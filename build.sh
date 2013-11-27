@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+
+# delete local site
+rm -rf _site
+
 jekyll build
 
 cd ../mysite
