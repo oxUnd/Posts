@@ -252,3 +252,8 @@ a {
 .cf {
   zoom:1;
 }
+
+#404 h1 {
+  color: red;
+  margin-top: 50px;
+}
