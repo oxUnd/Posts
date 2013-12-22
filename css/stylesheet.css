@@ -257,3 +257,8 @@ a {
   color: red;
   margin-top: 50px;
 }
+
+code {
+    font-family: Console;
+    font-size: 1.5em;
+}
