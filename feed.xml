@@ -3,8 +3,8 @@
 	<channel>
 		<title>t.zzis.me</title>
 		<description>...</description>
-		<link>/</link>
-		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+		<link>http://t.zzis.me/</link>
+		<atom:link href="http://t.zzis.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
 				<title>MacVim noantialias</title>
@@ -16,8 +16,8 @@ Google一下如何设置MacVim的&lt;code&gt;no-anti-aliasing&lt;/code&gt;。&lt
 使用&lt;/p&gt;
 </description>
 				<pubDate>Sun, 22 Dec 2013 15:59:00 +0000</pubDate>
-				<link>/2013/12/22/mvim-noantialias.html</link>
-				<guid isPermaLink="true">/2013/12/22/mvim-noantialias.html</guid>
+				<link>http://t.zzis.me/2013/12/22/mvim-noantialias.html</link>
+				<guid isPermaLink="true">http://t.zzis.me/2013/12/22/mvim-noantialias.html</guid>
 			</item>
 		
 			<item>
@@ -53,8 +53,8 @@ Google一下如何设置MacVim的&lt;code&gt;no-anti-aliasing&lt;/code&gt;。&lt
 &lt;/ul&gt;
 </description>
 				<pubDate>Wed, 27 Nov 2013 12:41:32 +0000</pubDate>
-				<link>/jekyll/app/2013/11/27/dayone.html</link>
-				<guid isPermaLink="true">/jekyll/app/2013/11/27/dayone.html</guid>
+				<link>http://t.zzis.me/jekyll/app/2013/11/27/dayone.html</link>
+				<guid isPermaLink="true">http://t.zzis.me/jekyll/app/2013/11/27/dayone.html</guid>
 			</item>
 		
 			<item>
@@ -72,8 +72,8 @@ To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; direc
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/mojombo/jekyll&quot;&gt;Jekyll&amp;#39;s GitHub repo&lt;/a&gt;.&lt;/p&gt;
 </description>
 				<pubDate>Wed, 27 Nov 2013 09:25:37 +0000</pubDate>
-				<link>/jekyll/update/2013/11/27/welcome-to-jekyll.html</link>
-				<guid isPermaLink="true">/jekyll/update/2013/11/27/welcome-to-jekyll.html</guid>
+				<link>http://t.zzis.me/jekyll/update/2013/11/27/welcome-to-jekyll.html</link>
+				<guid isPermaLink="true">http://t.zzis.me/jekyll/update/2013/11/27/welcome-to-jekyll.html</guid>
 			</item>
 		
 			<item>
@@ -86,8 +86,8 @@ To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; direc
 &lt;p&gt;测试中文，测试中文&lt;/p&gt;
 </description>
 				<pubDate>Wed, 27 Nov 2013 00:00:00 +0800</pubDate>
-				<link>/jekyll/new/2013/11/27/helloworld.html</link>
-				<guid isPermaLink="true">/jekyll/new/2013/11/27/helloworld.html</guid>
+				<link>http://t.zzis.me/jekyll/new/2013/11/27/helloworld.html</link>
+				<guid isPermaLink="true">http://t.zzis.me/jekyll/new/2013/11/27/helloworld.html</guid>
 			</item>
 		
 	</channel>
