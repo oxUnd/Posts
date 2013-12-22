@@ -12,12 +12,21 @@
 Google一下如何设置MacVim的&lt;code&gt;no-anti-aliasing&lt;/code&gt;。&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;vim language-vim&quot; data-lang=&quot;vim&quot;&gt;&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;noantialias&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;这样就可以关闭反锯齿了。眼睛看着不累，非常适合coding时
-使用&lt;/p&gt;
+&lt;p&gt;这样就可以关闭反锯齿了。眼睛看着不累，非常适合coding时使用&lt;/p&gt;
+
+&lt;h4&gt;效果&lt;/h4&gt;
+
+&lt;h5&gt;before&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/vim/antialiasing_before.png&quot; alt=&quot;anti-aliasing&quot;&gt;&lt;/p&gt;
+
+&lt;h5&gt;after&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/vim/antialiasing_after.png&quot; alt=&quot;noanti-aliasing&quot;&gt;&lt;/p&gt;
 </description>
 				<pubDate>Sun, 22 Dec 2013 15:59:00 +0000</pubDate>
-				<link>http://t.zzis.me/2013/12/22/mvim-noantialias.html</link>
-				<guid isPermaLink="true">http://t.zzis.me/2013/12/22/mvim-noantialias.html</guid>
+				<link>http://t.zzis.me/vim/2013/12/22/mvim-noantialias.html</link>
+				<guid isPermaLink="true">http://t.zzis.me/vim/2013/12/22/mvim-noantialias.html</guid>
 			</item>
 		
 			<item>
