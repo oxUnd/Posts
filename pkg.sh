@@ -5,8 +5,8 @@ css_pkg='assets/all.css'
 rm -f $css_pkg
 cat assets/resources/bootstrap/css/bootstrap.min.css >> $css_pkg
 sed 's/\.\.\/fonts/\/assets\/resources\/font-awesome\/fonts/g' assets/resources/font-awesome/css/font-awesome.min.css >> $css_pkg
-cat assets/resources/syntax/syntax.css >> css_pkg
-cat assets/css/style.css >> css_pkg
+cat assets/resources/syntax/syntax.css >> $css_pkg
+cat assets/css/style.css >> $css_pkg
 
 # js
 js_pkg='assets/all.js'
