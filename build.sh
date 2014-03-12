@@ -3,6 +3,8 @@
 # delete local site
 rm -rf _site
 
+bash ./pkg.sh
+
 jekyll build
 
 cd ../mysite
