@@ -24,4 +24,8 @@ if(!jQuery)throw new Error("Bootstrap requires jQuery");+function(a){"use strict
 	
 	contact_list.mouseleave(function(){ scontacts.slideUp(); });
 
+	$('article img').each(function () {
+		$(this).addClass('img-thumbnail');
+	});
+
 });

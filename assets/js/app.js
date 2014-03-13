@@ -13,4 +13,8 @@ $( document ).ready(function() {
 	
 	contact_list.mouseleave(function(){ scontacts.slideUp(); });
 
+	$('article img').each(function () {
+		$(this).addClass('img-thumbnail');
+	});
+
 });
