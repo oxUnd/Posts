@@ -3,7 +3,7 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-14T08:04:38+08:00</updated>
+   <updated>2014-05-14T08:28:58+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
@@ -12,7 +12,7 @@
 
    
    <entry>
-      <title>回温数据结构-1</title>
+      <title>那些年我们落下的课-数据结构01</title>
       <link href="/struct-1"/>
       <updated>2014-05-14T16:04:08+08:00</updated>
       <id>/struct-1</id>
@@ -22,7 +22,7 @@
 
 &lt;p&gt;由于在大学属于学渣性，选择了一本贴近编程实践的书&amp;quot;&lt;a href=&quot;http://www.amazon.cn/gp/product/B00E87TVL0/ref=oh_d__o05_details_o05__i00?ie=UTF8&amp;amp;psc=1&quot; title=&quot;算法精解：C语言描述&quot;&gt;算法精解：C语言描述&lt;/a&gt;&amp;quot;；看了大概1/3，在实现上对我有很多启示。&lt;/p&gt;
 
-&lt;p&gt;学校时，实现链表的时候大概是没有怎么看书。每次都是用&lt;code&gt;list_element&lt;/code&gt;的数据结构作为表头；而不是新定义一个数据结构（比如&lt;code&gt;list&lt;/code&gt;）。&lt;/p&gt;
+&lt;p&gt;学校时，实现链表的时候大概是没有怎么看书。每次都是用&lt;code&gt;list_element&lt;/code&gt;的数据结构作为表头；&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_element_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_element_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -31,7 +31,9 @@
 &lt;p&gt;先指定一个头元素&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;然后在&lt;code&gt;add&lt;/code&gt;时，填充&lt;em&gt;next&lt;/em&gt;。这种方式如果想知道有多少个节点，得从&lt;code&gt;head&lt;/code&gt;遍历一遍，如此需要遍历一遍整个链。假设有一个结构存储链表的&lt;code&gt;size&lt;/code&gt;，每次添加节点的时候&lt;code&gt;size++&lt;/code&gt;，删除节点的时候&lt;code&gt;size--&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;然后在&lt;code&gt;add&lt;/code&gt;时，填充&lt;em&gt;next&lt;/em&gt;。这种方式如果想知道表大小，得从&lt;code&gt;head&lt;/code&gt;遍历一遍，如此需要遍历一遍整个链。&lt;/p&gt;
+
+&lt;p&gt;如果拿一个新的结构存储链表的&lt;code&gt;size&lt;/code&gt;，每次添加节点的时候&lt;code&gt;size++&lt;/code&gt;，删除节点的时候&lt;code&gt;size--&lt;/code&gt;，就可以直接读出表大小。&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -40,7 +42,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;用这样一个结构来记录链表的一些变化，如果想在表尾添加一个节点，也可以在O(1)的复杂度下完成；获取表大小也可以在O(1)的复杂度下完成。&lt;/p&gt;
 
-&lt;p&gt;看到这个书的描述，豁然开朗;&lt;/p&gt;
+&lt;p&gt;看到书上实现的细节，豁然开朗。&lt;/p&gt;
 
 &lt;blockquote&gt;
 &lt;p&gt;其实并不是经典数据结构限定了应该用什么样的解构去解决问题，而是教会怎样构造一个结构可以得到更好的实现和性能，就像设计类一样。&lt;/p&gt;
