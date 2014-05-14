@@ -3,13 +3,52 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-13T15:14:16+08:00</updated>
+   <updated>2014-05-14T08:04:38+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
       <email>fansekey@gmail.com</email>
    </author>
 
+   
+   <entry>
+      <title>回温数据结构-1</title>
+      <link href="/struct-1"/>
+      <updated>2014-05-14T16:04:08+08:00</updated>
+      <id>/struct-1</id>
+      <content type="html">&lt;p&gt;毕业快四年了，多多少少在自己的职业上有了一些积累。积累的是一些做事的经验，还有的也就是什么话该说什么不能说以及什么时候说。但反思知识体系，实在映衬不住四年的工作经验。&lt;/p&gt;
+
+&lt;p&gt;工作了那么长时间，在实现一个功能的时候也是使用语言提供的API，跟刚毕业的学生没什么两样时，也许只是熟悉了一个体系或者有更多的见识，多少显得尴尬。索性就拿起一本算法书在闲暇的时候研究研究。&lt;/p&gt;
+
+&lt;p&gt;由于在大学属于学渣性，选择了一本贴近编程实践的书&amp;quot;&lt;a href=&quot;http://www.amazon.cn/gp/product/B00E87TVL0/ref=oh_d__o05_details_o05__i00?ie=UTF8&amp;amp;psc=1&quot; title=&quot;算法精解：C语言描述&quot;&gt;算法精解：C语言描述&lt;/a&gt;&amp;quot;；看了大概1/3，在实现上对我有很多启示。&lt;/p&gt;
+
+&lt;p&gt;学校时，实现链表的时候大概是没有怎么看书。每次都是用&lt;code&gt;list_element&lt;/code&gt;的数据结构作为表头；而不是新定义一个数据结构（比如&lt;code&gt;list&lt;/code&gt;）。&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_element_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_element_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;先指定一个头元素&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;然后在&lt;code&gt;add&lt;/code&gt;时，填充&lt;em&gt;next&lt;/em&gt;。这种方式如果想知道有多少个节点，得从&lt;code&gt;head&lt;/code&gt;遍历一遍，如此需要遍历一遍整个链。假设有一个结构存储链表的&lt;code&gt;size&lt;/code&gt;，每次添加节点的时候&lt;code&gt;size++&lt;/code&gt;，删除节点的时候&lt;code&gt;size--&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;k&quot;&gt;typedef&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;list_element&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;用这样一个结构来记录链表的一些变化，如果想在表尾添加一个节点，也可以在O(1)的复杂度下完成；获取表大小也可以在O(1)的复杂度下完成。&lt;/p&gt;
+
+&lt;p&gt;看到这个书的描述，豁然开朗;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;其实并不是经典数据结构限定了应该用什么样的解构去解决问题，而是教会怎样构造一个结构可以得到更好的实现和性能，就像设计类一样。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这本书还描述了作为链表这样的一个数据结构有可能有什么样的用途，可以加深对此结构的理解。另外，中文译本有多处错误，可下载英文原版对照阅读；当然如果英文学的很溜，就直接英文吧。&lt;/p&gt;
+</content>
+   </entry>
    
    <entry>
       <title>MacVim noantialias</title>

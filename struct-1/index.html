@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="description" content="Personal blog of Berk Özbalcı, about computers, math and music">
+      <meta name="author" content="Berk Özbalcı">
+      <meta name="viewport" content="width=device-width">
+      <link rel="stylesheet" href="/css/syntax.css">
+      <link rel="stylesheet" href="/css/main.css">
+      <link rel="stylesheet" href="/css/normalize.css">
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="/favicon.ico" type="image/x-icon">
+      <link rel="alternate" type="application/atom+xml" href="/atom.xml">
+      <title>回温数据结构-1</title>
+   </head>
+   
+   <body>
+      <main>
+         <header>
+            <h1 class="title"><a href="/">:)</a></h1>
+         </header>
+
+         <article>
+   <h2>回温数据结构-1</h2>
+   <p>毕业快四年了，多多少少在自己的职业上有了一些积累。积累的是一些做事的经验，还有的也就是什么话该说什么不能说以及什么时候说。但反思知识体系，实在映衬不住四年的工作经验。</p>
+
+<p>工作了那么长时间，在实现一个功能的时候也是使用语言提供的API，跟刚毕业的学生没什么两样时，也许只是熟悉了一个体系或者有更多的见识，多少显得尴尬。索性就拿起一本算法书在闲暇的时候研究研究。</p>
+
+<p>由于在大学属于学渣性，选择了一本贴近编程实践的书&quot;<a href="http://www.amazon.cn/gp/product/B00E87TVL0/ref=oh_d__o05_details_o05__i00?ie=UTF8&amp;psc=1" title="算法精解：C语言描述">算法精解：C语言描述</a>&quot;；看了大概1/3，在实现上对我有很多启示。</p>
+
+<p>学校时，实现链表的时候大概是没有怎么看书。每次都是用<code>list_element</code>的数据结构作为表头；而不是新定义一个数据结构（比如<code>list</code>）。</p>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">list_element_</span> <span class="p">{</span>
+    <span class="kt">void</span> <span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">list_element_</span> <span class="n">next</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">list_element</span><span class="p">;</span>
+</code></pre></div>
+<p>先指定一个头元素</p>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="n">list_element</span> <span class="n">head</span><span class="p">;</span>
+</code></pre></div>
+<p>然后在<code>add</code>时，填充<em>next</em>。这种方式如果想知道有多少个节点，得从<code>head</code>遍历一遍，如此需要遍历一遍整个链。假设有一个结构存储链表的<code>size</code>，每次添加节点的时候<code>size++</code>，删除节点的时候<code>size--</code>。</p>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">list_</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">list_element</span> <span class="o">*</span><span class="n">head</span><span class="p">;</span>
+    <span class="n">list_element</span> <span class="o">*</span><span class="n">tail</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">list</span><span class="p">;</span>
+</code></pre></div>
+<p>用这样一个结构来记录链表的一些变化，如果想在表尾添加一个节点，也可以在O(1)的复杂度下完成；获取表大小也可以在O(1)的复杂度下完成。</p>
+
+<p>看到这个书的描述，豁然开朗;</p>
+
+<blockquote>
+<p>其实并不是经典数据结构限定了应该用什么样的解构去解决问题，而是教会怎样构造一个结构可以得到更好的实现和性能，就像设计类一样。</p>
+</blockquote>
+
+<p>这本书还描述了作为链表这样的一个数据结构有可能有什么样的用途，可以加深对此结构的理解。另外，中文译本有多处错误，可下载英文原版对照阅读；当然如果英文学的很溜，就直接英文吧。</p>
+
+</article>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'feeddly'; // required: replace example with your foshortn
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscr>comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="ldisqus">Disqus</span></a>
+
+<footer>
+   <div id="date" class="meta">
+      14 May 2014
+   </div>
+   <div id="return">
+      <a href="/">&laquo; Return to the home page</a>
+   </div>
+</footer>
+
+      </main>
+   </body>
+</html>
