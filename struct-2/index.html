@@ -70,7 +70,7 @@
 </code></pre></div>
 <p>第一个例子是浏览器端，监听页面是否已经loaded的事件；第二个是请求一个网页的时候每次数据传输一部分就会触发<code>data</code>事件，用来收集数据。</p>
 
-<p><code>onXXX</code> or <code>on(&#39;xxx&#39;)</code>一般就是监听某事件的意思，大概就是说给某一类<code>task</code>（在这里你完全可以看成一个函数）取个名字。当在使用的时候触发<code>trigger|emit</code>这些<code>task</code>; 当然这类<code>task</code>保存的时候就是按照队列的模型，先入先出；</p>
+<p><code>onXXX</code> or <code>on(&#39;xxx&#39;)</code>一般就是监听某事件的意思，大概就是说给某一类<code>task</code>（在这里你完全可以看成一个函数）取个名字并保存。当在使用的时候触发<code>trigger|emit</code>这些<code>task</code>; <code>task</code>保存的时候就是按照队列的模型，先入先出；</p>
 
 <p>上面所说的还是优点含糊？那么下面实现一个事件中心来看看队列的使用。</p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">ec</span> <span class="o">=</span> <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>

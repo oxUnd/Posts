@@ -3,7 +3,7 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-15T13:11:47+08:00</updated>
+   <updated>2014-05-15T13:19:47+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
@@ -64,7 +64,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;第一个例子是浏览器端，监听页面是否已经loaded的事件；第二个是请求一个网页的时候每次数据传输一部分就会触发&lt;code&gt;data&lt;/code&gt;事件，用来收集数据。&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;onXXX&lt;/code&gt; or &lt;code&gt;on(&amp;#39;xxx&amp;#39;)&lt;/code&gt;一般就是监听某事件的意思，大概就是说给某一类&lt;code&gt;task&lt;/code&gt;（在这里你完全可以看成一个函数）取个名字。当在使用的时候触发&lt;code&gt;trigger|emit&lt;/code&gt;这些&lt;code&gt;task&lt;/code&gt;; 当然这类&lt;code&gt;task&lt;/code&gt;保存的时候就是按照队列的模型，先入先出；&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;onXXX&lt;/code&gt; or &lt;code&gt;on(&amp;#39;xxx&amp;#39;)&lt;/code&gt;一般就是监听某事件的意思，大概就是说给某一类&lt;code&gt;task&lt;/code&gt;（在这里你完全可以看成一个函数）取个名字并保存。当在使用的时候触发&lt;code&gt;trigger|emit&lt;/code&gt;这些&lt;code&gt;task&lt;/code&gt;; &lt;code&gt;task&lt;/code&gt;保存的时候就是按照队列的模型，先入先出；&lt;/p&gt;
 
 &lt;p&gt;上面所说的还是优点含糊？那么下面实现一个事件中心来看看队列的使用。&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
