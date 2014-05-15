@@ -31,7 +31,7 @@
 <p>学校时，实现链表的时候大概是没有怎么看书。每次都是用<code>list_element</code>的数据结构作为表头；</p>
 <div class="highlight"><pre><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">list_element_</span> <span class="p">{</span>
     <span class="kt">void</span> <span class="o">*</span> <span class="n">data</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="n">list_element_</span> <span class="n">next</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">list_element_</span> <span class="o">*</span><span class="n">next</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">list_element</span><span class="p">;</span>
 </code></pre></div>
 <p>先指定一个头元素</p>
