@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>/quickling-1</loc>
+    <lastmod>2014-05-31T01:26:02+08:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>/struct-2</loc>
     <lastmod>2014-05-15T06:26:34+08:00</lastmod>
     <priority>0.8</priority>
@@ -41,14 +47,14 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2014-05-17T19:05:05+08:00</lastmod>
+    <lastmod>2014-05-30T17:29:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>/about/</loc>
-    <lastmod>2014-05-17T19:05:05+08:00</lastmod>
+    <lastmod>2014-05-30T17:29:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
