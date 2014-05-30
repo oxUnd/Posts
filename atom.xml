@@ -3,7 +3,7 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-30T17:48:29+08:00</updated>
+   <updated>2014-05-30T18:57:09+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
@@ -12,7 +12,7 @@
 
    
    <entry>
-      <title>加快网页加载的方案：bigpipe，bigrender，lazyrender</title>
+      <title>网页加载优化方案：bigpipe，bigrender，lazyrender</title>
       <link href="/quickling-1"/>
       <updated>2014-05-31T01:26:02+08:00</updated>
       <id>/quickling-1</id>
