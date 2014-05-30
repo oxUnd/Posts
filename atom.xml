@@ -3,7 +3,7 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-30T17:31:16+08:00</updated>
+   <updated>2014-05-30T17:36:42+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
@@ -39,7 +39,7 @@
 
 &lt;p&gt;bigpipe对服务器要求比较高，需要支持chunk输出。其实就是在同一个链接上将一个页面分段输出。需要服务器端能并行处理页面，假设页面可以分为三屏，没屏都对应一些数据。当某一屏的数据获取成功，其可以马上返回给浏览器（也就是pipe的方式输出），这样对应的屏就展现出来了。如果支持并行处理，再以chunk的方式输出，无疑会让浏览器加载展现会快很多。&lt;/p&gt;
 
-&lt;p&gt;对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层api&lt;em&gt;a得到，B是api&lt;/em&gt;b，C是api_c。&lt;/p&gt;
+&lt;p&gt;对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层&lt;code&gt;api_a&lt;/code&gt;得到，B是&lt;code&gt;api_b&lt;/code&gt;，C是&lt;code&gt;api_c&lt;/code&gt;。&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;node.js示例&lt;/em&gt;&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;asyncMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;slide&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;asyncMap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;

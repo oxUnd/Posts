@@ -47,7 +47,7 @@
 
 <p>bigpipe对服务器要求比较高，需要支持chunk输出。其实就是在同一个链接上将一个页面分段输出。需要服务器端能并行处理页面，假设页面可以分为三屏，没屏都对应一些数据。当某一屏的数据获取成功，其可以马上返回给浏览器（也就是pipe的方式输出），这样对应的屏就展现出来了。如果支持并行处理，再以chunk的方式输出，无疑会让浏览器加载展现会快很多。</p>
 
-<p>对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层api<em>a得到，B是api</em>b，C是api_c。</p>
+<p>对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层<code>api_a</code>得到，B是<code>api_b</code>，C是<code>api_c</code>。</p>
 
 <p><em>node.js示例</em></p>
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">asyncMap</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;slide&#39;</span><span class="p">).</span><span class="nx">asyncMap</span><span class="p">;</span>
