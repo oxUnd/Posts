@@ -3,7 +3,7 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-05-30T17:36:42+08:00</updated>
+   <updated>2014-05-30T17:44:22+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
@@ -16,7 +16,7 @@
       <link href="/quickling-1"/>
       <updated>2014-05-31T01:26:02+08:00</updated>
       <id>/quickling-1</id>
-      <content type="html">&lt;p&gt;开篇之初需要介绍一些网站页面加载的各种性能优化手段，他们分别是&lt;code&gt;bigrender&lt;/code&gt;、&lt;code&gt;bigpipe&lt;/code&gt;、&lt;code&gt;quickling&lt;/code&gt;。&lt;/p&gt;
+      <content type="html">&lt;p&gt;开篇之初需要介绍一些网站页面加载的各种性能优化手段，他们分别是&lt;code&gt;bigrender&lt;/code&gt;、&lt;code&gt;bigpipe&lt;/code&gt;、&lt;code&gt;lazyrender&lt;/code&gt;。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;bigrender&lt;/code&gt; 一种减少首屏dom节点优化首屏展现的方案；&lt;/li&gt;
