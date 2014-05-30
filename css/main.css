@@ -11,13 +11,13 @@
 }
 
 html, body { height: auto; }
-h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+h1, h2, h3, h4, h5, h6 { font-size: 100%; margin-top:.6em;}
 h2 { font-size: 125%; margin-bottom: .5em; }
 p { margin: 1em 0; }
 
 body {
    background-color: #ecf0f1;
-   font: 13.34px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+   font: 14px/24px arial,"\5b8b\4f53",sans-serif,"Microsoft YaHei",tahoma;
    font-size: small;
    -webkit-font-smoothing: antialiased;
    text-align: center;
