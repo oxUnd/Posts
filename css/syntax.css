@@ -1,73 +1,67 @@
-/* Every highlighting-related tag starts with code.
- * It proves valuable when one day, for example,
- * you need to use MathJax on your blog.
- *
- * No problem.
-*/
-
-code .hll { background-color: #ffffcc }
-code  /*{ background: #f0f3f3; }*/
-code .c { color: #999; } /* Comment */
-code .err { color: #AA0000; background-color: #FFAAAA } /* Error */
-code .k { color: #006699; } /* Keyword */
-code .o { color: #555555 } /* Operator */
-code .cm { color: #0099FF; font-style: italic } /* Comment.Multiline */
-code .cp { color: #009999 } /* Comment.Preproc */
-code .c1 { color: #999; } /* Comment.Single */
-code .cs { color: #999; } /* Comment.Special */
-code .gd { background-color: #FFCCCC; border: 1px solid #CC0000 } /* Generic.Deleted */
-code .ge { font-style: italic } /* Generic.Emph */
-code .gr { color: #FF0000 } /* Generic.Error */
-code .gh { color: #003300; } /* Generic.Heading */
-code .gi { background-color: #CCFFCC; border: 1px solid #00CC00 } /* Generic.Inserted */
-code .go { color: #AAAAAA } /* Generic.Output */
-code .gp { color: #000099; } /* Generic.Prompt */
-code .gs { } /* Generic.Strong */
-code .gu { color: #003300; } /* Generic.Subheading */
-code .gt { color: #99CC66 } /* Generic.Traceback */
-code .kc { color: #006699; } /* Keyword.Constant */
-code .kd { color: #006699; } /* Keyword.Declaration */
-code .kn { color: #006699; } /* Keyword.Namespace */
-code .kp { color: #006699 } /* Keyword.Pseudo */
-code .kr { color: #006699; } /* Keyword.Reserved */
-code .kt { color: #007788; } /* Keyword.Type */
-code .m { color: #FF6600 } /* Literal.Number */
-code .s { color: #d44950 } /* Literal.String */
-code .na { color: #4f9fcf } /* Name.Attribute */
-code .nb { color: #336666 } /* Name.Builtin */
-code .nc { color: #00AA88; } /* Name.Class */
-code .no { color: #336600 } /* Name.Constant */
-code .nd { color: #9999FF } /* Name.Decorator */
-code .ni { color: #999999; } /* Name.Entity */
-code .ne { color: #CC0000; } /* Name.Exception */
-code .nf { color: #CC00FF } /* Name.Function */
-code .nl { color: #9999FF } /* Name.Label */
-code .nn { color: #00CCFF; } /* Name.Namespace */
-code .nt { color: #2f6f9f; } /* Name.Tag */
-code .nv { color: #003333 } /* Name.Variable */
-code .ow { color: #000000; } /* Operator.Word */
-code .w { color: #bbbbbb } /* Text.Whitespace */
-code .mf { color: #FF6600 } /* Literal.Number.Float */
-code .mh { color: #FF6600 } /* Literal.Number.Hex */
-code .mi { color: #FF6600 } /* Literal.Number.Integer */
-code .mo { color: #FF6600 } /* Literal.Number.Oct */
-code .sb { color: #CC3300 } /* Literal.String.Backtick */
-code .sc { color: #CC3300 } /* Literal.String.Char */
-code .sd { color: #CC3300; font-style: italic } /* Literal.String.Doc */
-code .s2 { color: #CC3300 } /* Literal.String.Double */
-code .se { color: #CC3300; } /* Literal.String.Escape */
-code .sh { color: #CC3300 } /* Literal.String.Heredoc */
-code .si { color: #AA0000 } /* Literal.String.Interpol */
-code .sx { color: #CC3300 } /* Literal.String.Other */
-code .sr { color: #33AAAA } /* Literal.String.Regex */
-code .s1 { color: #CC3300 } /* Literal.String.Single */
-code .ss { color: #FFCC33 } /* Literal.String.Symbol */
-code .bp { color: #336666 } /* Name.Builtin.Pseudo */
-code .vc { color: #003333 } /* Name.Variable.Class */
-code .vg { color: #003333 } /* Name.Variable.Global */
-code .vi { color: #003333 } /* Name.Variable.Instance */
-code .il { color: #FF6600 } /* Literal.Number.Integer.Long */
-
 .css .o,
 .css .o + .nt,
 .css .nt + .nt { color: #999; }
+
+.highlight pre, pre, .highlight .hll { background-color: #f8f8f8; border: 1px solid #ccc; padding: 6px 10px; border-radius: 3px; }
+.highlight .c { color: #999988; font-style: italic; }
+.highlight .err { color: #a61717; background-color: #e3d2d2; }
+.highlight .k { font-weight: bold; }
+.highlight .o { font-weight: bold; }
+.highlight .cm { color: #999988; font-style: italic; }
+.highlight .cp { color: #999999; font-weight: bold; }
+.highlight .c1 { color: #999988; font-style: italic; }
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic; }
+.highlight .gd { color: #000000; background-color: #ffdddd; }
+.highlight .gd .x { color: #000000; background-color: #ffaaaa; }
+.highlight .ge { font-style: italic; }
+.highlight .gr { color: #aa0000; }
+.highlight .gh { color: #999999; }
+.highlight .gi { color: #000000; background-color: #ddffdd; }
+.highlight .gi .x { color: #000000; background-color: #aaffaa; }
+.highlight .go { color: #888888; }
+.highlight .gp { color: #555555; }
+.highlight .gs { font-weight: bold; }
+.highlight .gu { color: #800080; font-weight: bold; }
+.highlight .gt { color: #aa0000; }
+.highlight .kc { font-weight: bold; }
+.highlight .kd { font-weight: bold; }
+.highlight .kn { font-weight: bold; }
+.highlight .kp { font-weight: bold; }
+.highlight .kr { font-weight: bold; }
+.highlight .kt { color: #445588; font-weight: bold; }
+.highlight .m { color: #009999; }
+.highlight .s { color: #dd1144; }
+.highlight .n { color: #333333; }
+.highlight .na { color: teal; }
+.highlight .nb { color: #0086b3; }
+.highlight .nc { color: #445588; font-weight: bold; }
+.highlight .no { color: teal; }
+.highlight .ni { color: purple; }
+.highlight .ne { color: #990000; font-weight: bold; }
+.highlight .nf { color: #990000; font-weight: bold; }
+.highlight .nn { color: #555555; }
+.highlight .nt { color: navy; }
+.highlight .nv { color: teal; }
+.highlight .ow { font-weight: bold; }
+.highlight .w { color: #bbbbbb; }
+.highlight .mf { color: #009999; }
+.highlight .mh { color: #009999; }
+.highlight .mi { color: #009999; }
+.highlight .mo { color: #009999; }
+.highlight .sb { color: #dd1144; }
+.highlight .sc { color: #dd1144; }
+.highlight .sd { color: #dd1144; }
+.highlight .s2 { color: #dd1144; }
+.highlight .se { color: #dd1144; }
+.highlight .sh { color: #dd1144; }
+.highlight .si { color: #dd1144; }
+.highlight .sx { color: #dd1144; }
+.highlight .sr { color: #009926; }
+.highlight .s1 { color: #dd1144; }
+.highlight .ss { color: #990073; }
+.highlight .bp { color: #999999; }
+.highlight .vc { color: teal; }
+.highlight .vg { color: teal; }
+.highlight .vi { color: teal; }
+.highlight .il { color: #009999; }
+.highlight .gc { color: #999; background-color: #EAF2F5; }
