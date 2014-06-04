@@ -172,7 +172,7 @@ code,
 kbd,
 pre,
 samp {
-    font-family: Menlo, Monaco, "Courier New", monospace, serif;
+    font-family: Consolas, "Ubuntu Mono", Monaco, "Courier New", monospace;
     /* font-size: 1em; */
 }
 
