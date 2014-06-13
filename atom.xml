@@ -3,13 +3,123 @@
    <title>:)</title>
    <link href="/atom.xml" rel="self"/>
    <link href=""/>
-   <updated>2014-06-04T08:20:53+08:00</updated>
+   <updated>2014-06-13T08:05:52+08:00</updated>
    <id></id>
    <author>
       <name>xiangshouding</name>
       <email>fansekey@gmail.com</email>
    </author>
 
+   
+   <entry>
+      <title>用nodejs构建网站</title>
+      <link href="/node-1"/>
+      <updated>2014-06-13T15:20:01+08:00</updated>
+      <id>/node-1</id>
+      <content type="html">&lt;h3&gt;用node.js构建网站&lt;/h3&gt;
+
+&lt;p&gt;node.js灵活，轻巧，异步IO这些都是被大家传道的优点。不过在我看来，其后面庞大的社区才是最闪亮的。社区很庞大，以至于实现什么东西，扒拉扒拉就能搞定。所以这次node.js构建网站也出现在了现在的研究课题里面。&lt;/p&gt;
+
+&lt;p&gt;构建网站，开发其次，其实最主要的还是线上的运维。这块如果不搞好实在只能算是个玩具。不过好在现在有很多的管理nodejs进程的工具。比如&lt;code&gt;pm2&lt;/code&gt;、&lt;code&gt;forever&lt;/code&gt;等。还需要一套容灾方案。比如服务挂了，起不起来了怎么办等等等。&lt;/p&gt;
+
+&lt;p&gt;so，在这篇文章里罗列一下用什么手段在用nodejs构建网站时能防止灾难性的问题发生。&lt;/p&gt;
+
+&lt;p&gt;文章讲从以下几个方面进行；&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一个健壮的框架&lt;/li&gt;
+&lt;li&gt;一个靠谱的部署方案&lt;/li&gt;
+&lt;li&gt;一套完善的监控&lt;/li&gt;
+&lt;li&gt;一套完善的降级方案&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;健壮的框架&lt;/h4&gt;
+
+&lt;p&gt;想想框架能为整个项目带来什么？是好用的helper工具，还是结构清晰的目录结构抑或是强壮的错误处理能力？纵观现在能看到的那些框架，解决的问题无非是路由映射（跟目录结构息息相关），提供了很多公共库库（方便开发），基本上围绕着开发来的。其实用nodejs也需要一个这样的库。说到这些大家可能已经想到了&lt;code&gt;express&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;对，就是&lt;code&gt;express&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;不过在我看来&lt;code&gt;express&lt;/code&gt;还是有点问题，如果裸用它就显得太灵活了，所以业界最广泛的一种使用方式是在其上在封装一个框架，一个典型的包括&lt;code&gt;model&lt;/code&gt;、&lt;code&gt;controller&lt;/code&gt;、&lt;code&gt;view&lt;/code&gt;的MVC框架。比如现在我比较喜欢的paypal的 http://krakenjs.com/ ，一个分层分的很明晰的MVC框架。&lt;/p&gt;
+
+&lt;p&gt;那我们的做法也是一样的，也是基于&lt;code&gt;express&lt;/code&gt;进行封装。然后再支持牛逼哄哄的&lt;code&gt;bigpipe&lt;/code&gt;。算是一个健壮的框架就产生了。至于如何支持&lt;code&gt;bigpipe&lt;/code&gt;后续会发篇博文说明。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;框架的好处&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一致的目录结构，增强可维护性&lt;/li&gt;
+&lt;li&gt;一致的公共库，避免出现组件库打架的事情，增强维护性&lt;/li&gt;
+&lt;li&gt;一致的路由，增强实用性&lt;/li&gt;
+&lt;li&gt;....&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;ul&gt;
+&lt;li&gt;路由&lt;/li&gt;
+&lt;li&gt;目录结构&lt;/li&gt;
+&lt;li&gt;MVC&lt;/li&gt;
+&lt;li&gt;bigpipe&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;靠谱的部署方案&lt;/h4&gt;
+
+&lt;p&gt;其实单拉出部署是因为，不像php那样，把php代码扔到对应的目录就能跑起来。node.js是需要重新启动node服务的。如果上线不频繁也没啥，但是如果上线频繁，总不能一天断好几次服务。所以需要一个靠谱的部署方案。&lt;/p&gt;
+
+&lt;p&gt;期间俺们的同学经过多次的验证和靠谱的推论。用一个&lt;code&gt;recluster&lt;/code&gt;的东东来做这个事情。recluster是这么搞定这个事情的。当某个链接正在被某进程处理时，这时候如果有新代码上线，需要restart服务。在这种情况下，它先启动新的进程。然后等在那些还在做处理的老进程，等完成后杀死它们。如果没有在处理状态的老进程，则直接杀死。把新的请求都发给新启动的进程。这样就是一种名字叫&lt;code&gt;热启动&lt;/code&gt;的模式了。&lt;/p&gt;
+
+&lt;p&gt;如果你要用nodejs上线，&lt;code&gt;recluster&lt;/code&gt;你值得拥有。&lt;/p&gt;
+
+&lt;p&gt;https://github.com/doxout/recluster&lt;/p&gt;
+
+&lt;p&gt;这个是关于上线启动服务的，但如果恰巧服务器有多台服务器，则需要在本地找好一台同构的机器，编译node。上线时打包上线更靠谱一点。至于编译node，再简单不过了。&lt;/p&gt;
+
+&lt;p&gt;还有负载均衡，这块就用node自带&lt;code&gt;cluster&lt;/code&gt;就挺好。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;ul&gt;
+&lt;li&gt;上线、部署、热启动&lt;/li&gt;
+&lt;li&gt;负载均衡&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;完善的监控&lt;/h4&gt;
+
+&lt;p&gt;从测试的结果来看，node的应用程序的内存时及其容易飙升的。所以内存上升报警这块需要做好预案，哪怕是杀掉进程重启也行。&lt;/p&gt;
+
+&lt;p&gt;好在node使用的v8提供了不错的一些方法来达到这个目的。这块后续也会出一篇文章详细探讨。&lt;/p&gt;
+
+&lt;p&gt;还有一些问题比如，node程序错误了要抓取错误等，记录日志让监控平台抓取分析等等等，一些线上监控还是得需要很完善的。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;ul&gt;
+&lt;li&gt;内存监控&lt;/li&gt;
+&lt;li&gt;爆栈重启&lt;/li&gt;
+&lt;li&gt;错误报警&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;完善的降级方案&lt;/h4&gt;
+
+&lt;p&gt;如果是成年老站，在使用node这么个新款时，不得不考虑如果node挂掉。切换到老站上面的策略。&lt;/p&gt;
+
+&lt;p&gt;现在一致的做法是，在php/java等机器上nginx把需要node处理的数据都代理给node机器处理。一旦node机器出问题，则把这些流量切回本机。这个方案估计是一个长态方案，一直要node稳定。&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;ul&gt;
+&lt;li&gt;容灾&lt;/li&gt;
+&lt;li&gt;降级&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+</content>
+   </entry>
    
    <entry>
       <title>网页加载优化方案：bigpipe，bigrender，lazyrender</title>
