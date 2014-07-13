@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "初用xcode 5"
-date: 2013-11-27 12:41:32
+date: 2014-07-13 19:00:58 
 categories: osx
 ---
 
@@ -21,17 +21,22 @@ categories: osx
 
 网络总是发展很快，而沉淀很多。google第一二条就是想要的。
 
-- http://nshipster.com/xcode-plugins/
-- http://iosdevtips.co/post/82232620790/best-xcode-plugins
+- [http://nshipster.com/xcode-plugins/](http://nshipster.com/xcode-plugins/)
+- [http://iosdevtips.co/post/82232620790/best-xcode-plugins](http://iosdevtips.co/post/82232620790/best-xcode-plugins
+)
 
 上面两篇文章介绍了一些常用的插件。其中有`xvim`，秉着尝试一把的念头试了试，发现这东西确实很好用，给了`xcode`另一条生命，随用之。
 
 后装上了最爱的代码颜色主题 `base16-ocean`，看着整个开发环境顺眼多了。
 
-- https://github.com/chriskempson/base16
+- [https://github.com/chriskempson/base16](https://github.com/chriskempson/base16)
 
 -----
 
 周末完了，多学多看，周末拿起《Unix 环境高级编程》开始看了看`socket`方面的只是和`异步io`方面的知识，翻译真不咋地，很多错误。
+
+虽然很多人都给soket例子，我这块也贴一个。
+
+{%gist xiangshouding/d5e53c83b83c71954675 %}
 
 随口唠叨一篇，下周工作快乐。
