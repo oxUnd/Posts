@@ -35,7 +35,7 @@ categories: osx
 
 周末完了，多学多看，周末拿起《Unix 环境高级编程》开始看了看`socket`方面的只是和`异步io`方面的知识，翻译真不咋地，很多错误。
 
-虽然很多人都给soket例子，我这块也贴一个。
+虽然很多人都给socket例子，我这块也贴一个。
 
 {%gist xiangshouding/d5e53c83b83c71954675 %}
 
