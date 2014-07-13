@@ -184,3 +184,7 @@ hr {
 #home p.intro {
    margin-top: 0px;
 }
+
+.gist {
+   font-size: 50%;
+}
