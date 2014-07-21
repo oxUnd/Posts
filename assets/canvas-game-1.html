@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="draw" width="400px" height="400px"></canvas>
+<script type="text/javascript">
+    // shim layer with setTimeout fallback
+    window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                window.oRequestAnimationFrame      ||
+                window.msRequestAnimationFrame     ||
+                function( callback ){
+                    window.setTimeout(callback, 1000 / 60);
+                };
+    })();
+
+    var canvas = document.getElementById('draw');
+
+    //--------
+    var keys = {};
+    document.addEventListener("keydown", function (e) {
+        keys[e.keyCode] = true;
+    });
+
+    document.addEventListener("keyup", function (e) {
+        keys[e.keyCode] = false;
+    });
+
+    var player = {
+        x: canvas.width / 2,
+        y: canvas.height - 20,
+        w: 10,
+        h: 20,
+        color: '#FF0000'
+    };
+
+    function refreshCanvas() {
+        var c = canvas.getContext('2d');
+        c.fillStyle = "#FFFFFF";
+        c.fillRect(0,0,canvas.width,canvas.height);
+    }
+
+    function intersect(a, b) {
+        var f = false;
+        if ((a.x <= b.x) && (b.x <= a.x + a.w) && (a.y + a.h >= b.y) && (b.y >= a.y)) {
+            f = true;
+        }
+
+        if (!f && (b.x <= a.x) && (a.x <= b.x + b.w) && (b.y + b.h >= a.y) && (a.y >= b.y)) {
+            f = true;
+        }
+
+        return f;
+    }
+
+    var enemies = [];
+    var e_n = 0;
+    function createEnemies() {
+        while (e_n < canvas.width) {
+            var enemy = {
+                x: e_n,
+                y: 0,
+                w: 20,
+                h: 20,
+                color: '#0000FF'
+            };
+            enemies.push(enemy);
+            e_n += 40;
+        }
+    }
+
+    function drawEnemies() {
+        var c = canvas.getContext('2d');
+        enemies.forEach(function (enemy) {
+            c.fillStyle = enemy.color;
+            c.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        });
+    }
+
+    var bullets = [];
+    var b_tick = 0;
+    function drawPlayer() {
+        var c = canvas.getContext("2d");
+        c.fillStyle = player.color;
+        c.fillRect(player.x, player.y, player.w, player.h);
+        if (player.fired) {
+            if (b_tick % 10 == 0) {
+                bullets.push({
+                    x: player.x,
+                    y: player.y,
+                    w: 10,
+                    h: 5,
+                    speed: 5
+                });
+            }
+            b_tick++;
+        }
+    }
+
+    function updatePlayer() {
+        if (keys[37]) {
+            player.x -= 10;
+            if (player.x < 0) player.x = 0;
+        }
+
+        if (keys[39]) {
+            player.x += 10;
+            var right = canvas.width - player.w;
+            if (player.x > right) player.x = right;
+        }
+
+        if (keys[38]) {
+            player.y -= 10;
+            if (player.y < 0) player.y = 0;
+        }
+
+        if (keys[40]) {
+            player.y += 10;
+            var b = canvas.height - player.h;
+            if (player.y > b) player.y = b;
+        }
+
+        if (keys[32]) {
+            player.fired = true;
+        } else {
+            player.fired = false;
+        }
+    }
+
+    function drawBullet() {
+        if (bullets.length) {
+            var c = canvas.getContext('2d');
+            for (var i in bullets) {
+                var bullet = bullets[i];
+                c.fillStyle = '#000000';
+                c.fillRect(bullet.x, bullet.y, bullet.w, bullet.h);
+            }
+        }
+    }
+
+    function updateBullet() {
+        if (bullets.length) {
+            for (var i in bullets) {
+                var bullet = bullets[i];
+                bullet.y -= bullet.speed;
+            }
+        }
+    }
+
+    function killBullet() {
+        if (bullets.length) {
+            for (var i in bullets) {
+                var bullet = bullets[i];
+                if (bullet.y < 0) {
+                    bullets.splice(i, 1);
+                }
+            }
+        }
+    }
+
+    function kill() {
+        var c = canvas.getContext('2d');
+        bullets.forEach(function (b) {
+            for (var i = 0, len = enemies.length; i < len; i++) {
+                var enemy = enemies[i];
+                if (intersect(b, enemy)) {
+                    enemies.splice(i, 1);
+                    break;
+                }
+            }
+        });
+
+        enemies.forEach(function (e) {
+            c.fillStyle = e.color;
+            c.fillRect(e.x, e.y, e.w, e.h);
+        });
+    }
+
+    function loop() {
+        window.requestAnimFrame(loop);
+        refreshCanvas();
+        createEnemies();
+        drawEnemies();
+        drawPlayer();
+        drawBullet();
+        updateBullet();
+        updatePlayer();
+        killBullet();
+        kill();
+    }
+    window.requestAnimFrame(loop);
+
+</script>
+</body>
+</html>

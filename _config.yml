@@ -1,23 +1,18 @@
-name: ":)"
-markdown: redcarpet
-highlighter: 'pygments'
-permalink: :title
-exclude: [README.md, LICENSE, Makefile]
+
+
+name : ":)"
+markdown : redcarpet
+highlighter : 'pygments'
+permalink : /posts/:categories/:title
+exclude: ['README.md', 'LICENSE', 'Makefile']
+include: ['./assets']
 
 # Information for the Atom feed
 gereksiz:
-   author: "xiangshouding"
-   email: "fansekey@gmail.com"
+   author : "xiangshouding"
+   email : "fansekey@gmail.com"
 
-markdown: redcarpet
-markdown_ext: markdown,md,mdk
+markdown : redcarpet
+markdown_ext : markdown,md,mdk
 redcarpet:
-    extensions: ['fenced_code_blocks']
-    
-# sitemap
-gems:
-  - jekyll-sitemap
-  
-#########
-source: .
-destination: ../mysite
+    extensions : ['fenced_code_blocks']
