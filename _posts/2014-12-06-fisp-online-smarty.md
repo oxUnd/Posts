@@ -45,6 +45,9 @@ $smarty->setTemplateDir(ROOT . '/template');//[4]
 $smarty->left_delimiter = "{%";//[5]
 $smarty->right_delimiter = "%}";//[6]
 $smarty->display('a.tpl');//[7]
+
+?>
+
 ```
 解释这段代码之前呢，我们先贴上本地的目录；
 
@@ -61,6 +64,7 @@ $ tree -L 1
 
 ```php
 //file: index.php
+<?php
 
 if (!defined("ROOT")) define("ROOT", __DIR__); //[1]
 include (ROOT . '/smarty/Smarty.class.php'); //[2]
@@ -72,6 +76,9 @@ $smarty->left_delimiter = "{%";//[5]
 $smarty->right_delimiter = "%}";//[6]
 $smarty->setPluginsDir(ROOT .'/plugin');//[7]
 $smarty->display('a.tpl');//[8]
+
+?>
+
 ```
 
 [7]这行设置了一个插件目录，意思是说，如果这个目录下有有效的Smarty插件，就会加载起来，然后在模板里面就可以直接使用，Smarty有很多类型的插件，我们这块使用`function`插件来举例子。
@@ -89,6 +96,8 @@ $smarty->display('a.tpl');//[8]
 function smarty_function_xdate($params, $template) {
     return date('Y-m-d H:i:s');
 }
+?>
+
 ```
 
 当渲染`a.tpl`时，会调用插件`xdate`得到一个当前的时间。。。
