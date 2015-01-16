@@ -79,6 +79,7 @@ $ git:(master) ✗ tree -L 1
 - `fis-conf.js` FIS配置文件，定制编译逻辑都是放在这个页面里面的
 
 几个分享的点
+
 - 拆分组件后用`<!--inline[]-->`粘合在一起，这个是FIS**三种语言能力**里面的内嵌能力。
 - markdown使用`marked`这个开源库搞定
 - 高亮使用`highlight.js`，可以给`marked`设置属性来使用它。
@@ -98,6 +99,7 @@ $ git:(master) ✗ tree -L 1
         smartLists: true,
         smartypants: false
     });
+
     ```
 
 - 如何让FIS把`markdown`编译为`html`就很简单了，直接使用`fis-parser-marked`即可，不过由于我的整个方案定制点比较多，所以选择自己实现一个`fis-parser`。
