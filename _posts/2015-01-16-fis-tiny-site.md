@@ -84,21 +84,21 @@ $ git:(master) ✗ tree -L 1
 - 高亮使用`highlight.js`，可以给`marked`设置属性来使用它。
     
     ```javascript
-        marked.setOptions({
-            renderer: renderer,
-            highlight: function(code) {
-                return require('highlight.js').highlightAuto(code).value;
-            },
-            langPrefix: 'hljs lang-',
-            gfm: true,
-            tables: true,
-            breaks: false,
-            pedantic: false,
-            sanitize: false,
-            smartLists: true,
-            smartypants: false
-        });
-   ```
+    marked.setOptions({
+        renderer: renderer,
+        highlight: function(code) {
+            return require('highlight.js').highlightAuto(code).value;
+        },
+        langPrefix: 'hljs lang-',
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false
+    });
+    ```
 
 - 如何让FIS把`markdown`编译为`html`就很简单了，直接使用`fis-parser-marked`即可，不过由于我的整个方案定制点比较多，所以选择自己实现一个`fis-parser`。
 
@@ -124,19 +124,19 @@ fis.config.set('roadmap.path', [
 定制`marked`的`renderer`，收集到所有`isNav`文件中的链接；
 
 ```javascript
-        renderer.link = function(href, title, text) {
-            if (file.isNav) {
-                var info = url.parse(href);
-                if (!~navs.indexOf(info.pathname)) {
-                    //check file exist?
-                    var refFile = fis.file(file.dirname + '/' + info.pathname + '.md');
-                    gNavRef.push(refFile.toString());
-                    navs.push(info.pathname);
-                }
-                return;
-            }
-            ...
+renderer.link = function(href, title, text) {
+    if (file.isNav) {
+        var info = url.parse(href);
+        if (!~navs.indexOf(info.pathname)) {
+            //check file exist?
+            var refFile = fis.file(file.dirname + '/' + info.pathname + '.md');
+            gNavRef.push(refFile.toString());
+            navs.push(info.pathname);
         }
+        return;
+    }
+    ...
+}
 ```
 
 再把这些链接拼凑成`FIS`的`inline`能力，让`FIS`编译时进行处理
