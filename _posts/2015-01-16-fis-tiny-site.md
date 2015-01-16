@@ -108,6 +108,7 @@ $ git:(master) ✗ tree -L 1
 幸好，WIKI有个写`NAV`的文件，叫`doc/_Sidebar.md`；所以整个顺序等都是由这个文件决定的。
 
 设置属性为`isNav`
+
 ```javascript
 fis.config.set('roadmap.path', [
 ...
@@ -118,7 +119,9 @@ fis.config.set('roadmap.path', [
 ...
 ]);
 ```
+
 定制`marked`的`renderer`，收集到所有`isNav`文件中的链接；
+
 ```javascript
         renderer.link = function(href, title, text) {
             if (file.isNav) {
