@@ -2,10 +2,13 @@
 * {
    margin: 0;
    padding: 0;
-
    -moz-box-sizing: border-box;
    -webkit-box-sizing: border-box;
    box-sizing: border-box;
+}
+
+html {
+   font-size: 20px;
 }
 
 html, body { height: auto; }
@@ -18,20 +21,33 @@ body {
 }
 
 header {
-   padding-top: 30px;
+   border-bottom: 1px solid #EEEEEE;
+   margin-bottom: 20px;
 }
 
-header h1 {
-   text-align: center;
+header h3 {
+   padding: 0;
+   margin: 5px 0;
+   border: 0;
+}
+
+header a {
+   font-weight: bold;
+   text-decoration: none;
+}
+
+header .container {
+   width: 60%;
+   margin: 0 auto;
+   padding: 15px 0;
+}
+
+header .container span {
+   margin-left: 20px;
 }
 
 footer {
    padding-bottom: 20px;
-}
-
-.code-block {
-   font-size: 27px;
-   padding-left: 50px;
 }
 
 /* Gentle links */
@@ -64,22 +80,13 @@ a:hover { color: #2980B9; }
 }
 
 main {
-   font-size: 16px;
-   line-height: 1.8em;
-   margin: 2em auto 0.5em;
-   max-width: 55em;
-   background-color: #f7f7f9;
+   line-height: 1.5em;
+   /*background-color: #f7f7f9;*/
    border-radius: 10px;
-   border: 1px solid #e1e1e8;
-   padding: 30px 18px;
-}
-
-header h1 {
-}
-
-header a {
-   font-weight: bold;
-   text-decoration: none;
+   /*border: 1px solid #e1e1e8;*/
+   width: 60%;
+   padding: 30px 0;
+   margin: 0 auto;
 }
 
 /* the website's name on the header */
@@ -179,7 +186,6 @@ h2, h3, h4, h5 {
 
 p {
    margin: 10px 0 25px;
-   font-size: 17px;
    line-height: 2em;
 }
 
@@ -268,7 +274,6 @@ table th {
   background: #00cccc;
   color: #fff;
   text-transform: uppercase;
-  font-size: 12px;
 }
 table th.last {
   border-right: none;
