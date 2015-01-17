@@ -368,7 +368,7 @@ ok，其实上面这个例子已经把静态文件换个产出路径的方方面
     {%include file="<filepath>"%}
     ```
 
-- config_load
+- load_config
     
     ```smarty
     {%load_config file="<filepath>"%}
