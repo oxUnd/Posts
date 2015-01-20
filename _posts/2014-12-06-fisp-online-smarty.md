@@ -84,10 +84,12 @@ $smarty->display('a.tpl');//[8]
 [7]这行设置了一个插件目录，意思是说，如果这个目录下有有效的Smarty插件，就会加载起来，然后在模板里面就可以直接使用，Smarty有很多类型的插件，我们这块使用`function`插件来举例子。
 
 我们迅速搞一个`function`插件，就叫`function.xdate.php`吧。在模板里面这么调用。
+
 ```smarty
 {%*file: template/a.tpl*%}
 {%xdate%}
 ```
+
 这个插件的作用是打出时间；代码如下
 
 ```php
