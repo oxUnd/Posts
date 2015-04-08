@@ -128,7 +128,7 @@ fis.config.set('settings.parser.sass', {
 假设页面的样式文件是`/static/index.scss`，那么使用就很简单了；
 
 ```css
-@import '_bootstrap.scss'; //从某一个include_path找到文件
+@import '_bootstrap.scss'; /*从某一个include_path找到文件*/
 ```
 
 然后在页面引入这个index.scss即可；
