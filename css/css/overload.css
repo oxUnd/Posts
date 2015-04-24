@@ -1,0 +1,104 @@
+.sect2:not(:last-child) {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgb(134, 150, 165);
+}
+
+li > a.sc-current-element:before {
+    content: "";
+    left: 0;
+    position: absolute;
+    width: 5px;
+    height: 1.5em;
+    background-color: #ffa500;
+    transition-property: background-color, color;
+    transition-duration: 0.3s;
+}
+
+.github-ribbon {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    border: 0;
+}
+
+.social-button-wrapper {
+    margin-bottom: 1.25em;
+}
+
+.download-area {
+    margin-bottom: 1.25em;
+}
+
+.download-button {
+    font-size: 1.1em;
+    display: inline-block;
+    margin: 0.75em 0.25em;
+    border: 0 none;
+    border-radius: 3px;
+    padding: 0.75em 1em;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.download-button.pdf {
+    background-color: #5cb85c;
+}
+
+.download-button.source-code {
+    background-color: #1FA5CD;
+}
+
+.download-button:hover {
+    color: white;
+}
+
+.download-button.pdf:hover {
+    background-color: #4c974c;
+}
+
+.download-button.source-code:hover {
+    background-color: #2090b9;
+}
+
+.tutorial-area {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    font-size: 0.9em;
+    margin: 5px 1px 1.25em 0;
+    padding: 0 0 0 0.5em;
+    border-top: 1px solid rgba(81, 203, 238, 1);
+    border-bottom: 1px solid rgba(81, 203, 238, 1);
+}
+
+.mirror-console-wrapper {
+    margin: 0 0 1.25em 0;
+}
+
+/* 幅が狭いと横にスクロール出来てしまう問題 */
+.article a, .article code {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.article table {
+    table-layout: fixed;
+}
+
+@media only screen {
+    .github-ribbon {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .github-ribbon {
+        display: block;
+    }
+}
+
+/* codemirror */
+.CodeMirror.cm-s-default {
+    line-height: 1.2;
+}
