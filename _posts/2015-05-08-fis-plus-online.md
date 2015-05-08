@@ -99,10 +99,20 @@ fisp 就选用了 Smarty 作为模板语言。
     require(dirname(dirname(__FILE__)) . '/lib/smarty/Smarty.class.php'); //引入 smarty
     class Index extends Controller {
         private $_smarty = null;
+
+        //假象 init 方法
         public function init() {
             $this->_smarty = new Smarty();
-            $this->_smarty->setTemplateDir(dirname(__DIR__) . '/view');
+            // 模板目录设置，非 `/` 或者 `.` 开头的文件到这个目录下查找
+            $this->_smarty->setTemplateDir(dirname(__DIR__) . '/view/template');
+            // 设置插件目录，一般 fisp 会提供很多 smarty 的插件
+            $this->_smarty->setPluginsDir(array(
+                dirname(__DIR__) . '/view/plugin'
+            ));
+            // config_dir 设置
+            $this->_smarty->setConfigDir(dirname(__DIR__) . '/view/config');
         }
+
         public function show() {
             // 获取 $data 的逻辑，一般是调用 model 下某逻辑
             $this->_smarty->assign('data', $data); // <1>
@@ -110,6 +120,27 @@ fisp 就选用了 Smarty 作为模板语言。
         } 
     }
     ```
-    ...
+
+    同样的方式，给模板塞数据 `$this->_smarty->assign` 以及去渲染模板 `$this->_smarty->display` 。那么这时候模板就应该是 smarty 的模板了；
+
+    `index/show.tpl`
+
+    ```smarty
+    <html>
+        <head>
+            <title>{%$data.title%}</title>
+        </head>
+        <body>
+            <p>{%$data.message%}</p>
+        </body>
+    </html>
+    ```
+
+有了这个对照，是否清晰了一些，Smarty 就是干渲染模板这个事情的，其实就是 View 模板这块的事情。
+
+
+### 后端如何去渲染 fisp 的项目？
+
+...
 
 {%endraw%}
