@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Markdown Helper，一次 Mac App 开发之旅"
+date: 2015-09-22 15:59:39
+categories: my
+---
+
+
 ## Markdown Helper，一次 Mac App 开发之旅
 
 > 以下内容适用于 XCode 7 开发的 App，使用操作系统 OSX 10.11
