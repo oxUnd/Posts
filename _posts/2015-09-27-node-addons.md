@@ -80,42 +80,9 @@ win => msbuild
 mac, linux, ... => make
 ```
 
-但其封装的是 gyp，只是没有提供现成的接口而已，自己造。。
+但其封装的是 gyp，只是没有提供现成的接口而已，自己造；
 
-当我们用 node-gyp 进行编译的时候，会输入如下内容
-
-```
-➜  images git:(node-v4.0.0) ✗ node-gyp rebuild
-gyp info it worked if it ends with ok
-gyp info using node-gyp@3.0.1
-gyp info using node@4.1.1 | darwin | x64
-gyp http GET https://nodejs.org/download/release/v4.1.1/node-v4.1.1-headers.tar.gz
-gyp http 200 https://nodejs.org/download/release/v4.1.1/node-v4.1.1-headers.tar.gz
-gyp http GET https://nodejs.org/download/release/v4.1.1/SHASUMS256.txt
-gyp http 200 https://nodejs.org/download/release/v4.1.1/SHASUMS256.txt
-gyp info spawn python
-gyp info spawn args [ '/Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py',
-gyp info spawn args   'binding.gyp',
-gyp info spawn args   '-f',
-gyp info spawn args   'make',
-gyp info spawn args   '-I',
-gyp info spawn args   '/Users/shouding/Dev/fis2/dev/images/build/config.gypi',
-gyp info spawn args   '-I',
-gyp info spawn args   '/Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi',
-gyp info spawn args   '-I',
-gyp info spawn args   '/Users/shouding/.node-gyp/4.1.1/include/node/common.gypi',
-gyp info spawn args   '-Dlibrary=shared_library',
-gyp info spawn args   '-Dvisibility=default',
-gyp info spawn args   '-Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1',
-gyp info spawn args   '-Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp',
-gyp info spawn args   '-Dnode_lib_file=node.lib',
-gyp info spawn args   '-Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images',
-gyp info spawn args   '--depth=.',
-gyp info spawn args   '--no-parallel',
-gyp info spawn args   '--generator-output',
-gyp info spawn args   'build',
-gyp info spawn args   '-Goutput_dir=.' ]
-```
+当我们用 node-gyp 进行编译的时候，会输入
 
 ![](http://store.orrafy.com/get/uuid=ecdcc9be82674109036d8266eca3f74c)
 
@@ -125,7 +92,7 @@ gyp info spawn args   '-Goutput_dir=.' ]
 /Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
 ```
 
-其中有 `-f` 参数，修改为 `cmake`，执行这个命令即可得到 `./build/Release/CMakeLists.txt`，再用 CION 打开 `Release` 目录就是一个完整的项目了，可以在 IDE 编译，修改错误以及编码（代码自动补全很 nice）
+其中有 `-f` 参数，修改为 `cmake`，执行这个命令即可得到 `./build/Release/CMakeLists.txt`，再用 CLION 打开 `Release` 目录就是一个完整的项目了，可以在 IDE 编译，修改错误以及编码（代码自动补全很 nice）
 
 很快我的项目就改好接口了，假设我用 make 一个一个去排除错误，修改到猴年马月都不能完成。
 
