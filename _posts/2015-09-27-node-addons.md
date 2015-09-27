@@ -6,6 +6,7 @@ categories: my
 ---
 
 开始前的说明及准备
+
 - Addons node 原生插件，以下用 addons 代指。
 - node-gyp 辅助开发 addon 的工具
 - build-essential 如 gcc、make、cmake、python、gdb 等
