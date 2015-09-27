@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "如何方便快捷的进行 node-addons 开发
+title: "如何方便快捷的进行 node-addons 开发"
 date: 2015-09-27 10:21:42
 categories: my
 ---
