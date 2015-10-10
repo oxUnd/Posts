@@ -21,14 +21,14 @@ ajaxify_contact_form: false
 
 # Disqus post comments
 # (leave blank to disable Disqus)
-disqus_shortname:
+disqus_shortname: feeddly
 
 # Social icons
-github_username:
+github_username: xiangshouding
 bitbucket_username:
 stackoverflow_id:
 twitter_username:
-google_plus_id:
+google_plus_id: xiangshouding
 linkedin_username:
 angellist_username:
 medium_id:
