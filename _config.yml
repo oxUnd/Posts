@@ -6,7 +6,6 @@ description: "A simple, beautiful theme for Jekyll that emphasizes content rathe
 baseurl:     ""
 url:         "http://www.orrafy.com"
 date_format: "%b %-d, %Y"
-permalink : /posts/:categories/:title
 
 # Google services
 google_analytics:
@@ -55,7 +54,8 @@ markdown : redcarpet
 markdown_ext : markdown,md,mdk
 redcarpet:
     extensions : ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-permalink:    pretty
+# permalink:    pretty
+permalink : /posts/:categories/:title
 paginate:     4
 sass:
   compressed: true
