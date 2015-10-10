@@ -1,13 +1,11 @@
 ---
 layout: default
 ---
-<article>
-   <h2>{{ page.title }}</h2>
-   {{ content }}
-</article>
-
-<footer>
-   <div id="return">
-      <a href="/">&laquo; Return to the home page</a>
-   </div>
-</footer>
+<div class="post">
+  <header class="post-header">
+    <h1 class="h2">{{ page.title }}</h1>
+  </header>
+  <article class="post-content">
+  {{ content }}
+  </article>
+</div>

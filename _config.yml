@@ -1,18 +1,61 @@
-
-
-name : "Xiang Shouding "
-markdown : redcarpet
-highlighter : 'pygments'
+# Site settings
+title:       随手一笔
+email:       fansekey@gmail.com
+author:      Xiang Shouding
+description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
+baseurl:     ""
+url:         "http://www.orrafy.com"
+date_format: "%b %-d, %Y"
 permalink : /posts/:categories/:title
-exclude: ['README.md', 'LICENSE', 'Makefile']
-include: ['./assets']
 
-# Information for the Atom feed
-gereksiz:
-   author : "xiangshouding"
-   email : "fansekey@gmail.com"
+# Google services
+google_analytics:
+google_verification:
 
+# Optional features
+animated:             false
+show_related_posts:   false
+show_post_footers:    false
+show_social_icons:    false
+ajaxify_contact_form: false
+
+# Disqus post comments
+# (leave blank to disable Disqus)
+disqus_shortname:
+
+# Social icons
+github_username:
+bitbucket_username:
+stackoverflow_id:
+twitter_username:
+google_plus_id:
+linkedin_username:
+angellist_username:
+medium_id:
+bitcoin_url:
+paypal_url:
+flattr_button:
+
+# Post sharing icons
+show_sharing_icons: false
+share_text: 'Share this post!'
+# Change to 'true' to enable individual icons
+share_facebook: false
+share_twitter: false
+share_googleplus: false
+share_linkedin: false
+share_digg: false
+share_tumblr: false
+share_reddit: false
+share_stumbleupon: false
+share_hackernews: false
+
+# Build settings
 markdown : redcarpet
 markdown_ext : markdown,md,mdk
 redcarpet:
     extensions : ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+permalink:    pretty
+paginate:     4
+sass:
+  compressed: true

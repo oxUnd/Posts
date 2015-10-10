@@ -1,14 +1,24 @@
 ---
 layout: default
-title: orrafy
 ---
 
-<div id="home">
-   <p class="intro">Pursue your object, be it what it will, steadily and indefatigably. <a href="/atom.xml"><i class="icon-rss"></i></a></p> 
-   <h2>Blog posts</h2>
-   <ul class="posts">
-      {% for post in site.posts %}
-      <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-      {% endfor %}
-   </ul>
+<div class="home">
+
+  <div class="posts">
+    {% for post in paginator.posts %}
+      <div class="post py3">
+        <p class="post-meta">{{ post.date | date: site.date_format }}</p>
+        <a href="{{ post.url | prepend: site.baseurl }}" class="post-link"><h3 class="h1 post-title">{{ post.title }}</h3></a>
+        <p class="post-summary">
+          {% if post.summary %}
+            {{ post.summary }}
+          {% else %}
+            {{ post.excerpt }}
+          {% endif %}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% include pagination.html %}
 </div>
