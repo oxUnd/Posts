@@ -50,10 +50,11 @@ share_stumbleupon: false
 share_hackernews: false
 
 # Build settings
-markdown : redcarpet
+gems: [jekyll-paginate, jekyll-gist]
+markdown : kramdown
 markdown_ext : markdown,md,mdk
-redcarpet:
-    extensions : ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+highlighter: rouge
+
 # permalink:    pretty
 permalink : /posts/:categories/:title
 paginate:     4
