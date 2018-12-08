@@ -4,7 +4,7 @@ email:       fansekey@gmail.com
 author:      Xiang Shouding
 description: "A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff."
 baseurl:     ""
-url:         "http://www.orrafy.com"
+url:         "https://www.orrafy.com"
 date_format: "%b %-d, %Y"
 
 # Google services
