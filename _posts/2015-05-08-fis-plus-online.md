@@ -5,7 +5,7 @@ date: 2015-05-08 11:39:18
 categories: fisbook
 ---
 
-{% capture %}
+{% raw %}
 
 最近遇到很多同学（非度厂）当在本地开发完的 fisp（指代fis-plus，以下同） 项目不知道如何跟后端连在一起工作；这可能是整个站在前端的角度上去考虑问题，而不清楚后端是如何去渲染一个页面导致的。当然也有可能是对 Smarty 本身了解的匮乏，前面我写过一篇关于 Smarty 的文章：[fis-plus上线篇之搞定smarty环境](http://www.orrafy.com/posts/fisbook/fisp-online-smarty/)，可能这篇更偏向于对 fisp 编译工具的一些产出设置。那么这篇将揭露假设我用了个 PHP 的什么什么框架该如何去渲染 fisp 的项目呢？
 
@@ -158,4 +158,4 @@ fisp 就选用了 Smarty 作为模板语言。
 
 [Smarty]: http://www.smarty.net
 
-{% endcapture %}
+{% endraw %}

@@ -5,7 +5,7 @@ date: 2014-12-06 10:48:36
 categories: fisbook
 ---
 
-{% capture %}
+{% raw %}
 
 在使用fisp（fis-plus简称）的时候，有些文件看着就是碍眼，有些文件想release到看上去比较顺眼的地方，或者是其他一些看似合乎逻辑的理由想改路径。反正就一个事儿，想更改发布路径。
 
@@ -435,4 +435,4 @@ SO，假设你要这么用；
 
 总结一下，fisp需要把产出的Smarty相关资源放到`config_dir`、`plugins_dir`、`template_dir`这三个目录，渲染就没问题了，当然需要**保持引用路径跟磁盘文件路径对上号**。
 
-{% endcapture %}
+{% endraw %}
