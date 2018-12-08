@@ -37,6 +37,6 @@ categories: osx
 
 虽然很多人都给socket例子，我这块也贴一个。
 
-{%gist xiangshouding/d5e53c83b83c71954675 %}
+<%gist xiangshouding/d5e53c83b83c71954675 %>
 
 随口唠叨一篇，下周工作快乐。

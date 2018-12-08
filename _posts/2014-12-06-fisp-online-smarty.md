@@ -5,8 +5,6 @@ date: 2014-12-06 10:48:36
 categories: fisbook
 ---
 
-{% raw %}
-
 在使用fisp（fis-plus简称）的时候，有些文件看着就是碍眼，有些文件想release到看上去比较顺眼的地方，或者是其他一些看似合乎逻辑的理由想改路径。反正就一个事儿，想更改发布路径。
 
 把想更改发布路径深深的埋藏在心里，苦苦不知道从何下手。翻翻文档吧，都能丢失在文档的海洋里面，心里暗骂“艹，上午的需求还没有完成呢！！！”，无奈心里还是痒痒，想改路径。
@@ -42,8 +40,8 @@ include (ROOT . '/smarty/Smarty.class.php'); //[2]
 $smarty = new Smarty(); //[3]
 
 $smarty->setTemplateDir(ROOT . '/template');//[4]
-$smarty->left_delimiter = "{%";//[5]
-$smarty->right_delimiter = "%}";//[6]
+$smarty->left_delimiter = "<%";//[5]
+$smarty->right_delimiter = "%>";//[6]
 $smarty->display('a.tpl');//[7]
 
 ?>
@@ -72,8 +70,8 @@ include (ROOT . '/smarty/Smarty.class.php'); //[2]
 $smarty = new Smarty(); //[3]
 
 $smarty->setTemplateDir(ROOT . '/template');//[4]
-$smarty->left_delimiter = "{%";//[5]
-$smarty->right_delimiter = "%}";//[6]
+$smarty->left_delimiter = "<%";//[5]
+$smarty->right_delimiter = "%>";//[6]
 $smarty->setPluginsDir(ROOT .'/plugin');//[7]
 $smarty->display('a.tpl');//[8]
 
@@ -86,8 +84,8 @@ $smarty->display('a.tpl');//[8]
 我们迅速搞一个`function`插件，就叫`function.xdate.php`吧。在模板里面这么调用。
 
 ```smarty
-{%*file: template/a.tpl*%}
-{%xdate%}
+<%*file: template/a.tpl*%>
+<%xdate%>
 ```
 
 这个插件的作用是打出时间；代码如下
@@ -362,37 +360,37 @@ ok，其实上面这个例子已经把静态文件换个产出路径的方方面
 - extends
     
     ```smarty
-    {%extends file="<filepath>"%}
+    <%extends file="<filepath>"%>
     ```
 
 - include
 
     ```smarty
-    {%include file="<filepath>"%}
+    <%include file="<filepath>"%>
     ```
 
 - load_config
     
     ```smarty
-    {%load_config file="<filepath>"%}
+    <%load_config file="<filepath>"%>
     ```
 
 - require
     
     ```smarty
-    {%require name="<id>"%}
+    <%require name="<id>"%>
     ```
 
 - widget
     
     ```smarty
-    {%widget name="<id>"%}
+    <%widget name="<id>"%>
     ```
 - html
     
     ```smarty
-    {%html framework="<id>"%}
-    {%/html%}
+    <%html framework="<id>"%>
+    <%/html%>
     ```
 
 其中require、widget、html是fisp独有的定制的一些函数（其实就是插件）。它们位fisp服务，并支撑fisp的正常运行（怎么做到的，可以看源码）。
@@ -402,12 +400,12 @@ ok，其实上面这个例子已经把静态文件换个产出路径的方方面
 SO，假设你要这么用；
 
 ```smarty
-{%include file="widget/a/a.tpl"%}
+<%include file="widget/a/a.tpl"%>
 ```
 那么渲染的文件是`SMARTY_TEMPLATE_DIR/widget/a/a.tol`，假设你写错了，写成了。
 
 ```smarty
-{%include file="/widget/a/a.tpl"%}
+<%include file="/widget/a/a.tpl"%>
 ```
 这种情况下，会去系统根目录下查找`/widget/a/a.tpl`，咦，一般都会挂掉。
 
@@ -434,5 +432,3 @@ SO，假设你要这么用；
 最后，写了很长一个篇幅介绍上线这回事儿，其实主要是smarty这块，因为出问题比较多的也是这块。
 
 总结一下，fisp需要把产出的Smarty相关资源放到`config_dir`、`plugins_dir`、`template_dir`这三个目录，渲染就没问题了，当然需要**保持引用路径跟磁盘文件路径对上号**。
-
-{% endraw %}
