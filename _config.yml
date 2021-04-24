@@ -57,6 +57,6 @@ highlighter: rouge
 
 # permalink:    pretty
 permalink : /posts/:categories/:title
-paginate:     4
+paginate:     25
 sass:
   compressed: true
