@@ -15,7 +15,7 @@ google_verification:
 animated:             false
 show_related_posts:   false
 show_post_footers:    false
-show_social_icons:    false
+show_social_icons:    true
 ajaxify_contact_form: false
 
 # Disqus post comments
@@ -26,8 +26,8 @@ disqus_shortname: feeddly
 github_username: xiangshouding
 bitbucket_username:
 stackoverflow_id:
-twitter_username:
-google_plus_id: xiangshouding
+twitter_username: 
+# google_plus_id: xiangshouding
 linkedin_username:
 angellist_username:
 medium_id:
