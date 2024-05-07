@@ -60,7 +60,7 @@ wine regedit ./fonts.reg
 "RetinaMode" = "y"
 ```
 
-注意，可能你的注册表中没有这个路径，请运行 wine regedit 添加。
+<font color="red">注意</font>，可能你的注册表中 `HKEY_CURRENT_USER` 下没有 `Mac Driver`，请运行 `wine regedit` 启动注册表编辑器右键添加。
 
 - 运行 `winecfg` 更改 PPI 为一个大一些的值，具体可以根据自己的分辨率计算以下，我设置的是 196.
 - 设置完成后执行 `wineboot` 重启
