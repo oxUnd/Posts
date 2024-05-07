@@ -57,12 +57,12 @@ wine regedit ./fonts.reg
 
 ```
 [HKEY_CURRENT_USER\Software\Wine\Mac Driver]
-"RetinaMode" = "y"
+"RetinaMode" = "Y"
 ```
 
 <font color="red">注意</font>，可能你的注册表中 `HKEY_CURRENT_USER` 下没有 `Mac Driver`，请运行 `wine regedit` 启动注册表编辑器右键添加。
 
-- 运行 `winecfg` 更改 PPI 为一个大一些的值，具体可以根据自己的分辨率计算以下，我设置的是 196.
+- 运行 `winecfg` 更改 PPI 为一个大一些的值，具体可以根据自己的分辨率计算一下，我设置的是 196.
 - 设置完成后执行 `wineboot` 重启
 
 另外一个比较难搞的问题是，如何有个快捷方式直接启动应用即可。我折腾了一圈，发现可以用 `wineskin`，可以 Homebrew 安装。但实现的方式是直接打包一个 Wine 到 xxx.app 目录下，来达成。感觉不是特别好。最终我直接选择使用命令行指令的方式。写一个脚本来快速启动某个应用。以 `Source Insight` 举例。
