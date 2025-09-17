@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;弱类型下的参数类型检查&#34;</h1>
+<div class="date">08 Nov 2016</div>
+<div class="content">
+  
+<section id="outline-container-2016-11-08-dev-php-0001" class="outline-2">
+<h2 id="2016-11-08-dev-php-0001">2016-11-08-dev-php-0001</h2>
+<div class="outline-text-2">
+<p>
+昨天看到一个项目，特别好奇的看了一眼，顿觉世界人民还是智慧满天下的。
+</p>
+
+<p>
+大家可能都知道，php 是弱类型的，那么就意味着有各种可能性，bug
+能在代码中游离，不顾一切。
+</p>
+
+<p>
+好了，段子说完了，我们开始说正题。
+</p>
+
+<p>
+如果要做到参数检查，无非两点
+</p>
+
+<ol class="org-ol">
+<li>语言本身支持</li>
+<li>写校验</li>
+</ol>
+
+<p>
+对于第一点可以选择
+hacklang，不缀述了。本文围绕第二点，可能看到这儿你会觉得我偏你感情，校验谁不会，但客官先别急。
+</p>
+
+<p>
+我以前也是如同你这般，检验参数谁不会的态度走了这么久&#x2026;但当我看到昨天那个项目的时候，有必要写一篇出来。
+</p>
+
+<p>
+昨天看到的项目的校验是这么写的
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+  Argument::i()
+    -&gt;test(1, 'string')
+    -&gt;test(2, 'number');
+}
+</pre>
+</div>
+
+<p>
+而通常我们写是这么写的
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+    if (!is_string($a) || !is_numeric($b)) {
+        throw new ArgumentInvalidException('xxx');
+    }
+}
+</pre>
+</div>
+
+<p>
+摔桌子&#x2026;&#x2026;
+</p>
+
+<p>
+一个是完全有规律有节奏的校验，一个是没有共性 case by case 的校验。
+</p>
+
+<p>
+最近也是对数据的校验产生了浓厚的兴趣，原因无他，因为没有一个能把这个事情干漂亮的。
+</p>
+
+<p>
+看到这儿，大家可能也想知道是如何做的？
+</p>
+
+<p>
+在整个 PHP
+体系里面，奇技淫巧数不胜数，当然从侧面讲是“高级特性”。要想做到上面写到的这块代码描述的情况，也不是什么难事儿。咋们可以幻想一下，实现此类功能，应该如何做；
+</p>
+
+<ul class="org-ul">
+<li>首先得获取到调用参数的运行时变量值</li>
+<li>然后给定规则校验这个值是否 OK</li>
+</ul>
+
+<p>
+可以看到，就如第一段代码描述的，感觉只有设定规则，并没有去获取函数参数值。这块就让我百思不得姐了；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+
+function foo() {
+    var_dump(debug_backtrace());
+}
+
+foo(1, 2, 'test');
+</pre>
+</div>
+
+<p>
+其输出
+</p>
+
+<pre class="example" id="orgb18adea">
+array(1) {
+  [0]=&gt;
+  array(4) {
+    ["file"]=&gt;
+    string(31) "/Users/shouding/Downloads/t.php"
+    ["line"]=&gt;
+    int(8)
+    ["function"]=&gt;
+    string(3) "foo"
+    ["args"]=&gt;
+    array(3) {
+      [0]=&gt;
+      int(1)
+      [1]=&gt;
+      int(2)
+      [2]=&gt;
+      string(4) "test"
+    }
+  }
+}
+</pre>
+
+<p>
+居然用了 <code>debug_backtrace</code>
+函数，虽然这样能拿到参数，但我想性能损耗也是比较大的。
+</p>
+
+<p>
+可能你会突然说，我操，原来用来这个东西，但其实我们很少用到这些，因为某公司还处在
+PHP 5.2 的水平上。
+</p>
+
+<p>
+但，文法确实很赞，给了我一些思路。
+</p>
+
+<p>
+如果协助以编译工具，或者稍微写代码的时候允许繁琐一点，就能比较完美的实现函数参数类型校验了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+    Argument::i(func_get_args())
+        -&gt;test(1, 'string')
+        -&gt;test(2, 'number');
+}
+</pre>
+</div>
+
+<p>
+文法、性能上都有所考虑了。
+</p>
+
+<p>
+我还没说完，等我晚上更。
+</p>
+</div>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>

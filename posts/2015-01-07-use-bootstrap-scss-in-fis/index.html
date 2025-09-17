@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用&#34;</h1>
+<div class="date">07 Jan 2015</div>
+<div class="content">
+  
+<section id="outline-container-2015-01-07-use-bootstrap-scss-in-fis" class="outline-2">
+<h2 id="2015-01-07-use-bootstrap-scss-in-fis">2015-01-07-use-bootstrap-scss-in-fis</h2>
+<div class="outline-text-2">
+<p>
+从题目不难看出，我最近要开始写点关于fis使用的博文了。fis固然好，但一些使用上的细节，不是靠看文档就能看得明白使用得顺心的；
+</p>
+
+<p>
+好吧，本来应该把文档写得风趣一点，奈何大家写文档都是一板一眼，不好扭过来。
+</p>
+
+<p>
+闲话少扯&#x2026;&#x2026;
+</p>
+
+<p>
+最近在整理官网，官网由于时间的推移，用户认知的改变需要做一些调整。展示给用户的内容呢要突出重点，所以呢我就放下手头乌七八糟的事情，开始了设计页面的事情；选来选去还是决定选择bootstrap干净利落；
+</p>
+
+<p>
+bootstrap提供了less、sass等异构语言（变种语言）的版本，如今如果搞前端不用点这些都觉着丢人。那么问题来了，在fis里面如何使用上bootstrap的less或者sass版本呢？
+</p>
+
+<p>
+由于我要使用的是=sass=，就来写写bootstrap的sass版本在fis的使用吧。
+</p>
+</div>
+
+<div id="outline-container-准备工作" class="outline-4">
+<h4 id="准备工作">准备工作</h4>
+<div class="outline-text-4" id="text-准备工作">
+<ul class="org-ul">
+<li>安装fis <code>npm install -g fis</code></li>
+<li>安装fis-parser-sass插件 <code>npm install -g fis-parser-sass</code></li>
+<li>下载<a href="https://github.com/twbs/bootstrap-sass/archive/v3.3.1.tar.gz">bootstrap-sass</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-开始调教" class="outline-4">
+<h4 id="开始调教">开始调教</h4>
+<div class="outline-text-4" id="text-开始调教">
+</div>
+<ul class="org-ul">
+<li><a id="准备bootstrap源码"></a>准备bootstrap源码<br>
+<div class="outline-text-5" id="text-准备bootstrap源码">
+<p>
+不出意外的话，下来下来的bootstrap-sass解压后目录下有一大坨的东西，如这样
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 2
+.
+&#9500;&#9472;&#9472; CHANGELOG.md
+&#9500;&#9472;&#9472; CONTRIBUTING.md
+&#9500;&#9472;&#9472; Gemfile
+&#9500;&#9472;&#9472; LICENSE
+&#9500;&#9472;&#9472; README.md
+&#9500;&#9472;&#9472; Rakefile
+&#9500;&#9472;&#9472; assets
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; fonts
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; images
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; javascripts
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; stylesheets
+&#9500;&#9472;&#9472; bootstrap-sass.gemspec
+&#9500;&#9472;&#9472; bower.json
+&#9500;&#9472;&#9472; composer.json
+&#9500;&#9472;&#9472; lib
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; bootstrap-sass
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; bootstrap-sass.rb
+&#9500;&#9472;&#9472; package.json
+&#9500;&#9472;&#9472; sache.json
+&#9500;&#9472;&#9472; tasks
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; bower.rake
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; converter
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; converter.rb
+&#9500;&#9472;&#9472; templates
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; project
+&#9492;&#9472;&#9472; test
+    &#9500;&#9472;&#9472; compass_test.rb
+    &#9500;&#9472;&#9472; compilation_test.rb
+    &#9500;&#9472;&#9472; dummy_node_mincer
+    &#9500;&#9472;&#9472; dummy_rails
+    &#9500;&#9472;&#9472; dummy_sass_only
+    &#9500;&#9472;&#9472; gemfiles
+    &#9500;&#9472;&#9472; node_mincer_test.rb
+    &#9500;&#9472;&#9472; node_sass_compile_test.sh
+    &#9500;&#9472;&#9472; pages_test.rb
+    &#9500;&#9472;&#9472; sass_test.rb
+    &#9500;&#9472;&#9472; sprockets_rails_test.rb
+    &#9500;&#9472;&#9472; support
+    &#9500;&#9472;&#9472; test_helper.rb
+    &#9492;&#9472;&#9472; test_helper_rails.rb
+</pre>
+</div>
+
+<p>
+看到很多东西，特别是=.json=结尾的，都是提供给包管理用的，现在提供库的这些开发者也是蛮拼的，不过在他们的行列里面以后也会有=fis的包管理配置文件=的，😄i
+</p>
+
+<p>
+这么多东西，其实有用的就=assets=下的;那么其他东西是什么呢，由于sass是用ruby写的其他的东西都是一些编译出css的程序，忽略它们就好。
+</p>
+
+<p>
+不用的东西那么多，果断copy出有用的东西（=assets=目录下的内容）。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">&#10140;  bootstrap  tree -L 1
+.
+&#9500;&#9472;&#9472; fonts
+&#9500;&#9472;&#9472; images
+&#9500;&#9472;&#9472; javascripts
+&#9492;&#9472;&#9472; stylesheets
+</pre>
+</div>
+
+<p>
+=sass=文件都在=stylesheets=下面；
+</p>
+</div>
+</li>
+
+<li><a id="在fis中使用"></a>在fis中使用<br>
+<div class="outline-text-5" id="text-在fis中使用">
+<p>
+创建一个文件夹，作为fis的项目目录，并新建=fis-conf.js=
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ mkdir fis-ui
+$ touch fis-conf.js
+</pre>
+</div>
+
+<blockquote>
+<p>
+windows用户可右键创建
+</p>
+</blockquote>
+
+<p>
+然后把准备好的源码=bootstrap=目录放到=fis-ui/static/=下面；
+</p>
+
+<p>
+配置配置文件
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>fis.config.set(<span class="org-string">'project.exclude'</span>, <span class="org-string">'**/_*.scss'</span>); <span class="org-comment-delimiter">// </span><span class="org-comment">[1]
+</span>fis.config.set(<span class="org-string">'modules.parser.scss'</span>, <span class="org-string">'sass'</span>); <span class="org-comment-delimiter">//</span><span class="org-comment">&#21551;&#29992;fis-parser-sass&#25554;&#20214;&#24403;&#22788;&#29702;&#25991;&#20214;&#21518;&#32512;&#26159;`.scss`&#12290;
+</span>fis.config.set(<span class="org-string">'roadmap.ext.scss'</span>, <span class="org-string">'css'</span>); <span class="org-comment-delimiter">//</span><span class="org-comment">`.scss`&#30340;&#25991;&#20214;&#26368;&#21518;&#32534;&#35793;&#20135;&#20986;&#25104;`.css`&#25991;&#20214;&#12290;
+</span>
+<span class="org-comment-delimiter">//</span><span class="org-comment">&#32473;&#25554;&#20214;fis-parser-sass&#37197;&#32622;&#20449;&#24687;
+</span>fis.config.set(<span class="org-string">'settings.parser.sass'</span>, {
+    <span class="org-string">'include_paths'</span>: [__dirname, path.join(__dirname, <span class="org-string">'static'</span>, <span class="org-string">'bootstrap'</span>, <span class="org-string">'stylesheets'</span>)] <span class="org-comment-delimiter">//</span><span class="org-comment">[2]
+</span>});
+</pre>
+</div>
+
+<p>
+<i>解释：</i>
+</p>
+
+<ul class="org-ul">
+<li>[1]，=_=开头的这些文件，可以认为是定义的sass组件，会被sass最终编译内嵌到其他文件中</li>
+<li>[2]，这句告诉sass这个插件，遇到=@import=时，去什么目录查找文件。</li>
+<li>fis-parser-sass是一个编译sass编译工具</li>
+</ul>
+</div>
+</li>
+
+<li><a id="使用bootstrap"></a>使用bootstrap<br>
+<div class="outline-text-5" id="text-使用bootstrap">
+<p>
+假设页面的样式文件是=/static/index.scss=，那么使用就很简单了；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@import</span> <span class="org-string">'_bootstrap.scss'</span>; <span class="org-comment-delimiter">/*</span><span class="org-comment">&#20174;&#26576;&#19968;&#20010;include_path&#25214;&#21040;&#25991;&#20214;</span><span class="org-comment-delimiter">*/</span>
+</pre>
+</div>
+
+<p>
+然后在页面引入这个index.scss即可；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/static/index.scss"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span> <span class="org-variable-name">type</span>=<span class="org-string">"text/css"</span>&gt;
+</pre>
+</div>
+
+<p>
+当然在=index.scss=里面可以使用任意的=bootstrap=定义的=var=、=mixin=、=&#x2026;=了。
+</p>
+
+<p>
+fis编译查看
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ fis release
+or
+$ fis release -wL
+$ fis server start
+</pre>
+</div>
+
+<hr>
+
+<p>
+DONE.
+</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>

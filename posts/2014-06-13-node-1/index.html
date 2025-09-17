@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;用nodejs构建网站&#34;</h1>
+<div class="date">13 Jun 2014</div>
+<div class="content">
+  
+<section id="outline-container-2014-06-13-node-1" class="outline-2">
+<h2 id="2014-06-13-node-1">2014-06-13-node-1</h2>
+<div class="outline-text-2">
+<p>
+node.js灵活，轻巧，异步IO这些都是被大家传道的优点。不过在我看来，其后面庞大的社区才是最闪亮的。社区很庞大，以至于实现什么东西，扒拉扒拉就能搞定。所以这次node.js构建网站也出现在了现在的研究课题里面。
+</p>
+
+<p>
+构建网站，开发其次，其实最主要的还是线上的运维。这块如果不搞好实在只能算是个玩具。不过好在现在有很多的管理nodejs进程的工具。比如=pm2=、=forever=等。还需要一套容灾方案。比如服务挂了，起不起来了怎么办等等等。
+</p>
+
+<p>
+so，在这篇文章里罗列一下用什么手段在用nodejs构建网站时能防止灾难性的问题发生。
+</p>
+
+<p>
+文章从以下几个方面进行；
+</p>
+
+<ul class="org-ul">
+<li>一个健壮的框架</li>
+<li>一个靠谱的部署方案</li>
+<li>一套完善的监控</li>
+<li>一套完善的降级方案</li>
+</ul>
+</div>
+
+<ul class="org-ul">
+<li><a id="健壮的框架"></a>健壮的框架<br>
+<div class="outline-text-5" id="text-健壮的框架">
+<p>
+想想框架能为整个项目带来什么？是好用的helper工具，还是结构清晰的目录结构抑或是强壮的错误处理能力？纵观现在能看到的那些框架，解决的问题无非是路由映射（跟目录结构息息相关），提供了很多公共库库（方便开发），基本上围绕着开发来的。其实用nodejs也需要一个这样的库。说到这些大家可能已经想到了=express=。
+</p>
+
+<p>
+对，就是=express=。
+</p>
+
+<p>
+不过在我看来=express=还是有点问题，如果裸用它就显得太灵活了，所以业界最广泛的一种使用方式是在其上在封装一个框架，一个典型的包括=model=、=controller=、=view=的MVC框架。比如现在我比较喜欢的paypal的
+<a href="http://krakenjs.com/">http://krakenjs.com/</a> ，一个分层分的很明晰的MVC框架。
+</p>
+
+<p>
+那我们的做法也是一样的，也是基于=express=进行封装。然后再支持牛逼哄哄的=bigpipe=。算是一个健壮的框架就产生了。至于如何支持=bigpipe=后续会发篇博文说明。
+</p>
+
+<p>
+<i>框架的好处</i>
+</p>
+
+<ul class="org-ul">
+<li>一致的目录结构，增强可维护性</li>
+<li>一致的公共库，避免出现组件库打架的事情，增强维护性</li>
+<li>一致的路由，增强实用性</li>
+<li>&#x2026;.</li>
+</ul>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 路由 - 目录结构 - MVC - bigpipe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="靠谱的部署方案"></a>靠谱的部署方案<br>
+<div class="outline-text-5" id="text-靠谱的部署方案">
+<p>
+其实单拉出部署是因为，不像php那样，把php代码扔到对应的目录就能跑起来。node.js是需要重新启动node服务的。如果上线不频繁也没啥，但是如果上线频繁，总不能一天断好几次服务。所以需要一个靠谱的部署方案。
+</p>
+
+<p>
+期间俺们的同学经过多次的验证和靠谱的推论。用一个=recluster=的东东来做这个事情。recluster是这么搞定这个事情的。当某个链接正在被某进程处理时，这时候如果有新代码上线，需要restart服务。在这种情况下，它先启动新的进程。然后等在那些还在做处理的老进程，等完成后杀死它们。如果没有在处理状态的老进程，则直接杀死。把新的请求都发给新启动的进程。这样就是一种名字叫=热启动=的模式了。
+</p>
+
+<p>
+如果你要用nodejs上线，=recluster=你值得拥有。
+</p>
+
+<p>
+<a href="https://github.com/doxout/recluster">https://github.com/doxout/recluster</a>
+</p>
+
+<p>
+这个是关于上线启动服务的，但如果恰巧服务器有多台服务器，则需要在本地找好一台同构的机器，编译node。上线时打包上线更靠谱一点。至于编译node，再简单不过了。
+</p>
+
+<p>
+还有负载均衡，这块就用node自带=cluster=就挺好。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 上线、部署、热启动 - 负载均衡</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="完善的监控"></a>完善的监控<br>
+<div class="outline-text-5" id="text-完善的监控">
+<p>
+从测试的结果来看，node的应用程序的内存时及其容易飙升的。所以内存上升报警这块需要做好预案，哪怕是杀掉进程重启也行。
+</p>
+
+<p>
+好在node使用的v8提供了不错的一些方法来达到这个目的。这块后续也会出一篇文章详细探讨。
+</p>
+
+<p>
+还有一些问题比如，node程序错误了要抓取错误等，记录日志让监控平台抓取分析等等等，一些线上监控还是得需要很完善的。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 内存监控 - 爆栈重启 - 错误报警</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="完善的降级方案"></a>完善的降级方案<br>
+<div class="outline-text-5" id="text-完善的降级方案">
+<p>
+如果是成年老站，在使用node这么个新款时，不得不考虑如果node挂掉,切换到老站上面的策略。
+</p>
+
+<p>
+现在一致的做法是，在php/java等机器上nginx把需要node处理的数据都代理给node机器处理。一旦node机器出问题，则把这些流量切回本机。这个方案估计是一个长态方案，一直要node稳定。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 容灾 - 降级</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>

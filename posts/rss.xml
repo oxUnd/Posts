@@ -1,0 +1,3575 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+     xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+     xmlns:georss="http://www.georss.org/georss"
+     xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Duncan Mac-Vicar P. site</title>
+    <atom:link
+      href="https://www.orrafy.com/posts/rss.xml"
+      rel="self" type="application/rss+xml" />
+    <link>https://www.orrafy.com/</link>
+    <description><![CDATA[]]></description>
+    <language>en</language>
+    <pubDate>Tue, 07 May 2024 08:26:00 +0000</pubDate>
+    <lastBuildDate>Wed, 17 Sep 2025 10:06:48 +0000</lastBuildDate>
+    <generator>weblorg 0.1.0 (https://emacs.love/weblorg)</generator>
+    <webMaster>root</webMaster>
+    <image>
+      <url>https://www.gravatar.com/avatar/3b67365812827fa25df5093b38934a8f?s=80</url>
+      <title>Blog Author (root)</title>
+      <link>https://www.orrafy.com/</link>
+    </image>
+
+    
+    <item>
+      <title>&#34;在 macOS 上使用 wine 9.0&#34;</title>
+      <link>https://www.orrafy.com//posts/2024-05-07-wine-macos-m1/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2024-05-07-wine-macos-m1/</guid>
+      <pubDate>Tue, 07 May 2024 08:26:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2024-05-07-wine-macos-m1" class="outline-2">
+<h2 id="2024-05-07-wine-macos-m1">2024-05-07-wine-macos-m1</h2>
+<div class="outline-text-2">
+<p>
+首先，建议购买
+CrossOver，能省下很多折腾的时间。但如果还是希望折腾一下的话，那就继续折腾
+wine。
+</p>
+
+<p>
+本来打算直接购买 CrossOver，但奈何 CrossOver 24 版本的 CPU
+占用一直有点异常且不少应用程序关掉不退出（可能我观察时间太短）。所以就考虑直接使用
+wine。
+</p>
+
+<p>
+安装比较简单，直接用 Homebrew 搜索安装即可，建议安装 stable 版本，devel
+版本 log 太多且可能有不明所以的 bug。
+</p>
+
+<p>
+安装软件以及运行软件的方式比较简单，简单说一下，就不赘述了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">wine ./app.exe
+</pre>
+</div>
+
+<p>
+也可以执行以下命令获取更多帮助
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">winehelp
+</pre>
+</div>
+
+<p>
+但我安装完成后有几个问题比较明显，这也是我要写下来的原因。 -
+4k显示器或者 Macbook
+屏幕下字体现实比较虚，且界面不清晰，而且字体显示非平滑。 -
+每次执行应用都是需要去命令行下调用起来，感觉有点麻烦。
+</p>
+
+<p>
+主要就这两个问题，这两个问题解决后，大概率运行个软件应该没啥问题。我想运行的软件是
+Source Insight。其他软件现在基本都有替代品。
+</p>
+
+<p>
+关于字体的问题，找了一圈（找答案的过程中发现大模型能解决不少效率问题，可以用豆包或者
+Copilot），基本都能找到答案。主要是修改注册表。但其中稍有点波折。在论坛里面大家给的例子跟现实环境有点不太一样。
+</p>
+
+<ul class="org-ul">
+<li>运行以下代码，使字体平滑。</li>
+</ul>
+
+<p>
+fonts.reg
+</p>
+
+<pre class="example" id="orgd774df1">
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"FontSmoothing"="2"
+"FontSmoothingType"=dword:00000002
+"FontSmoothingGamma"=dword:00000578
+"FontSmoothingOrientation"=dword:00000001
+</pre>
+
+<p>
+执行
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">wine regedit ./fonts.reg
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Mac 和 Wine 中都安装常用的 Windows
+字体（主要是宋体、楷体、微软雅黑等等），方法比较简单不赘述。</li>
+
+<li>设置以下注册表变量使能够支持 Retina 显示效果</li>
+</ul>
+
+<pre class="example" id="org098ee32">
+[HKEY_CURRENT_USER\Software\Wine\Mac Driver]
+"RetinaMode" = "Y"
+</pre>
+
+<p>
+注意，可能你的注册表中 <code>HKEY_CURRENT_USER</code> 下没有 <code>Mac Driver=，请运行
+=wine regedit</code> 启动注册表编辑器右键添加。
+</p>
+
+<ul class="org-ul">
+<li>运行 <code>winecfg</code> 更改 PPI
+为一个大一些的值，具体可以根据自己的分辨率计算一下，我设置的是 196.</li>
+<li>设置完成后执行 <code>wineboot</code> 重启</li>
+</ul>
+
+<p>
+另外一个比较难搞的问题是，如何有个快捷方式直接启动应用即可。我折腾了一圈，发现可以用
+<code>wineskin=，可以 Homebrew 安装。但实现的方式是直接打包一个 Wine 到
+xxx.app
+目录下，来达成。感觉不是特别好。最终我直接选择使用命令行指令的方式。写一个脚本来快速启动某个应用。以
+=Source Insight</code> 举例。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh"><span class="org-comment-delimiter"># </span><span class="org-comment">filename = si
+</span><span class="org-comment-delimiter"># </span><span class="org-comment">wine64 "$HOME/.wine/drive_c/Program Files (x86)/Source Insight 4.0/sourceinsight4.exe" 2&gt;/dev/null &amp;
+</span>wine <span class="org-string">"$HOME/.wine/drive_c/Program Files (x86)/Source Insight 4.0/sourceinsight4.exe"</span> 2&gt;/dev/null &amp;
+</pre>
+</div>
+
+<p>
+启动的时候只需要终端 <code>si</code> 即可。
+</p>
+
+<p>
+我以前较抵触这种跨平台的项目，因为前面黑莓手机就用类似的方案，来安装
+Android 应用，实现效果非常一般。但感受了大量 linux 下的 wine
+应用后，发现靠谱程度已经非常高了。现在越来越能接受了。
+</p>
+
+<p>
+可想，很多时候得多尝试，才能真的了解一个东西。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;Emacs使用以及简单优化&#34;</title>
+      <link>https://www.orrafy.com//posts/2022-09-17-01/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2022-09-17-01/</guid>
+      <pubDate>Sat, 17 Sep 2022 22:26:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2022-09-17-01" class="outline-2">
+<h2 id="2022-09-17-01">2022-09-17-01</h2>
+<div class="outline-text-2">
+<p>
+过去了几天，一直尝试在用 emacs
+做想做的事情，写想写的东西。使用方法大概基本掌握了，学习曲线确实还是有的。好在
+elisp
+是个不错的语言，能够完成几乎想完成的大部分事情。就这样，写了一套自己用的配置，以及熟悉了一些好用的插件。
+</p>
+
+<p>
+今天，对加载 <code>.el</code> 配置进行大量的优化，基本都是靠 emacs 自己的
+bytecode。整体效率有提升，但没有做打点统计时间的优化程度。
+</p>
+
+<p>
+通过函数 <i>byte-compile-file</i> 能够把 <code>.el</code> 编译成 <code>.elc</code> 字节码文件，加载
+<code>.elc</code> 不再需要编译，性能有个不错的提升，肉眼可见。
+</p>
+
+<p>
+尝试美化
+=*Completions*=，找了几个插件，都没有找到合适、简单、易用的方法，暂时作罢。就是这样，折腾编辑器就想把每个区域都进行定制，尝试定制的乐趣。
+</p>
+
+<p>
+突然打开 <code>vim</code> 发现以前常用的，快捷键都快生疏了。后面可能在 <code>emacs</code>
+模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
+</p>
+
+<pre class="example" id="org3322548">
+#+BEGIN_SRC emacs-lisp
+  (defun load-b (file)
+    (if (file-exist-p (file-name-with-extension file ".elc"))
+        (load file) ;; .elc .el ...
+      (progn
+        (byte-compile-file (file-name-with-extension file ".el"))
+        (load file))))
+  ;; example
+  (load-b "path/to/.el/file")
+#+END_SRC
+</pre>
+
+<p>
+加载插件文件时
+</p>
+
+<ul class="org-ul">
+<li><code>load-b</code> 加载自定义的插件或者配置文件，不使用 <code>require</code></li>
+<li><code>use-package</code> 加载第三方扩展</li>
+</ul>
+
+<p>
+基本思路如果没有编译成字节码，就先编译后加载，如果已经有 <code>.elc</code> 文件直接
+<code>load=。其中有个问题是当我们进行配置变更时希望能够重新编译，其中
+EmacsWiki 给了一个明确的方法。在保存 =.el</code>
+文件时进行编译，这样能满足大部分的诉求。但当改坏了怎么办，或者由于不当操作导致无法重新编译怎么办？应该有很好的办法，但我现在没有时间做更多的研究，暂时就用最粗暴的方式。删除除了
+<code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
+</p>
+
+<pre class="example" id="orgbd9c0c3">
+#+BEGIN_SRC bash
+  find ./a ./b ./c -name '*.elc' | xargs rm
+#+END_SRC
+</pre>
+
+<p>
+为了后续方便，使用 <code>Makefile</code>
+</p>
+
+<pre class="example" id="orgfe19fe0">
+#+BEGIN_SRC makefile
+  .PHONY: clean
+      clean:
+          find ./a ./b ./c -name '*.elc' | xargs rm
+  .PHONY: all
+      all:
+          echo "Nothing...."
+#+END_SRC
+</pre>
+
+<p>
+在出现错误时 <code>make clean</code> 即可。
+</p>
+
+<p>
+简单折腾，使用 emacs 随时面临大折腾的可能，但学习面向 character
+编程的语言，确实感觉不错。
+</p>
+
+<p>
+&#x2026;&#x2026;
+</p>
+
+<p>
+突然看了一下，=load-b=
+写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
+</p>
+
+<pre class="example" id="orgfe43ff8">
+#+BEGIN_SRC emacs-lisp
+  (defun load-b (file)
+    (unless (file-exist-p (file-name-with-extension file ".elc"))
+      (byte-compile-file (file-name-with-extension file ".el")))
+    (load file))
+#+END_SRC
+</pre>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;写在这个小假期，祭祖抑或是旅游或是居家&#34;</title>
+      <link>https://www.orrafy.com//posts/2021-04-04-0-now-life/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2021-04-04-0-now-life/</guid>
+      <pubDate>Sun, 04 Apr 2021 21:51:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2021-04-04-0-now-life" class="outline-2">
+<h2 id="2021-04-04-0-now-life">2021-04-04-0-now-life</h2>
+<div class="outline-text-2" id="text-2021-04-04-0-now-life">
+</div>
+<div id="outline-container-x00-写在这个假期" class="outline-3">
+<h3 id="x00-写在这个假期">0x00 写在这个假期</h3>
+<div class="outline-text-3" id="text-x00-写在这个假期">
+<p>
+今年的清明节跟往常一样，在北京，法定三天的假期，没有由于大小周而间歇，这是个好事情。
+</p>
+
+<p>
+和往常一样，居家成了小长假最主要的旋律，不是不想走远一些，也不是不想回老家祭祖。而是时间不赶巧。
+就如同其他假日一样，我俩假期又没能放到一起，过去许多年了依然无法离开谁独自离开北京。
+以前尝试过离开，但不管走到哪儿、身在何处都是无趣的，心不在焉的感觉。
+</p>
+
+<p>
+索性就留在北京，在小区转转，在校区外的绿化带拍一拍花朵。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x01-音乐播放器不应该做得让人忘记歌名" class="outline-3">
+<h3 id="x01-音乐播放器不应该做得让人忘记歌名">0x01 音乐播放器不应该做得让人忘记歌名</h3>
+<div class="outline-text-3" id="text-x01-音乐播放器不应该做得让人忘记歌名">
+<p>
+矫情的说：“非常多的网络音乐播放器能听响，但无法记住歌名”，当在写代码写文档的时候，听了三个小时的歌曲，
+到头来可能一个都记不住歌名，当旋律想起的时候能够哼上几句，但就是无法记起来是谁唱的，是在哪个专辑，是在
+哪个歌曲。
+</p>
+
+<p>
+拿起了很多年前买来快要吃灰的 Sony Walkman
+音乐播放器，不是磁带机。配合在三亚酒店听到并淘宝来的音箱。
+听着时髦的网络歌曲。歌是一首首选进播放器的。记住了名字，记住了专辑，记住了歌手。
+</p>
+
+<p>
+想来，这就是很多人除去音质喜欢独立的音乐播放器的原因啊。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x02-坐在副驾驶座位上感受行进的汽车" class="outline-3">
+<h3 id="x02-坐在副驾驶座位上感受行进的汽车">0x02 坐在副驾驶座位上，感受行进的汽车</h3>
+<div class="outline-text-3" id="text-x02-坐在副驾驶座位上感受行进的汽车">
+<p>
+回忆一下，是否坐在副驾驶位置上去感受过汽车的走动，如果足够关注，不出意外的你会更敏感于汽车的走向。以为马上
+就要撞上隔壁的行驶的车了。猛然回头会吓出一身冷汗。
+</p>
+
+<p>
+公主位其实也是不好坐的。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x03-去商场吃一顿一人份的自助炒菜" class="outline-3">
+<h3 id="x03-去商场吃一顿一人份的自助炒菜">0x03 去商场吃一顿一人份的自助炒菜</h3>
+<div class="outline-text-3" id="text-x03-去商场吃一顿一人份的自助炒菜">
+<p>
+记得很早以前不知道怎么溜达在西安的街头，看到一个吃面的地方，有个传送带，有各式各样的面供大家吃。都是小份的
+碗。商场最近出了自由打菜称重的吃法，尝试了一下味道非常不错。可是最终发现吃一次的价格接近五十块。
+</p>
+
+<p>
+慢慢上涨的价格，体现在方方面面。
+</p>
+
+<p>
+新式的吃饭方式，总是让人胃口大开。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x04-通州基建真的是快广渠快速路的隧道真长" class="outline-3">
+<h3 id="x04-通州基建真的是快广渠快速路的隧道真长">0x04 通州基建真的是快，广渠快速路的隧道真长</h3>
+<div class="outline-text-3" id="text-x04-通州基建真的是快广渠快速路的隧道真长">
+<p>
+通燕高速路有时候非常拥堵，有一次想去鼓楼吃饭，在这条路上足足赌了两个小时，一天下来精疲力尽。
+</p>
+
+<p>
+广渠快速路开通了，一条六公里长的隧道解决了很多进京拥堵的问题，走了几次非常顺畅。
+</p>
+
+<p>
+在隧道里面，60 的限速，会使得感受走过最长的隧道就在眼前。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>2018-12-08-0x01</title>
+      <link>https://www.orrafy.com//posts/2018-12-08-0x01/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2018-12-08-0x01/</guid>
+      <pubDate>Sat, 08 Dec 2018 17:08:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2018-12-08-0x01" class="outline-2">
+<h2 id="2018-12-08-0x01">2018-12-08-0x01</h2>
+<div class="outline-text-2" id="text-2018-12-08-0x01">
+</div>
+<div id="outline-container-x00" class="outline-3">
+<h3 id="x00">0x00</h3>
+<div class="outline-text-3" id="text-x00">
+<p>
+看到最早一次写点东西发布出来是在 2017 年，现在已经 2018
+要过去了，整整一年多的时间，没有在博客上面留下一丁点记录。这着实跟我的意图相悖。在这
+2018 年关将近的晚上，我打算随口唠叨几句。
+</p>
+
+<p>
+唠叨的东西跟工作无关，大概随便写写，想到什么地方写什么。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x01" class="outline-3">
+<h3 id="x01">0x01</h3>
+<div class="outline-text-3" id="text-x01">
+<p>
+现在我想到的是我的周末，我的周末自从把房子装修出来以后就变得有点不同。在当下这个房价贵到一定程度的社会大环境下，只能把房子买在开车
+2 小时外的北京周边省市。大概也是在一个不怎么友好的场景下买下来这套房子。
+</p>
+
+<p>
+当时买的时候就在想，等房子下来，我就把它卖掉换钱。当真的到手，在一个环境还不错的地方，不想把它出售，并好好装饰了一番。
+</p>
+
+<p>
+就这么，每个周末我都会周五晚上开车从出租屋出发回家。这就算是身体的迁徙吧。
+</p>
+
+<p>
+“迁徙而居”
+</p>
+
+<p>
+有时候在工作日可能会期待回家，新小区，暖气足，也同样可以高速“飙车”。
+</p>
+
+<p>
+每次过来，都会自己亲自做饭，这些工作是我家领导完成的，我参加的非常少。可能对于我来说，洗碗更合适。
+</p>
+
+<p>
+我俩尝试了非常多的菜系做发，比如西北、东北、或者是湘菜不一而足，今天就吃了自捏的饺子。
+</p>
+
+<p>
+喜欢这种过家家的感觉
+</p>
+</div>
+</div>
+
+<div id="outline-container-x02" class="outline-3">
+<h3 id="x02">0x02</h3>
+<div class="outline-text-3" id="text-x02">
+<p>
+同样我也开始琢磨一个事情，我打开了一本纸质书，我的身边的图书大多都是计算机图书。今天看了会儿《Unix
+环境高级编程》。
+</p>
+
+<p>
+当然，书是看不进去的，感觉书太沉，就拿起 PAD
+搜一下，到底有没有电子版，最后在“多看”找到了最新的排版又美的电子版本。我想只有多看能做到这么又美的排版了。亚马逊的中国版本的电子书就是个笑话，除了小说。
+</p>
+
+<p>
+随后，感觉自己的 PAD 屏幕分辨率不怎么行，有点懊悔当时买 小米4 这款小
+PAD。可便宜，就当买了个玩具。
+</p>
+
+<p>
+看书只是幌子，最大的乐趣就是通过琐碎的时间挥发掉这个周末的时间，我周末宁愿眼睛睁着浪费时间也不愿意把时间浪费在睡觉上。这大概就是我自己。
+</p>
+
+<p>
+“瞎捣鼓”
+</p>
+
+<p>
+这大概是我自己对自己又一个诠释吧。
+</p>
+
+<p>
+在工作的时候，我是一门心思去工作的，可不要误解工作时候的我。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x03" class="outline-3">
+<h3 id="x03">0x03</h3>
+<div class="outline-text-3" id="text-x03">
+<p>
+下午接到了一堆报警，报警没人处理，有点恼火。但毕竟处理问题是我自己的“天职”，上手就开始处理。
+</p>
+
+<p>
+发现报警的信息跟实际信息根本对不上，有点惶恐，也同样气恼与基础设施太操蛋。心中默默问候了不知道多少人的工作到底是否到位。
+</p>
+
+<p>
+“突如其来的报警”
+</p>
+
+<p>
+这大概也是周末的一部分，同样这些报警匪夷所思，同样衬托我周末的生活，匪夷所思；
+</p>
+</div>
+</div>
+
+<div id="outline-container-x04" class="outline-3">
+<h3 id="x04">0x04</h3>
+<div class="outline-text-3" id="text-x04">
+<p>
+拿着这台 i7 处理器的电脑，准确点说是一台小米游戏本，在我这种 VIM
+用得还算快速的人来说，这台电脑的键盘让人抓狂，根本不适合做为编码机器的游戏本，失去了它应该有的价值。
+</p>
+
+<p>
+当时，想到要一台高性能的电脑，选了一直看好生态的小米游戏本，但用起来比
+Surface 差不少，后续假设入电脑，还是找官方电脑比较合适。
+</p>
+
+<p>
+“买了许多电子产品，但有时会后悔买这些”
+</p>
+
+<p>
+同样是我周末的一部分。
+</p>
+
+<p>
+今年尝试满足了自己所有的欲望，主要是搞了一堆的电子产品，手机无数。但用下来，能当主流机的没多少家。
+</p>
+
+<p>
+苹果手机算一个，华为手机算一个，其他，那怕是单摄第一的 Pixel
+系列，只能当玩具来看待，对 Google
+跟中国当下网络下提供的服务颇为担心以及心塞。
+</p>
+</div>
+</div>
+
+<div id="outline-container-x05" class="outline-3">
+<h3 id="x05">0x05</h3>
+<div class="outline-text-3" id="text-x05">
+<p>
+盯着 60
+多英寸的小米电视，看一部剧应该是一个还不错的选择，但，好看的剧也就那么多。
+</p>
+
+<p>
+最近在看《将夜》，周末却不放，有点些许遗憾。
+</p>
+
+<p>
+跟爱人一起看了一部腾讯拍的美食类纪录片，充分吊起自己的胃口，在市场买了许多食材，做了饺子和胡辣汤。
+</p>
+
+<p>
+是的。
+</p>
+
+<p>
+这大概就是我有很多事情要做的周末。
+</p>
+
+<p>
+对。
+</p>
+
+<p>
+这周是单周，明天还得上班呢，明天的大概还是会有很多会要参加。开始我新的一周工作。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;17 年马自达 CX-4 爆胎纪&#34;</title>
+      <link>https://www.orrafy.com//posts/2017-01-12-mazda-01/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2017-01-12-mazda-01/</guid>
+      <pubDate>Thu, 12 Jan 2017 17:46:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2017-01-12-mazda-01" class="outline-2">
+<h2 id="2017-01-12-mazda-01">2017-01-12-mazda-01</h2>
+<div class="outline-text-2">
+<p>
+除了写代码，书写一些生活细节，也成了乐趣。既感于生活中的点点滴滴，也欢喜未来的每一缕阳光。
+</p>
+
+<p>
+昨天，很早就下班回家了，每天下班都是跟老婆一起回家的，今天她有事情，没能跟我一起。回到家开着『家庭影院』播放『了不起的匠人』，不知觉已是十点，老婆还未回家，有些担心。微信她几时回来，得知又去了
+KTV，就商量着十点半去接她。
+</p>
+
+<p>
+回来的路上，有些迷糊，但终归我已经是『老司机』了，开得飞快。但老司机也有掉沟里的时候，在新龙城前的马路上，有个大坑，没太注意，轮胎被磕破。发生时没有发觉，开回家才发现轮胎无法补救。
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=8e79b2d59cadd76d3dffd809de1031eb">http://store.orrafy.com/get/uuid=8e79b2d59cadd76d3dffd809de1031eb</a>
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=4b514e59f33e2f834721cdd43b8e3d1e">http://store.orrafy.com/get/uuid=4b514e59f33e2f834721cdd43b8e3d1e</a>
+</p>
+
+<p>
+事情已经这样，也没有折腾太久，回去倒头就睡。
+</p>
+
+<p>
+今天，早上起来，找了个修车小伙，几分钟换了备胎，将就用，后开始找轮胎。
+</p>
+
+<p>
+马自达 CX-4 使用的 225/55/r19 G91
+的轮胎规格奇异，大家都叫它异性胎。找了几家本地的轮胎商家，都没有。求助
+4S 店也说需要订购，大概几天才能过来而且价格不菲（1.2k
+左右）。去淘宝找了一圈，正好有个卖原厂轮胎的 0.83k+，加上邮费工钱 1k
+能全搞定。
+</p>
+
+<p>
+遂下单订购，不出意外，周六就能用上。
+</p>
+
+<p>
+换轮胎的过程大家写了很多很多，也总结几点；
+</p>
+
+<ul class="org-ul">
+<li>换轮胎找匠人大概 30 块钱，建议直接找专业人士</li>
+<li>轮胎需要花纹一致，型号一致，最好原厂</li>
+<li>225/55/r19 G91 的说明
+<ul class="org-ul">
+<li>G91 指的是花纹类型</li>
+</ul></li>
+</ul>
+
+<p>
+到得现在，这台车子来到我家有半年了，开着很舒服。驾驶起来非常灵活，喜欢马自达这种操控体验，期间陆续租开过别克、雪佛兰的车，方向盘很重，不是我喜欢的类型。
+</p>
+
+<p>
+如果可以，我希望有一天来个公路旅行。开着车，一路西行，玩耍、摄影、回家。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;弱类型下的参数类型检查&#34;</title>
+      <link>https://www.orrafy.com//posts/2016-11-08-dev-php-0001/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2016-11-08-dev-php-0001/</guid>
+      <pubDate>Tue, 08 Nov 2016 10:02:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2016-11-08-dev-php-0001" class="outline-2">
+<h2 id="2016-11-08-dev-php-0001">2016-11-08-dev-php-0001</h2>
+<div class="outline-text-2">
+<p>
+昨天看到一个项目，特别好奇的看了一眼，顿觉世界人民还是智慧满天下的。
+</p>
+
+<p>
+大家可能都知道，php 是弱类型的，那么就意味着有各种可能性，bug
+能在代码中游离，不顾一切。
+</p>
+
+<p>
+好了，段子说完了，我们开始说正题。
+</p>
+
+<p>
+如果要做到参数检查，无非两点
+</p>
+
+<ol class="org-ol">
+<li>语言本身支持</li>
+<li>写校验</li>
+</ol>
+
+<p>
+对于第一点可以选择
+hacklang，不缀述了。本文围绕第二点，可能看到这儿你会觉得我偏你感情，校验谁不会，但客官先别急。
+</p>
+
+<p>
+我以前也是如同你这般，检验参数谁不会的态度走了这么久&#x2026;但当我看到昨天那个项目的时候，有必要写一篇出来。
+</p>
+
+<p>
+昨天看到的项目的校验是这么写的
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+  Argument::i()
+    -&gt;test(1, 'string')
+    -&gt;test(2, 'number');
+}
+</pre>
+</div>
+
+<p>
+而通常我们写是这么写的
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+    if (!is_string($a) || !is_numeric($b)) {
+        throw new ArgumentInvalidException('xxx');
+    }
+}
+</pre>
+</div>
+
+<p>
+摔桌子&#x2026;&#x2026;
+</p>
+
+<p>
+一个是完全有规律有节奏的校验，一个是没有共性 case by case 的校验。
+</p>
+
+<p>
+最近也是对数据的校验产生了浓厚的兴趣，原因无他，因为没有一个能把这个事情干漂亮的。
+</p>
+
+<p>
+看到这儿，大家可能也想知道是如何做的？
+</p>
+
+<p>
+在整个 PHP
+体系里面，奇技淫巧数不胜数，当然从侧面讲是“高级特性”。要想做到上面写到的这块代码描述的情况，也不是什么难事儿。咋们可以幻想一下，实现此类功能，应该如何做；
+</p>
+
+<ul class="org-ul">
+<li>首先得获取到调用参数的运行时变量值</li>
+<li>然后给定规则校验这个值是否 OK</li>
+</ul>
+
+<p>
+可以看到，就如第一段代码描述的，感觉只有设定规则，并没有去获取函数参数值。这块就让我百思不得姐了；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+
+function foo() {
+    var_dump(debug_backtrace());
+}
+
+foo(1, 2, 'test');
+</pre>
+</div>
+
+<p>
+其输出
+</p>
+
+<pre class="example" id="org0110062">
+array(1) {
+  [0]=&gt;
+  array(4) {
+    ["file"]=&gt;
+    string(31) "/Users/shouding/Downloads/t.php"
+    ["line"]=&gt;
+    int(8)
+    ["function"]=&gt;
+    string(3) "foo"
+    ["args"]=&gt;
+    array(3) {
+      [0]=&gt;
+      int(1)
+      [1]=&gt;
+      int(2)
+      [2]=&gt;
+      string(4) "test"
+    }
+  }
+}
+</pre>
+
+<p>
+居然用了 <code>debug_backtrace</code>
+函数，虽然这样能拿到参数，但我想性能损耗也是比较大的。
+</p>
+
+<p>
+可能你会突然说，我操，原来用来这个东西，但其实我们很少用到这些，因为某公司还处在
+PHP 5.2 的水平上。
+</p>
+
+<p>
+但，文法确实很赞，给了我一些思路。
+</p>
+
+<p>
+如果协助以编译工具，或者稍微写代码的时候允许繁琐一点，就能比较完美的实现函数参数类型校验了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+
+function foo($a, $b) {
+    Argument::i(func_get_args())
+        -&gt;test(1, 'string')
+        -&gt;test(2, 'number');
+}
+</pre>
+</div>
+
+<p>
+文法、性能上都有所考虑了。
+</p>
+
+<p>
+我还没说完，等我晚上更。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;买了一台黑莓手机&#34;</title>
+      <link>https://www.orrafy.com//posts/2016-03-04-note-no/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2016-03-04-note-no/</guid>
+      <pubDate>Fri, 04 Mar 2016 14:28:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2016-03-04-note-no-2" class="outline-2">
+<h2 id="2016-03-04-note-no-2">2016-03-04-note-no.2</h2>
+<div class="outline-text-2">
+<p>
+好久没上来写一下近况了，完全违背了我『随手一笔』的初衷。
+</p>
+
+<p>
+前面的一个月回家过了个年还跟我家领导把婚礼给办了，农家婚礼颇具特色，等我有时间整理一下照片再一篇，今天我们先不谈这个。
+</p>
+
+<p>
+今天的话题是，我上周末由于心中长草买了一台黑莓手机，从这台黑莓手机说起。
+</p>
+
+<p>
+长草的过程，我回家以后家里面 500
+块钱买的一款黑莓手机还健在，随便拿起来把玩了几分钟后觉着这键盘太有手感的，然后对黑莓顿觉好感，回北京后在闲鱼上各种找黑莓机器，看到
+BlackBerry Passport 一下就被吸引住了。
+</p>
+
+<p>
+心中长了草总得把这个给解决了，遂用各种理由向领导申请经费，然后就购得这块
+Passport 2 代 （其实比一代就换了个皮）。
+</p>
+
+<p>
+拿到手机后，确实被这胖家伙下了一跳，感觉一只手拿着真费劲，再加上领导在一旁吹风倍受打击，但把玩数日，发现好处不少，坏处也不少。
+</p>
+
+<p>
+足够让我说上几千字的就是这块键盘了，从来没有在手机上打字这么爽过，随写了两篇使用体验，对了，一定要结合
+BlackBerry 上的 Evernote。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://www.evernote.com/l/ACBgW8RNVTlFaJisoKHnk2yN8D4hFfp2rTg">黑莓手机使用感受</a></li>
+<li><a href="https://www.evernote.com/l/ACAASA3OGCBKv6n28VpaZIb8AV6yqJ1IZaY">黑莓手机 Passport 应用篇</a></li>
+</ul>
+
+<p>
+都是用这台黑莓机器写的，从来没想过能用手机写文章。主要是摸着那块键盘就停不下来了。
+</p>
+
+<p>
+我在这两篇中已经把诸多优劣都说了，也是暂时位置体会到的，有兴趣可以看看。
+</p>
+
+<p>
+我很迷恋电子产品，各种操作系统都体验过，WebOS、Ubuntu
+touch、塞班、智能机、Android、iOS。如果说到内容消费非 iOS
+类设备莫属，如果说到玩起来比较爽那可能就得 Linux
+系列的操作系统的软件了，能各种刷机，可以有很多好玩的 App。
+</p>
+
+<p>
+黑莓嘛，现在听说也 Android 了，不过我想很难
+ROOT，如果硬件做得不好就没那么好玩了，不过还是看好那块键盘。
+</p>
+
+<p>
+如果你也用了 BlackBerry OS 10，那么我们有话聊。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;本周软件 - OmniDiskSweeper&#34;</title>
+      <link>https://www.orrafy.com//posts/2016-01-31-disk-space/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2016-01-31-disk-space/</guid>
+      <pubDate>Sun, 31 Jan 2016 17:31:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2016-01-31-disk-space" class="outline-2">
+<h2 id="2016-01-31-disk-space">2016-01-31-disk-space</h2>
+<div class="outline-text-2">
+<p>
+可能当我们长时间用我们的 Mac OS
+后，就会发现一个有趣的问题，『我们的磁盘空间都到什么地方去了？』
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=617e82f572a46e56c760eb85ac5ccf85">http://store.orrafy.com/get/uuid=617e82f572a46e56c760eb85ac5ccf85</a>
+</p>
+
+<p>
+如上图，70+G 的空间都成了 Other，那么这个 Other 又是什么呢？
+</p>
+
+<p>
+今天就介绍一款软件 OmniDiskSweeper
+，它是免费的，它可以扫出所有磁盘的文件，扫出后你可以根据需要酌情删除一些不需要的文件，来释放磁盘。
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=a5f097c6cae5aed910aaab6d14e8aca4">http://store.orrafy.com/get/uuid=a5f097c6cae5aed910aaab6d14e8aca4</a>
+</p>
+
+<p>
+如上图，可以清晰的看出哪个文件夹下多了个文件而且还特别占磁盘空间。
+</p>
+
+<dl class="org-dl">
+<dt>如果你也遇到了类似的问题，请下载软件查看一下你的磁盘文件。</dt><dd>完 ~</dd>
+</dl>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;如何方便快捷的进行 node-addons 开发&#34;</title>
+      <link>https://www.orrafy.com//posts/2015-09-27-node-addons/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2015-09-27-node-addons/</guid>
+      <pubDate>Sun, 27 Sep 2015 10:21:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2015-09-27-node-addons" class="outline-2">
+<h2 id="2015-09-27-node-addons">2015-09-27-node-addons</h2>
+<div class="outline-text-2">
+<p>
+开始前的说明及准备
+</p>
+
+<ul class="org-ul">
+<li>Addons node 原生插件，以下用 addons 代指。</li>
+<li>node-gyp 辅助开发 addon 的工具</li>
+<li>build-essential 如 gcc、make、cmake、python、gdb 等</li>
+<li>文档
+<ul class="org-ul">
+<li><a href="https://developers.google.com/v8/embed">https://developers.google.com/v8/embed</a></li>
+<li><a href="https://nodejs.org/api/addons.html">https://nodejs.org/api/addons.html</a></li>
+</ul></li>
+</ul>
+
+<p>
+关键词：node原生插件开发、使用IDE开发node-addon、node-gyp、gyp、ninja
+</p>
+</div>
+
+<div id="outline-container-简单介绍" class="outline-4">
+<h4 id="简单介绍">简单介绍</h4>
+<div class="outline-text-4" id="text-简单介绍">
+<p>
+node addons （node原生插件）用来扩展 node
+能力，有一些对性能敏感的功能需要实现为原生插件，也为了对接原有 C、CPP
+等开发的库。从表象上是一个动态链接库，是 v8
+提供的插件接口，这就意味着每次 v8
+的升级就会导致接口的不兼容，需要重新在新版本下编译或者修改接口。
+</p>
+
+<blockquote>
+<p>
+node 升级导致 addons
+不好使的情况很常见，几乎一个大版本都会出现类似的问题，这让维护一个
+addons 项目变得复杂。
+</p>
+</blockquote>
+
+<p>
+addons 可以用 cpp、c 等语言进行开发，接入 node 的 wrap 层需要使用 cpp
+编写。开发一个 cpp 程序，特别是大型项目中有个好的 IDE
+支持无疑能让开发快很多（特别是修改已有项目），本篇文章就围绕这个话题展开。
+</p>
+
+<p>
+如何开发直接看文档即可，主要介绍周边开发工具，先从 node-gyp 开发。
+</p>
+</div>
+</div>
+
+<div id="outline-container-让-node-gyp-生成不同-ide-项目文件" class="outline-4">
+<h4 id="让-node-gyp-生成不同-ide-项目文件">让 node-gyp 生成不同 IDE 项目文件</h4>
+<div class="outline-text-4" id="text-让-node-gyp-生成不同-ide-项目文件">
+<p>
+node-gyp 实则包装了 gyp，其位 Google V8
+项目中使用的构建工具，它非常好用，可以说是对各大构建工具再包装提供简易的配置文件 -
+JSON，最终编译的时候可以生成各种编译工具项目文件，如
+cmake、ninja、vs、make等。
+</p>
+
+<blockquote>
+<p>
+gyp 的项目地址 <a href="https://chromium.googlesource.com/external/gyp/">https://chromium.googlesource.com/external/gyp/</a>
+</p>
+</blockquote>
+
+<p>
+node-gyp
+提供了很多功能，但用户文档根本就没写出来。这会让开发变得很局促。我开发的时候由于网络被非可抗因素导致很慢，当第一次启动
+node-gyp 进行编译的时候，其会下载当前使用 node
+版本的源码，获取头文件及其必要的
+library。这个过程很漫长，我忍无可忍就开始寻求办法，看源码中是否留了直接指定源码包的接口，过不其然其中包含这样的接口。
+</p>
+
+<pre class="example" id="orge1b5eec">
+node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
+</pre>
+
+<p>
+<code>--tarball</code> 参数就是干这个事情了，用提前下载好的源码包路径设置参数。
+</p>
+
+<p>
+由于刚才说到的 v8
+升级会导致预编译的二进制包无法使用，这时候就需要提前编译好多个版本的二进制插件包。如何编译出特定
+node 版本下的插件使用如下命令。
+</p>
+
+<pre class="example" id="orge70c5cd">
+node-gyp rebuild --target=0.10.0
+</pre>
+
+<p>
+<code>--target</code> 设置为 node 的版本号。
+</p>
+
+<p>
+有时候还需要在同一台机器上编译不同体系（x86，x64）下的插件
+</p>
+
+<pre class="example" id="orge95c6c3">
+node-gyp rebuild --arch=ia32
+node-gyp rebuild --arch=x64
+</pre>
+
+<p>
+对于个人是不需要考虑这些事情的，因为自己编译自己用。但当你开发的插件打算分享给别人的时候，就得考虑对方的操作系统、arch、node版本等问题，提供给别人完整体验就得花费更多的心思。
+</p>
+
+<p>
+最近 node 又升级到 4.x
+时代了，无一例外，我的插件都跪了。面对这样的事实我也比较无奈。
+</p>
+
+<p>
+以前开发的时候为了兼容跨大版本引起的接口变动，使用了
+<a href="https://github.com/nodejs/nan">nan</a> 这个兼容方案，后来也陆续了解过像
+<a href="http://www.swig.org/">swig</a>
+这样的兼容层模板。感觉这类东西能解决问题，就使用了 nan，谁曾想 4.x
+时代还需要升级 nan，而 nan 的接口变动甚至能用看不懂来形容（其使用了各种
+cpp template
+技术），后再去看原生接口亲切了很多。遂花了点时间又改回原生接口，在改的过程中发现太多问题，都是
+v8 接口使用问题。就想用 IDE 来帮助修改，因为 IDE 有良好的接口提示功能。
+</p>
+
+<p>
+node-gyp 在 Windows 上会生成 visual studio 项目文件可直接用 VS
+来做调整。但在 Mac 下其产出的是 Makefile，就有点难办。
+</p>
+
+<p>
+以前研究 gyp 的时候发现，gyp 是可以支持生成 CMakeLists.txt （cmake
+配置文件），而 <a href="https://www.jetbrains.com/clion/">CLION</a>
+是比较不错的一个 C、CPP IDE，支持用 CMakeLists.txt 来初始化一个项目。
+</p>
+
+<p>
+这样只需要让 node-gyp 也同样生成 CMakeLists.txt 即可
+</p>
+
+<p>
+使用 gyp 的做法
+</p>
+
+<pre class="example" id="org6010239">
+gyp build.gyp --depth=. --generator-output=./output -f cmake
+gyp build.gyp --depth=. --generator-output=./output -f ninja
+</pre>
+
+<p>
+使用 node-gyp 的做法
+</p>
+
+<pre class="example" id="org6482396">
+很遗憾，其没有留接口，代码写死
+win =&gt; msbuild
+mac, linux, ... =&gt; make
+</pre>
+
+<p>
+但其封装的是 gyp，只是没有提供现成的接口而已，自己造；
+</p>
+
+<p>
+当我们用 node-gyp 进行编译的时候，会输入
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=ecdcc9be82674109036d8266eca3f74c">http://store.orrafy.com/get/uuid=ecdcc9be82674109036d8266eca3f74c</a>
+</p>
+
+<p>
+上图红框框住的地方不正是 gyp 的调用，抠出来
+</p>
+
+<pre class="example" id="orge675daa">
+/Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
+</pre>
+
+<p>
+其中有 <code>-f</code> 参数，修改为 <code>cmake=，执行这个命令即可得到
+=./build/Release/CMakeLists.txt=，再用 CLION 打开 =Release</code>
+目录就是一个完整的项目了，可以在 IDE
+编译，修改错误以及编码（代码自动补全很 nice）
+</p>
+
+<p>
+很快我的项目就改好接口了，假设我用 make
+一个一个去排除错误，修改到猴年马月都不能完成。
+</p>
+
+<p>
+同样，把这个思路推广一下，就会发现开发的时候也可以便捷的用 IDE
+了，可能有人会说难道直接用 IDE 开发不就得了，当然开发是 OK 的，但是 IDE
+的各项环境设置几乎会让人死去活来好几次。
+</p>
+</div>
+</div>
+
+<div id="outline-container-用-gdb-调试-node-扩展" class="outline-4">
+<h4 id="用-gdb-调试-node-扩展">用 gdb 调试 node 扩展</h4>
+<div class="outline-text-4" id="text-用-gdb-调试-node-扩展">
+<p>
+有时候必不可少的需要单步编译，做到这一点有个要求就是得用 debug 版的
+node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 时添加
+<code>--debug</code> 参数即可。
+</p>
+
+<pre class="example" id="org93a2621">
+./configure --debug
+</pre>
+
+<p>
+有了 node_g 就可以用 gdb 单步调试 node 了，包括你的扩展程序，gdb
+调试是个复杂的话题，就不展开讨论了，Google 之。
+</p>
+</div>
+</div>
+
+<div id="outline-container-小结" class="outline-4">
+<h4 id="小结">小结</h4>
+<div class="outline-text-4" id="text-小结">
+<p>
+开发程序主要需要调试方便，无黑盒，这样才能开发的开心。之所以大家喜欢开发脚本语言，是因为脚本语言调试简单。而静态语言开发调试就得看内存，所以合理的借助工具是很好的实践方法。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;Markdown Helper，一次 Mac App 开发之旅&#34;</title>
+      <link>https://www.orrafy.com//posts/2015-09-22-create-mac-app/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2015-09-22-create-mac-app/</guid>
+      <pubDate>Tue, 22 Sep 2015 15:59:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2015-09-22-create-mac-app" class="outline-2">
+<h2 id="2015-09-22-create-mac-app">2015-09-22-create-mac-app</h2>
+<div class="outline-text-2">
+<blockquote>
+<p>
+使用 XCode 7 开发，使用操作系统 OSX 10.11
+</p>
+</blockquote>
+
+<p>
+最近由于经常写文档，想找个顺手的工具，但很多 Markdown
+工具都没有处理图片的问题。大概有这么三类
+</p>
+
+<ol class="org-ol">
+<li value="0">图片只能用远端的</li>
+<li>图片可以引入本地路径</li>
+<li>图片可以上传</li>
+</ol>
+
+<p>
+第 1 种是那些不支持本地图片的，这类工具很多，DayOne
+就是其中一个，当然你可能会说它能传*一张*图片。
+</p>
+
+<p>
+第 2 种像 write
+或者用编辑器都可以做到，可惜的是传到远端的时候还得考虑图片路径映射的问题
+</p>
+
+<p>
+第 3 种一般都是远端应用或者 chrome
+的插件，唯一的缺点是写文字时颤抖，容易引起不适。
+</p>
+
+<p>
+而能做到把图片处理的得当的即好用的工具没能发现（至少我没有发现）；
+</p>
+
+<p>
+从上面描述来看论实用性还是得选择图片传到远端，引入时引入图片的
+URL，这样所有的编辑器下都可以很方便的使用。
+</p>
+
+<p>
+其实，我们有自己喜欢的编辑文档（Markdown）的方法，比如用 sublime text
+或者 vim。只要有个工具能搞定图片这个事情就皆大欢喜了。
+</p>
+
+<p>
+从这点出发，我只需要一个开速上传图片并且返回图片 URL
+的小工具就能满足需求。当然你也许会说直接传到图床（这是放毛片用的好吧）或者网盘不就行了。但这个路径还是太长，太麻烦。
+</p>
+
+<p>
+我给这个工具取名叫 感叹号（Exclamation Mark），因为 Markdown
+语法加一个图片的第一个字符是 =!=。
+</p>
+
+<p>
+在开始的时候可能我需要做一些技术选型，由于自己使用的是 OS
+X，毫无疑问直接开发原生程序可以给我带来很大的便利性，比如可以方便的访问剪切板，实现剪切复制黏贴很方便。不过，我没有开发过
+Mac 应用，也让我纠结了一番，想着要不要用
+<a href="https://github.com/atom/electron">electron</a>
+来实现，后来还是选择了使用原生开发。
+</p>
+
+<p>
+由于我需要这样一个工具而且我没有开发过 Mac
+下的应用，一下子就激起了我的兴趣，我用周末时间，边看别人写的代码边实现整个应用程序的基本功能搞定了。
+</p>
+
+<p>
+这个工具有两部分，服务端和客户端部分，服务端就相对于比较简单的，期初直接用
+PHP 自己写了个 router
+相对于优雅的搞定了功能，接受文件后保存返回文件的访问 url。
+</p>
+
+<p>
+最折腾的地方在客户端，由于以前也没学过，好在对 C
+语言比较熟，再加上强大的 Google，很快我的客户端慢慢的堆砌完成了。
+</p>
+
+<p>
+在这个过程中也有一些需要记录下来的东西。
+</p>
+
+<p>
+我的客户端设计有两个窗口，主窗口、设置窗口。主窗口包含触发上传文件的按钮和显示区域，设置窗口设置服务器接收端信息（想着后续可能会有人感兴趣自己搭建服务使用）；
+</p>
+
+<p>
+其中几个需要攻克的技术点
+</p>
+
+<ul class="org-ul">
+<li>打开一个文件浏览器窗口，选择文件，并获取选到文件的信息</li>
+<li>模拟上传（一般用 POST 请求上传）</li>
+<li>新建另一个窗口，主窗口可以控制它</li>
+<li>设置的接收端数据进行永久保存</li>
+<li>设置 App 的图标</li>
+</ul>
+</div>
+
+<div id="outline-container-打开一个文件浏览窗口选择文件" class="outline-4">
+<h4 id="打开一个文件浏览窗口选择文件">打开一个文件浏览窗口，选择文件</h4>
+<div class="outline-text-4" id="text-打开一个文件浏览窗口选择文件">
+<p>
+接口
+<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSOpenPanel_Class/">NSOpenPanel</a>
+实现这个操作
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">NSOpenPanel</span> *<span class="org-variable-name">panel</span> = [NSOpenPanel openPanel];
+[panel setCanChooseFiles: <span class="org-constant">YES</span>]; <span class="org-comment-delimiter">//</span><span class="org-comment">&#26159;&#21542;&#33021;&#36873;&#25321;&#25991;&#20214;
+</span>[panel setCanCreateDirectories: <span class="org-constant">NO</span>]; <span class="org-comment-delimiter">// </span><span class="org-comment">&#26159;&#21542;&#21019;&#24314;&#25991;&#20214;&#22841;
+</span>[panel setCanChooseDirectories: <span class="org-constant">NO</span>]; <span class="org-comment-delimiter">// </span><span class="org-comment">&#26159;&#21542;&#33021;&#36873;&#25321;&#25991;&#20214;&#22841;
+</span>[panel setAllowedFileTypes:@[@<span class="org-string">"jpg"</span>, @<span class="org-string">"jpeg"</span>, @<span class="org-string">"png"</span>, @<span class="org-string">"gif"</span>]]; <span class="org-comment-delimiter">// </span><span class="org-comment">&#33021;&#35775;&#38382;&#30340;&#25991;&#20214;&#21518;&#32512;</span>
+</pre>
+</div>
+
+<p>
+初始化好了对象，就执行以下接口打开文件浏览窗口进行选择文件。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc">[panel beginSheetModalForWindow: [[<span class="org-keyword">self</span> view] window] completionHandler: ^(NSInteger result) {
+        <span class="org-keyword">if</span> (result == NSFileHandlingPanelOKButton) {
+                onComplete([panel URLs][0]);
+        }
+}]; 
+</pre>
+</div>
+
+<p>
+这个接口算是异步接口，当成功后会调用给定的回调函数 =onComplete=。
+当然你也可以调用同步接口；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">NSInteger</span> <span class="org-variable-name">result</span> = [panel runModal];
+<span class="org-keyword">if</span> (result == NSFileHandlingPanelOKButton) {
+    <span class="org-keyword">return</span> [panel URLs][0];
+}
+</pre>
+</div>
+
+<p>
+当然建议使用异步接口，不然会卡顿一下。上面代码中有这样的语句
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc">[panel URLs][0];
+</pre>
+</div>
+
+<p>
+这个应该是高版本才开始支持的，对于 <code>NSArray</code> 使用这种方式访问，也算是
+Objc 的一种进步，当然后续可能全都使用 swift 了，不过还是建议学习一下
+Objc，可以使用积攒已久的开源财富。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc">^() {
+  <span class="org-comment-delimiter">//</span><span class="org-comment">balabala
+</span>}
+</pre>
+</div>
+
+<p>
+<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Blocks/Articles/bxGettingStarted.html">blocks</a>
+在 C 语言里可以使用函数指针来实现传参一个函数，这是 Objc
+里面另一种类似实现。
+</p>
+</div>
+</div>
+
+<div id="outline-container-模拟上传" class="outline-4">
+<h4 id="模拟上传">模拟上传</h4>
+<div class="outline-text-4" id="text-模拟上传">
+<p>
+模拟上传也就是模拟一次表单提交，这个就很简单的，一搜一大把，包括各种语言版本的都有。网络请求使用的类是
+<a href="https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSURLSession_class/">NSURLSession</a>，<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSMutableURLRequest_Class/">NSMutableURLRequest</a>；
+</p>
+
+<p>
+打开一个 HTTP
+请求，并发送数据，数据完成后执行回调（当然得用异步，不然拖死主进程）。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">NSURLSession</span> *<span class="org-variable-name">session</span> = [NSURLSession sharedSession];
+<span class="org-type">NSURLSessionDataTask</span> *<span class="org-variable-name">reqTask</span> = [session dataTaskWithRequest:req completionHandler:onReady];
+[reqTask resume];
+</pre>
+</div>
+
+<p>
+接口 <code>dataTaskWithRequest</code> 接口接受一个 Request
+对象，以及一个网络请求成功后的回调 =completionHandler=。
+</p>
+
+<p>
+那么实例化 <code>NSMutableURLRequest</code> 得到一个 Request 对象。
+</p>
+
+<p>
+<a href="https://gist.github.com/xiangshouding/34cb19f177a7a998b5f6">代码</a>
+</p>
+
+<p>
+调用的回调函数 <code>onReady</code> 函数结构是
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">void</span> (^onReady) (<span class="org-type">NSData</span> *<span class="org-variable-name">data</span>, <span class="org-type">NSURLResponse</span> *<span class="org-variable-name">res</span>, <span class="org-type">NSError</span> *<span class="org-variable-name">err</span>) {}
+</pre>
+</div>
+
+<p>
+很自然，第一个参数是访问服务端得到的数据，第二个是 Response
+对象，第三个是错误；当我们想拿到服务器返回的状态码时需要实例化
+=NSHTTPURLResponse=，可能看 API 文档的时候会无从下手，其实作为 C
+语言高级版本，数据类型是可以通过强转来实现的变更的，因为最终都是一块连续的内存。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">NSHTTPURLResponse</span> *<span class="org-variable-name">response</span> = (<span class="org-type">NSHTTPURLResponse</span> *) res;
+<span class="org-type">long</span> <span class="org-variable-name">statusCode</span> = [response statusCode]; <span class="org-comment-delimiter">// </span><span class="org-comment">&#33719;&#21462;&#21040;&#26381;&#21153;&#22120;&#36820;&#22238;&#29366;&#24577;&#30721;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-新建另一个窗口" class="outline-4">
+<h4 id="新建另一个窗口">新建另一个窗口</h4>
+<div class="outline-text-4" id="text-新建另一个窗口">
+<p>
+这个可能比较简单，新建一个 <code>xib</code> 文件（View），然后实现一个 Controller
+类关联即可，具体方法可以参考网络，一大把一大把的文档。
+</p>
+
+<p>
+需要给大家推荐一个新建 Perferences 窗口的类库
+<a href="https://github.com/shpakovski/MASPreferences">https://github.com/shpakovski/MASPreferences</a> 实现得特别赞，直接拿来用。
+</p>
+
+<p>
+还有包管理工具 <a href="https://cocoapods.org">https://cocoapods.org</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-设置数据永久保存" class="outline-4">
+<h4 id="设置数据永久保存">设置数据永久保存</h4>
+<div class="outline-text-4" id="text-设置数据永久保存">
+<p>
+用户提交的配置信息，可以用
+<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/">NSUserDefaults</a>
+实现。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-objc"><span class="org-type">NSUserDefaults</span> * <span class="org-variable-name">userDefaults</span> = [NSUserDefaults standardUserDefaults];
+[userDefaults setObject: @<span class="org-string">"xxx"</span> forKey: @<span class="org-string">"username"</span>];
+<span class="org-type">NSString</span> *<span class="org-variable-name">username</span> = [userDefaults stringForKey: @<span class="org-string">"username"</span>];
+<span class="org-comment-delimiter">// </span><span class="org-comment">xxx</span>
+</pre>
+</div>
+
+<p>
+还有其他若干类型接口，可逐一参考文档。
+</p>
+</div>
+</div>
+
+<div id="outline-container-设置-app-的图标" class="outline-4">
+<h4 id="设置-app-的图标">设置 App 的图标</h4>
+<div class="outline-text-4" id="text-设置-app-的图标">
+<p>
+这个其实蛮折腾的，需要制作 icon 图片，并且生成 <code>.icns</code>
+文件。好在有现成的工具制作，无需那么麻烦去保存多个分辨率的图片然后调用命令生成。推荐一个免费的在线制作工具
+<a href="https://iconverticons.com/online">https://iconverticons.com/online</a> 。
+</p>
+
+<p>
+把生成的 <code>.icns</code> 放到项目中，并修改 <code>info.plist</code> 中 <code>Icon File</code> 为
+<code>.icns</code> 文件的名字即可。
+</p>
+
+<p>
+举例；
+</p>
+
+<pre class="example" id="org4682cde">
+appicon.icns
+</pre>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=81c2b68ffe8b1d6f7f7cf8aafdfbe9be">http://store.orrafy.com/get/uuid=81c2b68ffe8b1d6f7f7cf8aafdfbe9be</a>
+</p>
+
+<p>
+顺便展示一下我弄的 icon
+</p>
+
+<p>
+<a href="http://store.orrafy.com/get/uuid=737280894969a0139d65ee82d400ff9a">http://store.orrafy.com/get/uuid=737280894969a0139d65ee82d400ff9a</a>
+</p>
+
+<p>
+回过头来，发现 Mac
+应用的开发还是蛮有意思的，后续可能会花更多来开发一些有意思的应用程序。
+</p>
+
+<p>
+我选择的语言是 Objective-c，后续转投 swift。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;聊聊最近&#34;</title>
+      <link>https://www.orrafy.com//posts/2015-07-17-note-no/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2015-07-17-note-no/</guid>
+      <pubDate>Fri, 17 Jul 2015 09:05:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2015-07-17-note-no-1" class="outline-2">
+<h2 id="2015-07-17-note-no-1">2015-07-17-note-no.1</h2>
+<div class="outline-text-2">
+<p>
+最近，大概也有几个月了，一直在寻求突破自己。就在今年上半年成功晋级，也成为了某团队负责人，肩头也一下子沉了不少。
+</p>
+
+<p>
+自此，从一个自认为不怎么合格的工程师成为了需要考虑团队、协作、技术方向等的角色，虽然刚来厂没多久就已经干起了相关的事情，但总体方向是有人设定好的。
+</p>
+
+<p>
+可能有人会兴奋不已，感觉自己终于可以大展身手施展才华了。但我在这个地方首先想到的就是如何保持现有团队的成就。也是去年，整个团队空前强大，几乎每一个队员都是高级别工程师。搞定这么多同级别工程师不是闹着玩的。
+</p>
+
+<p>
+如我想到的，最终还是努力失败了，并没能把团队聚拢的一起。可能我有一万个理由说明为啥没有聚拢成功，不过这些都不重要了。
+</p>
+
+<p>
+好在队员们都很努力成就自己，包括关键业务 FIS
+的维护等都进展的很顺利，所以来了大家各司伸展手脚的做法，成果斐然。
+</p>
+
+<p>
+虽然，还是缺少团队凝聚力。
+</p>
+
+<hr>
+
+<p>
+当初要对 FIS
+进行一次升级解决一些问题，然这个事情本身带来的压力是无可衡量的，FIS
+已经走的很高了，而想要超越她几乎是不可能的。至少我觉着自己做不到。
+</p>
+
+<p>
+所以整个更新过程进行的特别漫长，我也开始怀疑这个事情是否做得值得，最近也算是功德圆满，这个事情看来还是值得做的。
+</p>
+
+<p>
+在前端领域去做工具支持很容易迷路，因为业务的东西你不碰，必定不是每一个公司都能养得起一个做工具架构的团队，业务本身才是比较重要的。所以不管是个人或者团队必定要有自己的战场，得想明白为何而战。
+</p>
+
+<p>
+当想明白为何而战，你每天的日子必定会另有一番味道。
+</p>
+
+<hr>
+
+<p>
+去回想自己的职业，其实可怕的会发现有一种东西叫负能量。负能量来源很广，每个人都会有。合理控制自己的心理，不要被负能量所累。
+</p>
+
+<hr>
+
+<p>
+接下来，换一种思路，去继续锻炼自己。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;fis-plus篇，fisp 项目如何在线上跑起来&#34;</title>
+      <link>https://www.orrafy.com//posts/2015-05-08-fis-plus-online/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2015-05-08-fis-plus-online/</guid>
+      <pubDate>Fri, 08 May 2015 11:39:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2015-05-08-fis-plus-online" class="outline-2">
+<h2 id="2015-05-08-fis-plus-online">2015-05-08-fis-plus-online</h2>
+<div class="outline-text-2">
+<p>
+最近遇到很多同学（非度厂）当在本地开发完的 fisp（指代fis-plus，以下同）
+项目不知道如何跟后端连在一起工作；这可能是整个站在前端的角度上去考虑问题，而不清楚后端是如何去渲染一个页面导致的。当然也有可能是对
+Smarty 本身了解的匮乏，前面我写过一篇关于 Smarty
+的文章：<a href="http://www.orrafy.com/posts/fisbook/fisp-online-smarty/">fis-plus上线篇之搞定smarty环境</a>，可能这篇更偏向于对
+fisp 编译工具的一些产出设置。那么这篇将揭露假设我用了个 PHP
+的什么什么框架该如何去渲染 fisp 的项目呢？
+</p>
+</div>
+
+<div id="outline-container-讲述重点" class="outline-4">
+<h4 id="讲述重点">讲述重点</h4>
+<div class="outline-text-4" id="text-讲述重点">
+<ul class="org-ul">
+<li>Smarty 的应用？</li>
+<li>后端如何去渲染 fisp 的项目？</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-smarty-的应用" class="outline-4">
+<h4 id="smarty-的应用">Smarty 的应用？</h4>
+<div class="outline-text-4" id="text-smarty-的应用">
+<p>
+为了讲述能清晰一些，我们一并说一下 Smarty
+在我们的网站开发中是个什么角色，<a href="http://www.smarty.net">Smarty</a>
+所谓后端模板语言，模板一般都是 View
+层的承载介质（如MVC中），就很清晰知道是 View 层的东西；
+</p>
+
+<p>
+PHP
+本身就是一门优秀的模板语言，那么为了更简易的开发，<a href="http://www.smarty.net">Smarty</a>
+在其基础上实现了类似继承填坑的机制来提升模板语言的灵活性，方便搞页面拆分，而且做了不少容错处理；所以在不需要了解整个
+PHP 语言特性的情况下选择 <a href="http://www.smarty.net">Smarty</a>
+作为模板来让前端开发人员去使用是一种不错的选择。
+</p>
+
+<p>
+fisp 就选用了 Smarty 作为模板语言。
+</p>
+
+<ul class="org-ul">
+<li><p>
+假设我不用 Smarty PHP网站开发是如何？
+</p>
+
+<p>
+不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；
+</p>
+
+<pre class="example" id="org5512745">
+.
+├── controller
+├── model
+└── view
+</pre>
+
+<ul class="org-ul">
+<li>controller 是一些入口文件，控制器，来协调 model 和 view
+去完成一次页面的请求</li>
+<li>model 一些访问数据库或者是篡数据的逻辑</li>
+<li>view 这下面一般放的是模板</li>
+</ul>
+
+<p>
+假设我访问的 url 是 <code>http://my-host/index/show=，一般都会路由到 =show</code>
+函数的执行上
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//controller/index.php
+class Index extends Controller {
+    public function show() {
+        // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+        $this-&gt;assign('data', $data); // &lt;1&gt;
+        $this-&gt;display('show.php'); // &lt;2&gt;
+    } 
+}
+</pre>
+</div>
+
+<p>
+如以上代码，我们不去关心数据是如何来的，反正这个一般都是由后端工程师搞定，我们只需要关注
+&lt;1&gt; 、 &lt;2&gt; 两个步骤。=assign= 一般意思就是给模板塞数据，=display=
+一般就是去渲染这个模板，在上面逻辑里面渲染的是 <code>view/index/show.php</code>
+这个模板。
+</p>
+
+<p>
+<code>show.php</code> 是一个普通的 php 模板，我们可以假定它的内容如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;?=$data['title']?&gt;&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;?=$data['message']?&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+
+<p>
+只是显示 <code>$data</code> 塞过来的数据。
+</p>
+
+<p>
+通过上面的逻辑，一个完整的 php 模板的渲染过程已经说完了。
+</p></li>
+
+<li><p>
+用 Smarty 改造上面这个流程，该是怎么样的？
+</p>
+
+<p>
+跟上面一样，后端目录依然是如下这个形式
+</p>
+
+<pre class="example" id="orgc2467f0">
+.
+├── controller
+├── model
+└── view
+</pre>
+
+<p>
+可能为了放置 Smarty 的类库，需要添加一个新目录叫 <code>lib=，下载
+  [[http://www.smarty.net][Smarty]] 放到 =lib/smarty</code> 目录下；
+</p>
+
+<pre class="example" id="orgf4fec90">
+.
+├── controller
+├── lib
+├── model
+└── view
+</pre>
+
+<p>
+这时候依然访问 url =<a href="http://my-host/index/show">http://my-host/index/show</a>=， controller 需要引入
+smarty 去做渲染；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//controller/index.php
+require(dirname(dirname(__FILE__)) . '/lib/smarty/Smarty.class.php'); //引入 smarty
+class Index extends Controller {
+    private $_smarty = null;
+
+    //假象 init 方法
+    public function init() {
+        $this-&gt;_smarty = new Smarty();
+        // 模板目录设置，非 `/` 或者 `.` 开头的文件到这个目录下查找
+        $this-&gt;_smarty-&gt;setTemplateDir(dirname(__DIR__) . '/view/template');
+        // 设置插件目录，一般 fisp 会提供很多 smarty 的插件
+        $this-&gt;_smarty-&gt;setPluginsDir(array(
+            dirname(__DIR__) . '/view/plugin'
+        ));
+        // config_dir 设置
+        $this-&gt;_smarty-&gt;setConfigDir(dirname(__DIR__) . '/view/config');
+    }
+
+    public function show() {
+        // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+        $this-&gt;_smarty-&gt;assign('data', $data); // &lt;1&gt;
+        $this-&gt;_smarty-&gt;display('index/show.tpl'); // &lt;2&gt;
+    } 
+}
+</pre>
+</div>
+
+<p>
+同样的方式，给模板塞数据 <code>$this-&gt;_smarty-&gt;assign</code> 以及去渲染模板
+<code>$this-&gt;_smarty-&gt;display</code> 。那么这时候模板就应该是 smarty 的模板了；
+</p>
+
+<p>
+<code>index/show.tpl</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;%$data.title%&gt;&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;%$data.message%&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div></li>
+</ul>
+
+<p>
+有了这个对照，是否清晰了一些，Smarty 就是干渲染模板这个事情的，其实就是
+View 模板这块的事情。
+</p>
+</div>
+</div>
+
+<div id="outline-container-后端如何去渲染-fisp-的项目" class="outline-4">
+<h4 id="后端如何去渲染-fisp-的项目">后端如何去渲染 fisp 的项目？</h4>
+<div class="outline-text-4" id="text-后端如何去渲染-fisp-的项目">
+<p>
+如上面的对照，其实整个对 Smarty
+在项目中的引入，*不限于什么什么框架*，虽然有些框架也会提供一些自己的模板语言，但是你要用
+fisp 那么就应该忽视它们，直接换用 Smarty。
+</p>
+
+<p>
+信息的朋友可能会发现，有个*塞模板数据*的过程，这个过程就是前后端的分界点，对于一个
+fisp 的项目，编译完成后，只需要后端实例化 Smarty
+并且去渲染特定模板即可。而这些数据就调用 Smarty 的 <code>assign</code>
+方法塞数据即可。
+</p>
+
+<p>
+说到这块，我们畅想一下整个用 fisp 开发时的流程是怎么样的？
+</p>
+
+<ul class="org-ul">
+<li>据对对于某一个功能需要的数据都定下来，写数据结构文档（为了方便维护）</li>
+<li>后端过去查数据库调用服务来获取并给这些数据</li>
+<li>并行的前端开始开发页面，并且用 fisp
+提供的本地服务套件，模拟这些数据，开发页面</li>
+<li>联调的时候，把前端开发的模板、静态资源、Smarty 插件、Smarty
+config文件等上传到测试机器初始化 Smarty 时设置的那些目录下面</li>
+<li>后端写清楚某个逻辑需要渲染（=display=）哪个模板，并且把准备好的数据塞给模板</li>
+<li>然后这个事情就搞定了</li>
+</ul>
+
+<p>
+这样真正实现了前后端并行开发。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用&#34;</title>
+      <link>https://www.orrafy.com//posts/2015-01-07-use-bootstrap-scss-in-fis/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2015-01-07-use-bootstrap-scss-in-fis/</guid>
+      <pubDate>Wed, 07 Jan 2015 10:43:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2015-01-07-use-bootstrap-scss-in-fis" class="outline-2">
+<h2 id="2015-01-07-use-bootstrap-scss-in-fis">2015-01-07-use-bootstrap-scss-in-fis</h2>
+<div class="outline-text-2">
+<p>
+从题目不难看出，我最近要开始写点关于fis使用的博文了。fis固然好，但一些使用上的细节，不是靠看文档就能看得明白使用得顺心的；
+</p>
+
+<p>
+好吧，本来应该把文档写得风趣一点，奈何大家写文档都是一板一眼，不好扭过来。
+</p>
+
+<p>
+闲话少扯&#x2026;&#x2026;
+</p>
+
+<p>
+最近在整理官网，官网由于时间的推移，用户认知的改变需要做一些调整。展示给用户的内容呢要突出重点，所以呢我就放下手头乌七八糟的事情，开始了设计页面的事情；选来选去还是决定选择bootstrap干净利落；
+</p>
+
+<p>
+bootstrap提供了less、sass等异构语言（变种语言）的版本，如今如果搞前端不用点这些都觉着丢人。那么问题来了，在fis里面如何使用上bootstrap的less或者sass版本呢？
+</p>
+
+<p>
+由于我要使用的是=sass=，就来写写bootstrap的sass版本在fis的使用吧。
+</p>
+</div>
+
+<div id="outline-container-准备工作" class="outline-4">
+<h4 id="准备工作">准备工作</h4>
+<div class="outline-text-4" id="text-准备工作">
+<ul class="org-ul">
+<li>安装fis <code>npm install -g fis</code></li>
+<li>安装fis-parser-sass插件 <code>npm install -g fis-parser-sass</code></li>
+<li>下载<a href="https://github.com/twbs/bootstrap-sass/archive/v3.3.1.tar.gz">bootstrap-sass</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-开始调教" class="outline-4">
+<h4 id="开始调教">开始调教</h4>
+<div class="outline-text-4" id="text-开始调教">
+</div>
+<ul class="org-ul">
+<li><a id="准备bootstrap源码"></a>准备bootstrap源码<br>
+<div class="outline-text-5" id="text-准备bootstrap源码">
+<p>
+不出意外的话，下来下来的bootstrap-sass解压后目录下有一大坨的东西，如这样
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 2
+.
+&#9500;&#9472;&#9472; CHANGELOG.md
+&#9500;&#9472;&#9472; CONTRIBUTING.md
+&#9500;&#9472;&#9472; Gemfile
+&#9500;&#9472;&#9472; LICENSE
+&#9500;&#9472;&#9472; README.md
+&#9500;&#9472;&#9472; Rakefile
+&#9500;&#9472;&#9472; assets
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; fonts
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; images
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; javascripts
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; stylesheets
+&#9500;&#9472;&#9472; bootstrap-sass.gemspec
+&#9500;&#9472;&#9472; bower.json
+&#9500;&#9472;&#9472; composer.json
+&#9500;&#9472;&#9472; lib
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; bootstrap-sass
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; bootstrap-sass.rb
+&#9500;&#9472;&#9472; package.json
+&#9500;&#9472;&#9472; sache.json
+&#9500;&#9472;&#9472; tasks
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; bower.rake
+&#9474;&#160;&#160; &#9500;&#9472;&#9472; converter
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; converter.rb
+&#9500;&#9472;&#9472; templates
+&#9474;&#160;&#160; &#9492;&#9472;&#9472; project
+&#9492;&#9472;&#9472; test
+    &#9500;&#9472;&#9472; compass_test.rb
+    &#9500;&#9472;&#9472; compilation_test.rb
+    &#9500;&#9472;&#9472; dummy_node_mincer
+    &#9500;&#9472;&#9472; dummy_rails
+    &#9500;&#9472;&#9472; dummy_sass_only
+    &#9500;&#9472;&#9472; gemfiles
+    &#9500;&#9472;&#9472; node_mincer_test.rb
+    &#9500;&#9472;&#9472; node_sass_compile_test.sh
+    &#9500;&#9472;&#9472; pages_test.rb
+    &#9500;&#9472;&#9472; sass_test.rb
+    &#9500;&#9472;&#9472; sprockets_rails_test.rb
+    &#9500;&#9472;&#9472; support
+    &#9500;&#9472;&#9472; test_helper.rb
+    &#9492;&#9472;&#9472; test_helper_rails.rb
+</pre>
+</div>
+
+<p>
+看到很多东西，特别是=.json=结尾的，都是提供给包管理用的，现在提供库的这些开发者也是蛮拼的，不过在他们的行列里面以后也会有=fis的包管理配置文件=的，😄i
+</p>
+
+<p>
+这么多东西，其实有用的就=assets=下的;那么其他东西是什么呢，由于sass是用ruby写的其他的东西都是一些编译出css的程序，忽略它们就好。
+</p>
+
+<p>
+不用的东西那么多，果断copy出有用的东西（=assets=目录下的内容）。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">&#10140;  bootstrap  tree -L 1
+.
+&#9500;&#9472;&#9472; fonts
+&#9500;&#9472;&#9472; images
+&#9500;&#9472;&#9472; javascripts
+&#9492;&#9472;&#9472; stylesheets
+</pre>
+</div>
+
+<p>
+=sass=文件都在=stylesheets=下面；
+</p>
+</div>
+</li>
+
+<li><a id="在fis中使用"></a>在fis中使用<br>
+<div class="outline-text-5" id="text-在fis中使用">
+<p>
+创建一个文件夹，作为fis的项目目录，并新建=fis-conf.js=
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ mkdir fis-ui
+$ touch fis-conf.js
+</pre>
+</div>
+
+<blockquote>
+<p>
+windows用户可右键创建
+</p>
+</blockquote>
+
+<p>
+然后把准备好的源码=bootstrap=目录放到=fis-ui/static/=下面；
+</p>
+
+<p>
+配置配置文件
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>fis.config.set(<span class="org-string">'project.exclude'</span>, <span class="org-string">'**/_*.scss'</span>); <span class="org-comment-delimiter">// </span><span class="org-comment">[1]
+</span>fis.config.set(<span class="org-string">'modules.parser.scss'</span>, <span class="org-string">'sass'</span>); <span class="org-comment-delimiter">//</span><span class="org-comment">&#21551;&#29992;fis-parser-sass&#25554;&#20214;&#24403;&#22788;&#29702;&#25991;&#20214;&#21518;&#32512;&#26159;`.scss`&#12290;
+</span>fis.config.set(<span class="org-string">'roadmap.ext.scss'</span>, <span class="org-string">'css'</span>); <span class="org-comment-delimiter">//</span><span class="org-comment">`.scss`&#30340;&#25991;&#20214;&#26368;&#21518;&#32534;&#35793;&#20135;&#20986;&#25104;`.css`&#25991;&#20214;&#12290;
+</span>
+<span class="org-comment-delimiter">//</span><span class="org-comment">&#32473;&#25554;&#20214;fis-parser-sass&#37197;&#32622;&#20449;&#24687;
+</span>fis.config.set(<span class="org-string">'settings.parser.sass'</span>, {
+    <span class="org-string">'include_paths'</span>: [__dirname, path.join(__dirname, <span class="org-string">'static'</span>, <span class="org-string">'bootstrap'</span>, <span class="org-string">'stylesheets'</span>)] <span class="org-comment-delimiter">//</span><span class="org-comment">[2]
+</span>});
+</pre>
+</div>
+
+<p>
+<i>解释：</i>
+</p>
+
+<ul class="org-ul">
+<li>[1]，=_=开头的这些文件，可以认为是定义的sass组件，会被sass最终编译内嵌到其他文件中</li>
+<li>[2]，这句告诉sass这个插件，遇到=@import=时，去什么目录查找文件。</li>
+<li>fis-parser-sass是一个编译sass编译工具</li>
+</ul>
+</div>
+</li>
+
+<li><a id="使用bootstrap"></a>使用bootstrap<br>
+<div class="outline-text-5" id="text-使用bootstrap">
+<p>
+假设页面的样式文件是=/static/index.scss=，那么使用就很简单了；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-css"><span class="org-builtin">@import</span> <span class="org-string">'_bootstrap.scss'</span>; <span class="org-comment-delimiter">/*</span><span class="org-comment">&#20174;&#26576;&#19968;&#20010;include_path&#25214;&#21040;&#25991;&#20214;</span><span class="org-comment-delimiter">*/</span>
+</pre>
+</div>
+
+<p>
+然后在页面引入这个index.scss即可；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">link</span> <span class="org-variable-name">href</span>=<span class="org-string">"/static/index.scss"</span> <span class="org-variable-name">rel</span>=<span class="org-string">"stylesheet"</span> <span class="org-variable-name">type</span>=<span class="org-string">"text/css"</span>&gt;
+</pre>
+</div>
+
+<p>
+当然在=index.scss=里面可以使用任意的=bootstrap=定义的=var=、=mixin=、=&#x2026;=了。
+</p>
+
+<p>
+fis编译查看
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ fis release
+or
+$ fis release -wL
+$ fis server start
+</pre>
+</div>
+
+<hr>
+
+<p>
+DONE.
+</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;fis-plus上线篇之搞定smarty环境&#34;</title>
+      <link>https://www.orrafy.com//posts/2014-12-06-fisp-online-smarty/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2014-12-06-fisp-online-smarty/</guid>
+      <pubDate>Sat, 06 Dec 2014 10:48:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2014-12-06-fisp-online-smarty" class="outline-2">
+<h2 id="2014-12-06-fisp-online-smarty">2014-12-06-fisp-online-smarty</h2>
+<div class="outline-text-2">
+<p>
+在使用fisp（fis-plus简称）的时候，有些文件看着就是碍眼，有些文件想release到看上去比较顺眼的地方，或者是其他一些看似合乎逻辑的理由想改路径。反正就一个事儿，想更改发布路径。
+</p>
+
+<p>
+把想更改发布路径深深的埋藏在心里，苦苦不知道从何下手。翻翻文档吧，都能丢失在文档的海洋里面，心里暗骂“艹，上午的需求还没有完成呢！！！”，无奈心里还是痒痒，想改路径。
+</p>
+
+<p>
+我真实的描述了一个拿到fisp想改改路径却没改成功的心情。本篇就是彻底把这坨事情描述明白而生的，另外只此一次过时不候。
+</p>
+</div>
+
+<div id="outline-container-smarty使用介绍" class="outline-4">
+<h4 id="smarty使用介绍">Smarty使用介绍</h4>
+<div class="outline-text-4" id="text-smarty使用介绍">
+<p>
+ok，首先我们从使用Smarty说起。Smarty有个响亮的名字叫模板引擎，其实没来度厂之前我对这个很不屑，而且我也知道一些模板引擎是怎么做的，整个正则定义一些指令函数，就能做一个模板引擎；就像，很多前端模板就是这么干的一样。另外一个原因是其实说白了，我直接拿php做模板就好了，何必。。再引入一层Smarty？
+</p>
+
+<p>
+后来来到这边以后发现Smarty在各个使用PHP后端的产品线都在使用，然后我就震惊了。想了一万个为什么，最后发现主要原因是使用简单，哦，还有比较棒的=block=坑可以填，优点暂且就不说了，先来看一下如何用Smarty；
+</p>
+
+<p>
+先到Smarty官网上去下载一份smarty，大概下载下来是这个样子的；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 1
+.
+&#9500;&#9472;&#9472; Smarty.class.php
+&#9500;&#9472;&#9472; SmartyBC.class.php
+&#9500;&#9472;&#9472; debug.tpl
+&#9500;&#9472;&#9472; plugins
+&#9492;&#9472;&#9472; sysplugins
+</pre>
+</div>
+
+<p>
+我们暂时只需要关心=Smarty.class.php=，这个文件里面定义了=class Smarty=，来一个简短的例子。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//file: index.php
+
+if (!defined("ROOT")) define("ROOT", __DIR__); //[1]
+include (ROOT . '/smarty/Smarty.class.php'); //[2]
+
+$smarty = new Smarty(); //[3]
+
+$smarty-&gt;setTemplateDir(ROOT . '/template');//[4]
+$smarty-&gt;left_delimiter = "&lt;%";//[5]
+$smarty-&gt;right_delimiter = "%&gt;";//[6]
+$smarty-&gt;display('a.tpl');//[7]
+
+?&gt;
+</pre>
+</div>
+
+<p>
+解释这段代码之前呢，我们先贴上本地的目录；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 1
+.
+&#9500;&#9472;&#9472; index.php
+&#9500;&#9472;&#9472; smarty
+&#9492;&#9472;&#9472; template
+</pre>
+</div>
+
+<p>
+[4]
+设置了一个模板目录，这个非常重要，因为=$smarty-&gt;display=（渲染）的模板都是从这个目录开始找的；比如如上面的=a.tpl=就是渲染的是=template/a.tpl=。当然这块需要注意的是假设你=display=的是一个绝对路径，设置的=template_dir=就不起效咯。。。
+</p>
+
+<p>
+写完了一个简单的渲染的例子，我们再介绍一下Smarty的插件。Smarty的插件的方方面面可以在Smarty官网看到详细的介绍，而我这块只关心插件目录。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">//file: index.php
+&lt;?php
+
+if (!defined("ROOT")) define("ROOT", __DIR__); //[1]
+include (ROOT . '/smarty/Smarty.class.php'); //[2]
+
+$smarty = new Smarty(); //[3]
+
+$smarty-&gt;setTemplateDir(ROOT . '/template');//[4]
+$smarty-&gt;left_delimiter = "&lt;%";//[5]
+$smarty-&gt;right_delimiter = "%&gt;";//[6]
+$smarty-&gt;setPluginsDir(ROOT .'/plugin');//[7]
+$smarty-&gt;display('a.tpl');//[8]
+
+?&gt;
+</pre>
+</div>
+
+<p>
+[7]这行设置了一个插件目录，意思是说，如果这个目录下有有效的Smarty插件，就会加载起来，然后在模板里面就可以直接使用，Smarty有很多类型的插件，我们这块使用=function=插件来举例子。
+</p>
+
+<p>
+我们迅速搞一个=function=插件，就叫=function.xdate.php=吧。在模板里面这么调用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%*file: template/a.tpl*%&gt;
+&lt;%xdate%&gt;
+</pre>
+</div>
+
+<p>
+这个插件的作用是打出时间；代码如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//file: plugin/function.xdate.php
+function smarty_function_xdate($params, $template) {
+    return date('Y-m-d H:i:s');
+}
+?&gt;
+</pre>
+</div>
+
+<p>
+当渲染=a.tpl=时，会调用插件=xdate=得到一个当前的时间。。。
+</p>
+
+<p>
+Smarty的例子呢就举到这里；在上面的例子里面我们关注了两个目录
+</p>
+
+<ul class="org-ul">
+<li>template_dir 模板在这个目录下进行查找</li>
+<li>plugins_dir 插件在这个目录下进行查找</li>
+</ul>
+
+<p>
+当然，我们也可以=var_dump($smarty)=来看更多的一些目录配置，不过暂且我们只关心这俩目录。
+</p>
+
+<p>
+fisp里面定制了一些插件，所以需要把这些插件上线的时候放到Smaty的插件目录（=plugins_dir=）下；fisp编译产出后有一些模板，显然也需要把这些模板放到Smarty的模板目录（=template_dir=）下。
+</p>
+
+<p>
+有的时候可能会发现都不知道后端框架把Smarty隐藏到什么地方了，更别说设置了（一般都是已经设置好了的），一般得问下后端开发的同学，再要不，到=display=模板的地方=var_dump=模板对象就能看得到上面说的两个目录的位置了。
+</p>
+
+<p>
+其次来看看fisp的产出目录是怎么样的;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ fisp install pc-demo <span class="org-comment-delimiter">#</span><span class="org-comment">&#19979;&#36733;&#19968;&#20010;demo
+</span>$ cd pc-demo/common
+$ fisp release -d output
+$ cd output
+$ tree -L 1
+.
+&#9500;&#9472;&#9472; config
+&#9500;&#9472;&#9472; plugin
+&#9500;&#9472;&#9472; static
+&#9492;&#9472;&#9472; template
+</pre>
+</div>
+
+<p>
+看明白了吗，意思是plugin下的资源放到=plugins_dir=；template下的内容放到=template_dir=。
+</p>
+
+<p>
+当然还出现了两个目录，一个=config=、一个=static=。OH，其实=config=目录对应于=$smarty-&gt;config_dir=目录。=static=目录呢，直接copy到=www=目录下即可（静态服务器的DOCUMENT_ROOT下）。
+</p>
+
+<p>
+OK，标准上线目录已经说完了，我们现在进入正题；关于*想修改目录的时候肿么办的问题*。
+</p>
+</div>
+</div>
+
+<div id="outline-container-利用fis的roadmap.path更改产出路径url" class="outline-4">
+<h4 id="利用fis的roadmap.path更改产出路径url">利用fis的=roadmap.path=更改产出路径、URL</h4>
+<div class="outline-text-4" id="text-利用fis的roadmap.path更改产出路径url">
+<p>
+用了fisp大概知道=fis-conf.js=，一个牛逼而且有点晦涩的配置文件，后缀是=js=，告诉我们它是个JavaScript文件，可以任意写JavaScript代码。
+</p>
+
+<p>
+在改目录之前，我们先来调教一下这个配置文件；
+</p>
+
+<p>
+在整个FIS的配置中，提供了很多为了符合个性化开发需要配置的属性值，不是特别多，大概有=project=、=modules=、=roadmap=、=pack=、=settings=、=server=这几类，其他如果再出现一些稀奇古怪的，那就是/解决方案/自定义的了。
+</p>
+
+<p>
+所有的配置项目可以在<a href="https://github.com/fex-team/fis/wiki">https://github.com/fex-team/fis/wiki</a>上找到。不过我们可以在这块稍微了解一下。
+</p>
+
+<ul class="org-ul">
+<li>project 就是对项目全局做一些配置，什么编码、md5戳的长度等</li>
+<li>modules 配置FIS的几个插件流程上面那些文件该用什么插件处理</li>
+<li>roadmap
+配置某一类文件有哪些属性，并且产出到什么地方去，包括添加什么CDN等等，也是最复杂的一块</li>
+<li>pack 备份静态资源时需要配置这个，你可以把备份认为是合并静态资源</li>
+<li>settings 相对应与=modules=填写的一些插件进行某些配置</li>
+<li>server
+本地server的一些相关配置，比如执行=fis server clean=的时候保留哪些文件等</li>
+</ul>
+
+<blockquote>
+<p>
+为了实现上面移动目录的那个目标，我们只关心=roadmap=的配置情况。
+</p>
+</blockquote>
+
+<p>
+一般，fisp这样的解决方案，里面已经配置了一个牛逼哄哄的配置，特别是fisp经过多年对度厂前端项目的积累，所以是万众挑一的。我们可以很方便的查看这些配置的信息。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>console.log(fis.config.get(<span class="org-string">'roadmap'</span>));
+</pre>
+</div>
+
+<p>
+可以哗啦打出一大串的配置信息；负责文件产出、url更改的配置项是=roadmap.path=
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>console.log(fis.config.get(<span class="org-string">'roadmap.path'</span>));
+</pre>
+</div>
+
+<p>
+不出意外的打出了
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">[ { reg: <span class="org-string">'/fis_translate.tpl'</span>,
+    release: <span class="org-string">'${templates}/${namespace}/widget/fis_translate.tpl'</span> },
+  { reg: <span class="org-string">/\/lang\/([^\/]+)\.po/</span>i,
+    release: <span class="org-string">'/config/lang/${namespace}.$1.po'</span> },
+  { reg: <span class="org-string">/^\/widget\/(.*\.tpl)$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    url: <span class="org-string">'${namespace}/widget/$1'</span>,
+    release: <span class="org-string">'${templates}/${namespace}/widget/$1'</span> },
+  { reg: <span class="org-string">/^\/widget\/(.*\.(js|css))$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    release: <span class="org-string">'${statics}/${namespace}/widget/$1'</span> },
+  { reg: <span class="org-string">/^\/page\/(.+\.tpl)$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    release: <span class="org-string">'${templates}/${namespace}/page/$1'</span>,
+    extras: { isPage: <span class="org-constant">true</span> } },
+  { reg: <span class="org-string">/\.tmpl$/</span>i, release: <span class="org-constant">false</span>, useOptimizer: <span class="org-constant">false</span> },
+  { reg: <span class="org-string">/^\/(static)\/(.*)/</span>i,
+    release: <span class="org-string">'${statics}/${namespace}/$2'</span> },
+  { reg: <span class="org-string">/^\/(config|test)\/(.*)/</span>i,
+    isMod: <span class="org-constant">false</span>,
+    release: <span class="org-string">'/$1/${namespace}/$2'</span> },
+  { reg: <span class="org-string">/^\/(plugin|smarty\.conf$)|\.php$/</span>i },
+  { reg: <span class="org-string">'server.conf'</span>,
+    release: <span class="org-string">'/server-conf/${namespace}.conf'</span> },
+  { reg: <span class="org-string">'domain.conf'</span>, release: <span class="org-string">'/config/$&amp;'</span> },
+  { reg: <span class="org-string">'build.sh'</span>, release: <span class="org-constant">false</span> },
+  { reg: <span class="org-string">'${namespace}-map.json'</span>,
+    release: <span class="org-string">'/config/${namespace}-map.json'</span> },
+  { reg: <span class="org-string">/^.+$/</span>, release: <span class="org-string">'${statics}/${namespace}$&amp;'</span> } ]
+</pre>
+</div>
+
+<p>
+这样一个结果；
+</p>
+
+<p>
+其实就一个数组，里面是一个个的对象；*在FIS处理的时候是从上到下进行匹配的*，假设某一个文件被上面的匹配到了，那么就没有下面规则什么事情了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = [
+    {
+        reg: <span class="org-string">/.*\.js$/</span>,
+        release: <span class="org-string">'/static/js/$&amp;'</span>
+    },
+    {
+        reg: <span class="org-string">/.*\.css$/</span>,
+        release: <span class="org-string">'/static/css/$&amp;'</span>
+    }
+];
+</pre>
+</div>
+
+<p>
+其中对象的
+</p>
+
+<ul class="org-ul">
+<li>reg 是说要匹配某些文件</li>
+<li>release 是说要产出到什么地方去</li>
+</ul>
+
+<p>
+当然每个对象中都会由很多其他的一些属性，我们可以把这段配置理解为，给某些文件添加一些属性，这个属性包括FIS已经占用的，可以在<a href="https://github.com/fis-dev/fis/wiki/%E9%85%8D%E7%BD%AEAPI#roadmappath">roadmap.path</a>这个地方看到，还有一部分可以为了某些插件实现起来方便定义一些私有属性。
+</p>
+
+<blockquote>
+<p>
+当设置了某些属性，这些属性会伴随这个文件在整个编译期内。
+</p>
+</blockquote>
+
+<p>
+OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的奇妙使用方式。
+</p>
+
+<p>
+由于在整个fisp当中，*已经配置*了=roadmap.path=，而且获取出来以后是一个数组。所以就不能用=fis.config.merge=来处理*自定义*的一些*规则*了。这是为什么呢，因为其实=fis.config.merge=就是一个深度=merge=的函数。俩数组里面都是对象再合并，其效果可想而知，会合并的乱糟糟的，如果你用了=merge=来合并一条自定义的属性，可能你已经多次怀疑自己的人生了吧。
+</p>
+
+<p>
+那肿么设置呢，它不是一个数组嘛，在JavaScript里面数组有很多的方法可以添加一些项。当然添加的时候要放在最前面，*用户优先*嘛。
+</p>
+
+<ul class="org-ul">
+<li><p>
+方法一，arr.unshift
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">//</span><span class="org-comment">file: fis-conf.js
+</span><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = fis.config.get(<span class="org-string">'roadmap.path'</span>);
+
+path.unshift({
+    reg: <span class="org-string">/\/widget\/some\/.*\.tpl/</span>$,
+    release: <span class="org-string">'/template/$&amp;'</span>
+});
+</pre>
+</div></li>
+
+<li><p>
+方法二，arr.concat
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = fis.config.get(<span class="org-string">'roadmap.path'</span>);
+
+<span class="org-keyword">var</span> <span class="org-variable-name">userPath</span> = [{
+    reg: <span class="org-string">/\/widget\/some\/.*\.tpl/</span>$,
+    release: <span class="org-string">'/template/$&amp;'</span>
+}];
+
+userPath = userPath.concat(path); <span class="org-comment-delimiter">//</span><span class="org-comment">userPath&#22312;&#40664;&#35748;path&#21069;
+</span>fis.config.set(<span class="org-string">'roadmap.path'</span>, userPath);
+</pre>
+</div></li>
+
+<li>方法三，自己想</li>
+</ul>
+
+<p>
+所以，配置文件是一个Js文件，可以有很多想象。说道这里，把在fisp里面配置的方法教给大家了，至于你要不要怎么用怎么灵活的用，还得看你想不想了。
+</p>
+
+<p>
+有了配置的方法，那就看配置几种含义吧。其实吧，每一个=path=都对应与一次URL、产出路径的改变。所以稍微拿捏不准，可能就开始骂娘了，如果是我的话基本是怀疑人生。
+</p>
+
+<ul class="org-ul">
+<li><p>
+release 不写
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">'**.js'</span>
+}
+</pre>
+</div>
+
+<p>
+假设不写release，则产出路径就是源码路径；比如我们有个静态资源叫=/static/a.js=，使用的时候是这么使用的=&lt;script src=&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=，则产出的时候产出目录以及URL都不会被修改（相对路径引用除外）。
+</p></li>
+
+<li><p>
+release 写了
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    release: <span class="org-string">'/static/js/$1'</span>
+}
+</pre>
+</div>
+
+<p>
+那按照上面的例子，产出后=/static/a.js=产出到=output/static/js/a.js=，而使用的地方会从=&lt;script src=&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=变为=&lt;script src=&ldquo;/static/js/a.js&rdquo;&gt;&lt;/script&gt;=。
+</p></li>
+
+<li><p>
+release 写了，但是不想改URI [*注意*]
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    url: <span class="org-string">'$&amp;'</span>,
+    release: <span class="org-string">'/www/static/$1'</span>
+}
+</pre>
+</div>
+
+<p>
+我设置产出到了=www=目录下，但是我不想修改引入时的URI，还想保持原来的使用方法，该如何办呢，咦，恰巧上面给了一个例子，可以设置=url=来特定化引用的url。
+</p></li>
+
+<li><p>
+release false
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">'**.js'</span>,
+    release: <span class="org-constant">false</span>
+}
+</pre>
+</div>
+
+<p>
+所有的js不产出鸟。。。
+</p></li>
+</ul>
+
+<p>
+如果细心的同学看到了，我在上面打上了[*注意*]字眼，这个地方确实需要注意，因为这个关乎上线，关乎运行得起来还是跑不起来的问题。
+</p>
+
+<p>
+假设把这条弄懂了，整个FIS的目录操作者可就没有什么不能解决的了。
+</p>
+
+<p>
+为了表述更清楚，我们细化例子（其实就是把所有的东西都说出来）。
+</p>
+
+<ul class="org-ul">
+<li><p>
+源码
+</p>
+
+<pre class="example" id="orgbc9ed01">
+src
+.
+├── index.html
+└── static
+    └── a.js
+</pre></li>
+
+<li><p>
+roadmap.path
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">fis.config.set(<span class="org-string">'roadmap.path'</span>, [{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    url: <span class="org-string">'$&amp;'</span>,
+    release: <span class="org-string">'/www/static/$1'</span>
+}]);
+</pre>
+</div></li>
+
+<li><p>
+产出
+</p>
+
+<pre class="example" id="orgbf9e4a3">
+output
+.
+├── index.html
+└── www
+    └── static
+        └── a.js
+</pre></li>
+
+<li><p>
+index.html
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">源码</th>
+<th scope="col" class="org-left">产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>&lt;script src</code>&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=</td>
+<td class="org-left"><code>&lt;script src</code>&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+当然是相同的，因为虽然有了不同的release但是url保持不变（当然你也可以设置其他的一些URL，可以用url属性）。
+</p>
+
+<blockquote>
+<p>
+注意，假设编译后的url是=/static/a.js=这个样子，那么你就得把www这个目录作为静态资源请求的根目录。或者是做个路由，把=/static=开头的URL全都定位到=www=目录下，才能请求到想要的结果。
+</p>
+</blockquote></li>
+</ul>
+
+<p>
+ok，其实上面这个例子已经把静态文件换个产出路径的方方面面说完了，你学会了吗？
+</p>
+
+<p>
+那么进入Smarty的世界，我们要解决修改fisp的模板路径，在Smarty里面怎么运行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-fis-plus里面涉及到smarty的路径以及如何修改并能正确运行" class="outline-4">
+<h4 id="fis-plus里面涉及到smarty的路径以及如何修改并能正确运行">fis-plus里面涉及到Smarty的路径，以及如何修改并能正确运行</h4>
+<div class="outline-text-4" id="text-fis-plus里面涉及到smarty的路径以及如何修改并能正确运行">
+<p>
+在fisp里面，涉及路径的Smarty函数（指令）常用的有
+</p>
+
+<ul class="org-ul">
+<li><p>
+extends
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%extends file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+include
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+load_config
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%load_config file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+require
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%require name="&lt;id&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+widget
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%widget name="&lt;id&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+html
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%html framework="&lt;id&gt;"%&gt;
+&lt;%/html%&gt;
+</pre>
+</div></li>
+</ul>
+
+<p>
+其中require、widget、html是fisp独有的定制的一些函数（其实就是插件）。它们位fisp服务，并支撑fisp的正常运行（怎么做到的，可以看源码）。
+</p>
+
+<p>
+其中=&lt;filepath&gt;=就是相对于=$smarty-&gt;template_dir=的相对路径或者是相对于系统根目录的绝对路径。
+</p>
+
+<p>
+SO，假设你要这么用；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="widget/a/a.tpl"%&gt;
+</pre>
+</div>
+
+<p>
+那么渲染的文件是=SMARTY_TEMPLATE_DIR/widget/a/a.tol=，假设你写错了，写成了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="/widget/a/a.tpl"%&gt;
+</pre>
+</div>
+
+<p>
+这种情况下，会去系统根目录下查找=/widget/a/a.tpl=，咦，一般都会挂掉。
+</p>
+
+<p>
+说完=&lt;filepath&gt;=，再来说一下=&lt;id&gt;=；fisp里面要使用一些资源，至少是在Smarty里面用fisp自定义的一些函数，必须指定资源的=&lt;id&gt;=，这个=&lt;id&gt;=是fisp自定义的一种标识符。规则很简单=&lt;namespace&gt;:&lt;subpath&gt;=，当然这块的=&lt;subpath&gt;=指的是源码的subpath。
+</p>
+
+<p>
+举个小例子，假设在common下有个资源=/static/a.js=的ID就是=common:static/a.js=，/注意subpath第一个字符没有斜杠=/=/
+</p>
+
+<p>
+搞清楚了=&lt;id&gt;=的规则，还得弄懂它是如何工作的，才能解开我们心中的谜团。
+</p>
+
+<p>
+在模板渲染的时候，使用=&lt;id&gt;=加载的资源，有一个特殊的操作，那就是拿这个=&lt;id&gt;=去=map.json=里面找一把，找到对应ID的=uri=并加载渲染之。
+</p>
+
+<p>
+那么问题就来了，*其实对于=widget=渲染的模板，其实它的路径在=map.json=里面，而不像=&lt;filepath&gt;=一样，在源码里面就已经指定了*。
+</p>
+
+<p>
+=map.json=里面的=uri=就是通过=roadmap.path=的=url=调整的，OK，这块uri和url不太一样是吧，其实也算是个设计缺陷吧，不过无伤大雅。
+</p>
+
+<p>
+那么这时候，假设我更改了一个tpl的产出路径，那么就意味着=uri=发生了变化。只有=uri=能和上线时上传的文件路径保持一致才能被正确的渲染。所有的文件路径、url都遵循这个规则（可想而知）。
+</p>
+
+<p>
+所以，修改产出路径的时候，千万要注意修改的目录跟引用的路径是否一致，是否匹配。
+</p>
+
+<blockquote>
+<p>
+=&lt;id&gt;=引用路径在=map.json=里面=&lt;id&gt;=对应的uri，而=&lt;filepath&gt;=呢，直接就是相对或者绝对路径。上线代码时一定一定要保持引用路径能找到磁盘上的文件，不然不报错才怪。
+</p>
+</blockquote>
+
+<p>
+嗯，我想我应该画个图来表征这个关系，但暂时先不画了，等看不懂文字的时候再画。不过我想我已经几近大白话说的，应该不会出现对不上号的情况。
+</p>
+
+<p>
+最后，写了很长一个篇幅介绍上线这回事儿，其实主要是smarty这块，因为出问题比较多的也是这块。
+</p>
+
+<p>
+总结一下，fisp需要把产出的Smarty相关资源放到=config_dir=、=plugins_dir=、=template_dir=这三个目录，渲染就没问题了，当然需要*保持引用路径跟磁盘文件路径对上号*。
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;yog，简单易用的node框架&#34;</title>
+      <link>https://www.orrafy.com//posts/2014-07-30-yog/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2014-07-30-yog/</guid>
+      <pubDate>Wed, 30 Jul 2014 14:27:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2014-07-30-yog" class="outline-2">
+<h2 id="2014-07-30-yog">2014-07-30-yog</h2>
+<div class="outline-text-2">
+<p>
+风风火火又是一个多月过去了，炎热的北京夏天热得每个人都很浮躁，空调吱呀吱呀，有同事就咆哮大骂起来了，殊不知空调这玩意儿也能让TA生气。说偏了，回到正文。
+</p>
+
+<p>
+就在着炎热的夏天，项目组开发了一套node的开发框架，<a href="https://github.com/fex-team/yog">yog</a>。
+</p>
+
+<p>
+<a href="https://github.com/fex-team/yog">yog</a>解决了什么问题呢？
+</p>
+
+<ul class="org-ul">
+<li>中间件维护问题</li>
+<li>路由</li>
+<li>bigpipe支持</li>
+<li>mvc封装</li>
+<li>目录规范</li>
+<li>开发模式</li>
+</ul>
+</div>
+
+<div id="outline-container-中间件维护问题" class="outline-4">
+<h4 id="中间件维护问题">中间件维护问题</h4>
+<div class="outline-text-4" id="text-中间件维护问题">
+<p>
+用过=express=的人都知道，中间件维护起来确实挺麻烦；需要以这样
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">app.use(<span class="org-keyword">static</span>());
+app.use(router());
+</pre>
+</div>
+
+<p>
+硬编码的方式挂载中间件；这样假设某一天需要添加中间件时，还得考虑要加载哪两个的中间；所以yog利用配置文件配置进去。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-json">{
+    "middleware": {
+        "urlencoded": {
+            "enabled": true,
+            "priority": 50,
+            "module": {
+                "arguments": [
+                    {
+                        "extended": true
+                    }
+                ]
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+<p>
+上面就是一个例子，中间件=urlencoded=以这样一个方式配置到框架中；
+</p>
+</div>
+</div>
+
+<div id="outline-container-路由" class="outline-4">
+<h4 id="路由">路由</h4>
+<div class="outline-text-4" id="text-路由">
+<p>
+说到路由，假设用=express=的方式解决的话是如下这个样子的；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">app.get(<span class="org-string">'/xxx'</span>, requestHandle);
+</pre>
+</div>
+
+<p>
+如果按照这种方式，所有的路由可能需要写到某一个文件里面；就比如=django=就是配置在一个文件里面的，这样的好处是所有的路由情况都可以一目了然；
+但项目大了以后放到同一个地方确实会不方便，一般会选择使用一些规则来命中某一个Action，比如根据URI的信息来做匹配执行代码，这种方法很多框架都使用；
+</p>
+
+<p>
+而=yog=里面结合了两种方式，先用规则的方式命中某一个=controller=，然后在=controller=中书写关于这个=controller=的路由规则，比如：
+</p>
+
+<blockquote>
+<p>
+<a href="http://127.0.0.1/user/get">http://127.0.0.1/user/get</a>
+</p>
+</blockquote>
+
+<p>
+<i><code>user</code></i> 命中 <code>controllers/user.js</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">//</span><span class="org-comment">user.js
+</span>
+module.exports = <span class="org-keyword">function</span> (<span class="org-variable-name">router</span>) {
+    router.get(<span class="org-string">'/get'</span>, <span class="org-keyword">function</span> (<span class="org-variable-name">req</span>, <span class="org-variable-name">res</span>) {
+        <span class="org-comment-delimiter">//</span><span class="org-comment">balabala...
+</span>    });
+};
+</pre>
+</div>
+
+<p>
+在项目启动的时候，会扫描=controllers=目录下的文件，全部挂载到运行环境中；
+</p>
+
+<p>
+通过对=中间件=的处理以及=router=的处理；入口文件就相当简单了；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">app</span> = require(<span class="org-string">'express'</span>)();
+<span class="org-keyword">var</span> <span class="org-variable-name">yog</span> = require(<span class="org-string">'yog'</span>);
+
+app.use(yog());
+app.listen(4000);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-bigpipe支持" class="outline-4">
+<h4 id="bigpipe支持">bigpipe支持</h4>
+<div class="outline-text-4" id="text-bigpipe支持">
+<p>
+关于BigPipe，前面已经写了一篇博文说明<a href="file:///posts/web-dev/quickling-1/">网页加载优化方案：bigpipe，bigrender，lazyrender</a>。
+</p>
+
+<p>
+以前在PHP里面实现，无法做到并行获取数据，然node就不一样了，可以随意并行，所以<a href="https://github.com/fex-team/yog">yog</a>对bigpipe的支持是很完整的；它可以控制任意一小块页面输出，可以很方便的做性能优化。
+</p>
+
+<p>
+那是如何实现的呢？
+</p>
+
+<p>
+具体的实现可以阅读源代码<a href="https://github.com/fex-team/yog-bigpipe">yog-bigpipe</a>。大概总结是这样的；
+</p>
+
+<ul class="org-ul">
+<li>使用模板的钩子标识每个需要=pipe=出来的区域</li>
+<li>渲染时把这些区域抠出来，留个占位符=&lt;div id=&ldquo;id_100&rdquo;&gt;&lt;/div&gt;=</li>
+<li>后获取=pipe=区域的内容，并输出给浏览器</li>
+<li>chunck输出</li>
+</ul>
+
+<p>
+具体使用可以下载<a href="https://github.com/fex-team/yog-app">示例</a>，跑一把就知道了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-mvc封装" class="outline-4">
+<h4 id="mvc封装">MVC封装</h4>
+<div class="outline-text-4" id="text-mvc封装">
+<p>
+说到此处，<a href="https://github.com/fex-team/yog">yog</a>其实只负责了=view=和=controller=层，因为按照经验来看，=model=层迁移node阻力很大，暂时没有对这层的覆盖，后续会陆续搞定这层；
+</p>
+
+<p>
+MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=view=。
+</p>
+</div>
+</div>
+
+<div id="outline-container-目录规范" class="outline-4">
+<h4 id="目录规范">目录规范</h4>
+<div class="outline-text-4" id="text-目录规范">
+<p>
+这节说一下目录规范，其实这些都在<a href="http://oak.baidu.com/docs/yogurt">文档</a>中有详细的说明；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">&#10140;  yog-app git:(master) &#10007; tree -L 1
+.
+&#9500;&#9472;&#9472; config
+&#9500;&#9472;&#9472; controllers <span class="org-comment-delimiter"># </span><span class="org-comment">controller
+</span>&#9500;&#9472;&#9472; models <span class="org-comment-delimiter"># </span><span class="org-comment">model
+</span>&#9500;&#9472;&#9472; views  <span class="org-comment-delimiter"># </span><span class="org-comment">view
+</span>&#9500;&#9472;&#9472; public    <span class="org-comment-delimiter"># </span><span class="org-comment">&#38745;&#24577;&#36164;&#28304;&#25991;&#20214;&#22841;
+</span>&#9492;&#9472;&#9472; server.js <span class="org-comment-delimiter"># </span><span class="org-comment">&#20837;&#21475;&#25991;&#20214;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-开发模式" class="outline-4">
+<h4 id="开发模式">开发模式</h4>
+<div class="outline-text-4" id="text-开发模式">
+
+<figure id="org4648f58">
+<img src="file:///images/dev/rd-fe.png" alt="rd-fe.png">
+
+</figure>
+
+<p>
+如图，述说开发模式，不得不上一幅图；
+</p>
+
+<ul class="org-ul">
+<li>RD 后端开发</li>
+<li>FE 前端开发</li>
+</ul>
+</div>
+
+<ul class="org-ul">
+<li><a id="a开发模式"></a>A开发模式<br>
+<div class="outline-text-5" id="text-a开发模式">
+<p>
+FE写完页面，然后把写好的页面交给RD进行模板化，也就是*模板*这个东西在RD手上，也就是归于*后端业务逻辑*
+</p>
+
+<p>
+这种模式的不好的地方是，前端页面展现显然是经常会变化的，那么来回这么折腾，费时费力不说还费钱；
+</p>
+
+<p>
+不过貌似很多公司都是*A开发模式*
+</p>
+</div>
+</li>
+
+<li><a id="b开发模式"></a>B开发模式<br>
+<div class="outline-text-5" id="text-b开发模式">
+<p>
+为了解决上面的问题，出现了B开发模式，B开发模式是这样的；FE负责了写*模板*这个事情，每次迭代都很方便，有UI修改，只需要上模板就行，这时候一个频繁的工作由FE完成；
+</p>
+
+<p>
+当然，这种开发模式也是有问题的；比如RD没有开发完成，FE就没有数据来测试自己的代码了；这时候需要一套本地模拟环境的工具；比如现在的<a href="http://oak.baidu.com/docs/fis-plus">fis-plus</a>就完美模拟了线上环境；
+</p>
+
+<p>
+还有一个问题是啥呢，那就是每次还需要跟RD对接口，对数据结构，每次添加修改点数据也很麻烦；
+</p>
+
+<p>
+到后来就出现了C开发模式
+</p>
+</div>
+</li>
+
+<li><a id="c开发模式"></a>C开发模式<br>
+<div class="outline-text-5" id="text-c开发模式">
+<p>
+C开发模式就是建立*大前端*，FE负责UI层后端逻辑以及前端相关所有事物，这种模式相当不错，处理问题或者添加功能只需要FE来搞就行，没有了额外的沟通开销，开发顺畅了不少。
+</p>
+
+<p>
+但，也许FE需要学习一门后端语言，当然这个不是问题；
+</p>
+
+<p>
+<a href="https://github.com/fex-team/yog">yog</a>
+专提供给FE同学的后端UI开发框架，不巧语言也是FE同学熟悉的JavaScript（nodejs），这样似乎可以方便的使用=C开发模式=。
+</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;初用xcode 5&#34;</title>
+      <link>https://www.orrafy.com//posts/2014-07-13-xcode-test/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2014-07-13-xcode-test/</guid>
+      <pubDate>Sun, 13 Jul 2014 19:00:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2014-07-13-xcode-test" class="outline-2">
+<h2 id="2014-07-13-xcode-test">2014-07-13-xcode-test</h2>
+<div class="outline-text-2">
+<p>
+今天闲来无事，想起了周五学芝提到的异步IO问题，以前看过这方面的内容，但已经很模糊了，打算找出来看看。
+</p>
+
+<p>
+当我调用=mvim=进行尝试的时候，以前没有配置过，在不知道API是啥的时候，没有提示。这个实在难容，就打开了装了很久但没怎么用过的=xcode 5=。
+</p>
+
+<p>
+在使用它的时候多多少少有些不太自在，特别是以前管用的一些用法不怎么灵光了。
+</p>
+
+<ul class="org-ul">
+<li>当我要注释一段代码的时候，我用=&lt;Command-/&gt;=，当我想取消注释的时候，不好使了，又添加了一遍注释。</li>
+<li>当我代码乱了后，没办法方便=format=</li>
+<li>当我提示选错的时候，残留的代码还要删除，我又得提起鼠标开始删了（貌似鼠标被放在公司了，没带。。。）。</li>
+</ul>
+
+<p>
+此时我已经凌乱了。再看向代码的显示主题，就有打开vim的冲动了。
+</p>
+
+<p>
+不过新知识实在需要xcode这样的IDE。索性查了查看有没有好用的插件。
+</p>
+
+<p>
+网络总是发展很快，而沉淀很多。google第一二条就是想要的。
+</p>
+
+<ul class="org-ul">
+<li><a href="http://nshipster.com/xcode-plugins/">http://nshipster.com/xcode-plugins/</a></li>
+<li><a href="http://iosdevtips.co/post/82232620790/best-xcode-plugins">http://iosdevtips.co/post/82232620790/best-xcode-plugins</a></li>
+</ul>
+
+<p>
+上面两篇文章介绍了一些常用的插件。其中有=xvim=，秉着尝试一把的念头试了试，发现这东西确实很好用，给了=xcode=另一条生命，随用之。
+</p>
+
+<p>
+后装上了最爱的代码颜色主题 =base16-ocean=，看着整个开发环境顺眼多了。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/chriskempson/base16">https://github.com/chriskempson/base16</a></li>
+</ul>
+
+<hr>
+
+<p>
+周末完了，多学多看，周末拿起《Unix
+环境高级编程》开始看了看=socket=方面的知识和=异步io=方面的知识，翻译真不咋地，很多错误。
+</p>
+
+<p>
+虽然很多人都给socket例子，我这块也贴一个。
+</p>
+
+<p>
+&lt;%gist xiangshouding/d5e53c83b83c71954675 %&gt;
+</p>
+
+<p>
+随口唠叨一篇，下周工作快乐。
+</p>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;用nodejs构建网站&#34;</title>
+      <link>https://www.orrafy.com//posts/2014-06-13-node-1/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2014-06-13-node-1/</guid>
+      <pubDate>Fri, 13 Jun 2014 07:20:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2014-06-13-node-1" class="outline-2">
+<h2 id="2014-06-13-node-1">2014-06-13-node-1</h2>
+<div class="outline-text-2">
+<p>
+node.js灵活，轻巧，异步IO这些都是被大家传道的优点。不过在我看来，其后面庞大的社区才是最闪亮的。社区很庞大，以至于实现什么东西，扒拉扒拉就能搞定。所以这次node.js构建网站也出现在了现在的研究课题里面。
+</p>
+
+<p>
+构建网站，开发其次，其实最主要的还是线上的运维。这块如果不搞好实在只能算是个玩具。不过好在现在有很多的管理nodejs进程的工具。比如=pm2=、=forever=等。还需要一套容灾方案。比如服务挂了，起不起来了怎么办等等等。
+</p>
+
+<p>
+so，在这篇文章里罗列一下用什么手段在用nodejs构建网站时能防止灾难性的问题发生。
+</p>
+
+<p>
+文章从以下几个方面进行；
+</p>
+
+<ul class="org-ul">
+<li>一个健壮的框架</li>
+<li>一个靠谱的部署方案</li>
+<li>一套完善的监控</li>
+<li>一套完善的降级方案</li>
+</ul>
+</div>
+
+<ul class="org-ul">
+<li><a id="健壮的框架"></a>健壮的框架<br>
+<div class="outline-text-5" id="text-健壮的框架">
+<p>
+想想框架能为整个项目带来什么？是好用的helper工具，还是结构清晰的目录结构抑或是强壮的错误处理能力？纵观现在能看到的那些框架，解决的问题无非是路由映射（跟目录结构息息相关），提供了很多公共库库（方便开发），基本上围绕着开发来的。其实用nodejs也需要一个这样的库。说到这些大家可能已经想到了=express=。
+</p>
+
+<p>
+对，就是=express=。
+</p>
+
+<p>
+不过在我看来=express=还是有点问题，如果裸用它就显得太灵活了，所以业界最广泛的一种使用方式是在其上在封装一个框架，一个典型的包括=model=、=controller=、=view=的MVC框架。比如现在我比较喜欢的paypal的
+<a href="http://krakenjs.com/">http://krakenjs.com/</a> ，一个分层分的很明晰的MVC框架。
+</p>
+
+<p>
+那我们的做法也是一样的，也是基于=express=进行封装。然后再支持牛逼哄哄的=bigpipe=。算是一个健壮的框架就产生了。至于如何支持=bigpipe=后续会发篇博文说明。
+</p>
+
+<p>
+<i>框架的好处</i>
+</p>
+
+<ul class="org-ul">
+<li>一致的目录结构，增强可维护性</li>
+<li>一致的公共库，避免出现组件库打架的事情，增强维护性</li>
+<li>一致的路由，增强实用性</li>
+<li>&#x2026;.</li>
+</ul>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 路由 - 目录结构 - MVC - bigpipe</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="靠谱的部署方案"></a>靠谱的部署方案<br>
+<div class="outline-text-5" id="text-靠谱的部署方案">
+<p>
+其实单拉出部署是因为，不像php那样，把php代码扔到对应的目录就能跑起来。node.js是需要重新启动node服务的。如果上线不频繁也没啥，但是如果上线频繁，总不能一天断好几次服务。所以需要一个靠谱的部署方案。
+</p>
+
+<p>
+期间俺们的同学经过多次的验证和靠谱的推论。用一个=recluster=的东东来做这个事情。recluster是这么搞定这个事情的。当某个链接正在被某进程处理时，这时候如果有新代码上线，需要restart服务。在这种情况下，它先启动新的进程。然后等在那些还在做处理的老进程，等完成后杀死它们。如果没有在处理状态的老进程，则直接杀死。把新的请求都发给新启动的进程。这样就是一种名字叫=热启动=的模式了。
+</p>
+
+<p>
+如果你要用nodejs上线，=recluster=你值得拥有。
+</p>
+
+<p>
+<a href="https://github.com/doxout/recluster">https://github.com/doxout/recluster</a>
+</p>
+
+<p>
+这个是关于上线启动服务的，但如果恰巧服务器有多台服务器，则需要在本地找好一台同构的机器，编译node。上线时打包上线更靠谱一点。至于编译node，再简单不过了。
+</p>
+
+<p>
+还有负载均衡，这块就用node自带=cluster=就挺好。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 上线、部署、热启动 - 负载均衡</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="完善的监控"></a>完善的监控<br>
+<div class="outline-text-5" id="text-完善的监控">
+<p>
+从测试的结果来看，node的应用程序的内存时及其容易飙升的。所以内存上升报警这块需要做好预案，哪怕是杀掉进程重启也行。
+</p>
+
+<p>
+好在node使用的v8提供了不错的一些方法来达到这个目的。这块后续也会出一篇文章详细探讨。
+</p>
+
+<p>
+还有一些问题比如，node程序错误了要抓取错误等，记录日志让监控平台抓取分析等等等，一些线上监控还是得需要很完善的。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 内存监控 - 爆栈重启 - 错误报警</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+
+<li><a id="完善的降级方案"></a>完善的降级方案<br>
+<div class="outline-text-5" id="text-完善的降级方案">
+<p>
+如果是成年老站，在使用node这么个新款时，不得不考虑如果node挂掉,切换到老站上面的策略。
+</p>
+
+<p>
+现在一致的做法是，在php/java等机器上nginx把需要node处理的数据都代理给node机器处理。一旦node机器出问题，则把这些流量切回本机。这个方案估计是一个长态方案，一直要node稳定。
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">- 容灾 - 降级</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;网页加载优化方案：bigpipe，bigrender，lazyrender&#34;</title>
+      <link>https://www.orrafy.com//posts/2014-05-30-quickling-1/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2014-05-30-quickling-1/</guid>
+      <pubDate>Fri, 30 May 2014 17:26:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2014-05-30-quickling-1" class="outline-2">
+<h2 id="2014-05-30-quickling-1">2014-05-30-quickling-1</h2>
+<div class="outline-text-2">
+<p>
+开篇之初需要介绍一些网站页面加载的各种性能优化手段，他们分别是=bigrender=、=bigpipe=、=lazyrender=。
+</p>
+
+<ul class="org-ul">
+<li><code>bigrender</code> 一种减少首屏dom节点优化首屏展现的方案；</li>
+<li><code>bigpipe</code> 一种通过chunk输出来优化网页展现的方案；</li>
+<li><code>quickling</code>
+一种加载页面的模式，页面的一个局部可以通过异步请求，请求数据包括渲染好的页面以及静态资源；</li>
+<li><code>lazyrender</code>
+手机上可能网络传输很慢，如果先传输一部分过来展示，然后再根据用户的操作输出剩下的部分，无疑是可以提高首屏时间的。整个方案就命名为=lazyrender=</li>
+</ul>
+</div>
+
+<div id="outline-container-bigrender" class="outline-4">
+<h4 id="bigrender">bigrender</h4>
+<div class="outline-text-4" id="text-bigrender">
+<p>
+详细说一下bigrender如何实现的，一个页面可能占几屏，首先出现在用户视野里的自然是第一屏。一次渲染如果把所有都渲染，无疑需要比较长的时间，这时候用户无法操作界面甚至于无法看到页面。bigrender的思路是这样的；
+</p>
+
+<ul class="org-ul">
+<li>先渲染首屏，其余的部分的html被放到注释里面（或=textarea=），这样就保证不被渲染，较少首屏时间。</li>
+<li>当用户向下查看次屏的内容时，再触发脚本渲染次屏的内容。</li>
+<li>依次展现整个网页</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-bigpipe" class="outline-4">
+<h4 id="bigpipe">bigpipe</h4>
+<div class="outline-text-4" id="text-bigpipe">
+<p>
+bigpipe对服务器要求比较高，需要支持chunk输出。其实就是在同一个链接上将一个页面分段输出。需要服务器端能并行处理页面，假设页面可以分为三屏，每屏都对应一些数据。当某一屏的数据获取成功，其可以马上返回给浏览器（也就是pipe的方式输出），这样对应的屏就展现出来了。如果支持并行处理，再以chunk的方式输出，无疑会让浏览器加载展现会快很多。
+</p>
+
+<p>
+对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层=api_a=得到，B是=api_b=，C是=api_c=。
+</p>
+
+<p>
+<i>node.js示例</i>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">asyncMap</span> = require(<span class="org-string">'slide'</span>).asyncMap;
+<span class="org-keyword">var</span> <span class="org-variable-name">app</span> = require(<span class="org-string">'express'</span>)();
+
+app.get(<span class="org-string">'/'</span>, <span class="org-keyword">function</span> (<span class="org-variable-name">req</span>, <span class="org-variable-name">res</span>) {
+    <span class="org-comment-delimiter">//</span><span class="org-comment">&#24182;&#34892;&#22788;&#29702;
+</span>    asyncMap(
+        [
+            <span class="org-string">"http://api.xxx.com/api_a"</span>,
+            <span class="org-string">"http://api.xxx.com/api_b"</span>,
+            <span class="org-string">"http://api.xxx.com/api_c"</span>
+        ],
+        <span class="org-keyword">function</span>(<span class="org-variable-name">url</span>, <span class="org-variable-name">cb</span>) {
+            http.get(url, <span class="org-keyword">function</span>(<span class="org-variable-name">r</span>) {
+                <span class="org-keyword">var</span> <span class="org-variable-name">d</span> = <span class="org-string">''</span>;
+                r.on(<span class="org-string">'data'</span>, <span class="org-keyword">function</span> (<span class="org-variable-name">c</span>) { d += c.toString(); });
+                r.on(<span class="org-string">'end'</span>, <span class="org-keyword">function</span>() {
+                    res.write(d); <span class="org-comment-delimiter">//</span><span class="org-comment">&#30452;&#25509;&#36755;&#20986;
+</span>                    cb(<span class="org-constant">null</span>, <span class="org-string">''</span>);
+                });
+            });
+        },
+        <span class="org-keyword">function</span>(<span class="org-variable-name">err</span>, <span class="org-variable-name">r</span>) {
+            res.end();
+        };
+    );
+});
+
+app.listen(3000);
+</pre>
+</div>
+
+<p>
+上面就是一个并行化的例子，当然了如果不是api调用，查询数据库也是同样的道理。
+</p>
+
+<p>
+可能会有这样的疑问，如何精准控制页面的展现。比如可能第二屏先出来，导致用户看到的是第二屏，而第一屏跑到了第二屏下面；其实这个已经有成型的解决方案了，比如facebook，微博等都实现了bigpipe。
+</p>
+
+<p>
+解决上面问题的大致思路是，先给浏览器吐一个结构。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"first"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"second"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+</pre>
+</div>
+
+<p>
+然后在html结束后，输出一些js代码来渲染内容上去；比如
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"first"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"second"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+&lt;<span class="org-function-name">script</span>&gt;render('first', function() {/*first&#20869;&#23481;*/});&lt;/<span class="org-function-name">script</span>&gt; <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#31532;&#19968;&#27425;chunk</span><span class="org-comment-delimiter"> --&gt;</span>
+&lt;<span class="org-function-name">script</span>&gt;render('second', function() {/*second&#20869;&#23481;*/});&lt;/<span class="org-function-name">script</span>&gt; <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#31532;&#20108;&#27425;chunk</span><span class="org-comment-delimiter"> --&gt;</span>
+</pre>
+</div>
+
+<p>
+这样就完美搞定页面渲染的问题，并且提升了不少性能，一个部分一个部分渲染的嘛~
+</p>
+</div>
+</div>
+
+<div id="outline-container-lazyrender" class="outline-4">
+<h4 id="lazyrender">lazyrender</h4>
+<div class="outline-text-4" id="text-lazyrender">
+<p>
+在手机网络下，html如果太大，会传输很长时间。这时候如果把页面拆解为几部分然后分块请求，将有利于页面的展示。当然了，如果后端比较龟速，分成几块也可以使用相同的方式去加快页面的展现。
+</p>
+
+<p>
+lazyrender就是这个思路。大概做法就是，当页面渲染的时候，把首屏先传输给浏览器进行展示，其他屏或者不重要的东西给页面打一段js。大概是这个样子的；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span>&gt;&#39318;&#23631;&#20195;&#30721;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">script</span>&gt;lazyrender('second');&lt;/<span class="org-function-name">script</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+</pre>
+</div>
+
+<p>
+当首屏展现完成后，可以触发次屏的加载。使用quickling的方式加载次屏的html，css，js等然后进行渲染。
+</p>
+</div>
+</div>
+
+<div id="outline-container-总结" class="outline-4">
+<h4 id="总结">总结</h4>
+<div class="outline-text-4" id="text-总结">
+<p>
+这些方案解释就那么回事儿，但是实现起来确实比较麻烦。好在去年实现了一套支持bigrender，lazyrender的解决方案。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/xiangshouding/bigpipe.smarty">https://github.com/xiangshouding/bigpipe.smarty</a></li>
+</ul>
+
+<p>
+<i>各种环境问题导致不支持pipe输出</i>
+</p>
+</div>
+</div>
+</section>
+]]></description>
+    </item>
+    
+    <item>
+      <title>&#34;Awesome App: Day One &#34;</title>
+      <link>https://www.orrafy.com//posts/2013-11-17-dayone/</link>
+      <author></author>
+      <guid isPermaLink="false">https://www.orrafy.com//posts/2013-11-17-dayone/</guid>
+      <pubDate>Wed, 27 Nov 2013 12:41:00 +0000</pubDate>
+      <description><![CDATA[
+<section id="outline-container-2013-11-17-dayone" class="outline-2">
+<h2 id="2013-11-17-dayone">2013-11-17-dayone</h2>
+<div class="outline-text-2">
+<p>
+OK, 这是一个系列文章=Awesome App=，我想给大家分享一些我觉得不错的App。
+</p>
+
+<p>
+今天给大家分享的是<a href="http://dayoneapp.com/">Day One</a>.
+它是一个记录笔记的工具。
+</p>
+
+<ul class="org-ul">
+<li>支持=Apple=系列平台，不支持其他平台</li>
+<li>支持=Markdown=</li>
+<li>支持tag</li>
+<li>支持密码锁</li>
+<li>支持云同步，可同步=Apple Cloud=和=Dropbox=</li>
+<li>支持导出=pdf=, <code>markdown</code>, <code>html</code></li>
+</ul>
+
+<p>
+上面说了一些参数，相信你已经大致了解了这个App提供的功能。现在就给大家展示一下它的界面。
+</p>
+
+
+<figure id="orgb3a8e6d">
+<img src="file:///images/app/dayone-main.png" alt="dayone-main.png">
+
+<figcaption><span class="figure-number">Figure 1: </span>Day One</figcaption>
+</figure>
+
+<p>
+用这个软件已经很长时间了，对这个软件情有独钟只一个原因：*简单*
+</p>
+
+<p>
+相比于=evernote=很轻量，而且没有要做分类的压力。可以*随心所欲*的记东西。不过
+有个缺点，也是它唯一的缺点，这个软件是需要花钱买的（说给那些觉着买软件是傻逼行为的同学说的）。
+</p>
+
+<p>
+软件优点：
+</p>
+
+<ul class="org-ul">
+<li>轻量级</li>
+<li>无分类压力，随性所欲</li>
+<li>支持=markdown=</li>
+</ul>
+</div>
+</section>
+]]></description>
+    </item>
+    
+
+  </channel>
+</rss>

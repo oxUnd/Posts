@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;fis-plus篇，fisp 项目如何在线上跑起来&#34;</h1>
+<div class="date">08 May 2015</div>
+<div class="content">
+  
+<section id="outline-container-2015-05-08-fis-plus-online" class="outline-2">
+<h2 id="2015-05-08-fis-plus-online">2015-05-08-fis-plus-online</h2>
+<div class="outline-text-2">
+<p>
+最近遇到很多同学（非度厂）当在本地开发完的 fisp（指代fis-plus，以下同）
+项目不知道如何跟后端连在一起工作；这可能是整个站在前端的角度上去考虑问题，而不清楚后端是如何去渲染一个页面导致的。当然也有可能是对
+Smarty 本身了解的匮乏，前面我写过一篇关于 Smarty
+的文章：<a href="http://www.orrafy.com/posts/fisbook/fisp-online-smarty/">fis-plus上线篇之搞定smarty环境</a>，可能这篇更偏向于对
+fisp 编译工具的一些产出设置。那么这篇将揭露假设我用了个 PHP
+的什么什么框架该如何去渲染 fisp 的项目呢？
+</p>
+</div>
+
+<div id="outline-container-讲述重点" class="outline-4">
+<h4 id="讲述重点">讲述重点</h4>
+<div class="outline-text-4" id="text-讲述重点">
+<ul class="org-ul">
+<li>Smarty 的应用？</li>
+<li>后端如何去渲染 fisp 的项目？</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-smarty-的应用" class="outline-4">
+<h4 id="smarty-的应用">Smarty 的应用？</h4>
+<div class="outline-text-4" id="text-smarty-的应用">
+<p>
+为了讲述能清晰一些，我们一并说一下 Smarty
+在我们的网站开发中是个什么角色，<a href="http://www.smarty.net">Smarty</a>
+所谓后端模板语言，模板一般都是 View
+层的承载介质（如MVC中），就很清晰知道是 View 层的东西；
+</p>
+
+<p>
+PHP
+本身就是一门优秀的模板语言，那么为了更简易的开发，<a href="http://www.smarty.net">Smarty</a>
+在其基础上实现了类似继承填坑的机制来提升模板语言的灵活性，方便搞页面拆分，而且做了不少容错处理；所以在不需要了解整个
+PHP 语言特性的情况下选择 <a href="http://www.smarty.net">Smarty</a>
+作为模板来让前端开发人员去使用是一种不错的选择。
+</p>
+
+<p>
+fisp 就选用了 Smarty 作为模板语言。
+</p>
+
+<ul class="org-ul">
+<li><p>
+假设我不用 Smarty PHP网站开发是如何？
+</p>
+
+<p>
+不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；
+</p>
+
+<pre class="example" id="orgeaae6c3">
+.
+├── controller
+├── model
+└── view
+</pre>
+
+<ul class="org-ul">
+<li>controller 是一些入口文件，控制器，来协调 model 和 view
+去完成一次页面的请求</li>
+<li>model 一些访问数据库或者是篡数据的逻辑</li>
+<li>view 这下面一般放的是模板</li>
+</ul>
+
+<p>
+假设我访问的 url 是 <code>http://my-host/index/show=，一般都会路由到 =show</code>
+函数的执行上
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//controller/index.php
+class Index extends Controller {
+    public function show() {
+        // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+        $this-&gt;assign('data', $data); // &lt;1&gt;
+        $this-&gt;display('show.php'); // &lt;2&gt;
+    } 
+}
+</pre>
+</div>
+
+<p>
+如以上代码，我们不去关心数据是如何来的，反正这个一般都是由后端工程师搞定，我们只需要关注
+&lt;1&gt; 、 &lt;2&gt; 两个步骤。=assign= 一般意思就是给模板塞数据，=display=
+一般就是去渲染这个模板，在上面逻辑里面渲染的是 <code>view/index/show.php</code>
+这个模板。
+</p>
+
+<p>
+<code>show.php</code> 是一个普通的 php 模板，我们可以假定它的内容如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;?=$data['title']?&gt;&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;?=$data['message']?&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+
+<p>
+只是显示 <code>$data</code> 塞过来的数据。
+</p>
+
+<p>
+通过上面的逻辑，一个完整的 php 模板的渲染过程已经说完了。
+</p></li>
+
+<li><p>
+用 Smarty 改造上面这个流程，该是怎么样的？
+</p>
+
+<p>
+跟上面一样，后端目录依然是如下这个形式
+</p>
+
+<pre class="example" id="org298337e">
+.
+├── controller
+├── model
+└── view
+</pre>
+
+<p>
+可能为了放置 Smarty 的类库，需要添加一个新目录叫 <code>lib=，下载
+  [[http://www.smarty.net][Smarty]] 放到 =lib/smarty</code> 目录下；
+</p>
+
+<pre class="example" id="org5fcfcd8">
+.
+├── controller
+├── lib
+├── model
+└── view
+</pre>
+
+<p>
+这时候依然访问 url =<a href="http://my-host/index/show">http://my-host/index/show</a>=， controller 需要引入
+smarty 去做渲染；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//controller/index.php
+require(dirname(dirname(__FILE__)) . '/lib/smarty/Smarty.class.php'); //引入 smarty
+class Index extends Controller {
+    private $_smarty = null;
+
+    //假象 init 方法
+    public function init() {
+        $this-&gt;_smarty = new Smarty();
+        // 模板目录设置，非 `/` 或者 `.` 开头的文件到这个目录下查找
+        $this-&gt;_smarty-&gt;setTemplateDir(dirname(__DIR__) . '/view/template');
+        // 设置插件目录，一般 fisp 会提供很多 smarty 的插件
+        $this-&gt;_smarty-&gt;setPluginsDir(array(
+            dirname(__DIR__) . '/view/plugin'
+        ));
+        // config_dir 设置
+        $this-&gt;_smarty-&gt;setConfigDir(dirname(__DIR__) . '/view/config');
+    }
+
+    public function show() {
+        // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+        $this-&gt;_smarty-&gt;assign('data', $data); // &lt;1&gt;
+        $this-&gt;_smarty-&gt;display('index/show.tpl'); // &lt;2&gt;
+    } 
+}
+</pre>
+</div>
+
+<p>
+同样的方式，给模板塞数据 <code>$this-&gt;_smarty-&gt;assign</code> 以及去渲染模板
+<code>$this-&gt;_smarty-&gt;display</code> 。那么这时候模板就应该是 smarty 的模板了；
+</p>
+
+<p>
+<code>index/show.tpl</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;%$data.title%&gt;&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;%$data.message%&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div></li>
+</ul>
+
+<p>
+有了这个对照，是否清晰了一些，Smarty 就是干渲染模板这个事情的，其实就是
+View 模板这块的事情。
+</p>
+</div>
+</div>
+
+<div id="outline-container-后端如何去渲染-fisp-的项目" class="outline-4">
+<h4 id="后端如何去渲染-fisp-的项目">后端如何去渲染 fisp 的项目？</h4>
+<div class="outline-text-4" id="text-后端如何去渲染-fisp-的项目">
+<p>
+如上面的对照，其实整个对 Smarty
+在项目中的引入，*不限于什么什么框架*，虽然有些框架也会提供一些自己的模板语言，但是你要用
+fisp 那么就应该忽视它们，直接换用 Smarty。
+</p>
+
+<p>
+信息的朋友可能会发现，有个*塞模板数据*的过程，这个过程就是前后端的分界点，对于一个
+fisp 的项目，编译完成后，只需要后端实例化 Smarty
+并且去渲染特定模板即可。而这些数据就调用 Smarty 的 <code>assign</code>
+方法塞数据即可。
+</p>
+
+<p>
+说到这块，我们畅想一下整个用 fisp 开发时的流程是怎么样的？
+</p>
+
+<ul class="org-ul">
+<li>据对对于某一个功能需要的数据都定下来，写数据结构文档（为了方便维护）</li>
+<li>后端过去查数据库调用服务来获取并给这些数据</li>
+<li>并行的前端开始开发页面，并且用 fisp
+提供的本地服务套件，模拟这些数据，开发页面</li>
+<li>联调的时候，把前端开发的模板、静态资源、Smarty 插件、Smarty
+config文件等上传到测试机器初始化 Smarty 时设置的那些目录下面</li>
+<li>后端写清楚某个逻辑需要渲染（=display=）哪个模板，并且把准备好的数据塞给模板</li>
+<li>然后这个事情就搞定了</li>
+</ul>
+
+<p>
+这样真正实现了前后端并行开发。
+</p>
+</div>
+</div>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>

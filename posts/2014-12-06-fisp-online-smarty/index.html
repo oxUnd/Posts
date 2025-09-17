@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;fis-plus上线篇之搞定smarty环境&#34;</h1>
+<div class="date">06 Dec 2014</div>
+<div class="content">
+  
+<section id="outline-container-2014-12-06-fisp-online-smarty" class="outline-2">
+<h2 id="2014-12-06-fisp-online-smarty">2014-12-06-fisp-online-smarty</h2>
+<div class="outline-text-2">
+<p>
+在使用fisp（fis-plus简称）的时候，有些文件看着就是碍眼，有些文件想release到看上去比较顺眼的地方，或者是其他一些看似合乎逻辑的理由想改路径。反正就一个事儿，想更改发布路径。
+</p>
+
+<p>
+把想更改发布路径深深的埋藏在心里，苦苦不知道从何下手。翻翻文档吧，都能丢失在文档的海洋里面，心里暗骂“艹，上午的需求还没有完成呢！！！”，无奈心里还是痒痒，想改路径。
+</p>
+
+<p>
+我真实的描述了一个拿到fisp想改改路径却没改成功的心情。本篇就是彻底把这坨事情描述明白而生的，另外只此一次过时不候。
+</p>
+</div>
+
+<div id="outline-container-smarty使用介绍" class="outline-4">
+<h4 id="smarty使用介绍">Smarty使用介绍</h4>
+<div class="outline-text-4" id="text-smarty使用介绍">
+<p>
+ok，首先我们从使用Smarty说起。Smarty有个响亮的名字叫模板引擎，其实没来度厂之前我对这个很不屑，而且我也知道一些模板引擎是怎么做的，整个正则定义一些指令函数，就能做一个模板引擎；就像，很多前端模板就是这么干的一样。另外一个原因是其实说白了，我直接拿php做模板就好了，何必。。再引入一层Smarty？
+</p>
+
+<p>
+后来来到这边以后发现Smarty在各个使用PHP后端的产品线都在使用，然后我就震惊了。想了一万个为什么，最后发现主要原因是使用简单，哦，还有比较棒的=block=坑可以填，优点暂且就不说了，先来看一下如何用Smarty；
+</p>
+
+<p>
+先到Smarty官网上去下载一份smarty，大概下载下来是这个样子的；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 1
+.
+&#9500;&#9472;&#9472; Smarty.class.php
+&#9500;&#9472;&#9472; SmartyBC.class.php
+&#9500;&#9472;&#9472; debug.tpl
+&#9500;&#9472;&#9472; plugins
+&#9492;&#9472;&#9472; sysplugins
+</pre>
+</div>
+
+<p>
+我们暂时只需要关心=Smarty.class.php=，这个文件里面定义了=class Smarty=，来一个简短的例子。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//file: index.php
+
+if (!defined("ROOT")) define("ROOT", __DIR__); //[1]
+include (ROOT . '/smarty/Smarty.class.php'); //[2]
+
+$smarty = new Smarty(); //[3]
+
+$smarty-&gt;setTemplateDir(ROOT . '/template');//[4]
+$smarty-&gt;left_delimiter = "&lt;%";//[5]
+$smarty-&gt;right_delimiter = "%&gt;";//[6]
+$smarty-&gt;display('a.tpl');//[7]
+
+?&gt;
+</pre>
+</div>
+
+<p>
+解释这段代码之前呢，我们先贴上本地的目录；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ tree -L 1
+.
+&#9500;&#9472;&#9472; index.php
+&#9500;&#9472;&#9472; smarty
+&#9492;&#9472;&#9472; template
+</pre>
+</div>
+
+<p>
+[4]
+设置了一个模板目录，这个非常重要，因为=$smarty-&gt;display=（渲染）的模板都是从这个目录开始找的；比如如上面的=a.tpl=就是渲染的是=template/a.tpl=。当然这块需要注意的是假设你=display=的是一个绝对路径，设置的=template_dir=就不起效咯。。。
+</p>
+
+<p>
+写完了一个简单的渲染的例子，我们再介绍一下Smarty的插件。Smarty的插件的方方面面可以在Smarty官网看到详细的介绍，而我这块只关心插件目录。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">//file: index.php
+&lt;?php
+
+if (!defined("ROOT")) define("ROOT", __DIR__); //[1]
+include (ROOT . '/smarty/Smarty.class.php'); //[2]
+
+$smarty = new Smarty(); //[3]
+
+$smarty-&gt;setTemplateDir(ROOT . '/template');//[4]
+$smarty-&gt;left_delimiter = "&lt;%";//[5]
+$smarty-&gt;right_delimiter = "%&gt;";//[6]
+$smarty-&gt;setPluginsDir(ROOT .'/plugin');//[7]
+$smarty-&gt;display('a.tpl');//[8]
+
+?&gt;
+</pre>
+</div>
+
+<p>
+[7]这行设置了一个插件目录，意思是说，如果这个目录下有有效的Smarty插件，就会加载起来，然后在模板里面就可以直接使用，Smarty有很多类型的插件，我们这块使用=function=插件来举例子。
+</p>
+
+<p>
+我们迅速搞一个=function=插件，就叫=function.xdate.php=吧。在模板里面这么调用。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%*file: template/a.tpl*%&gt;
+&lt;%xdate%&gt;
+</pre>
+</div>
+
+<p>
+这个插件的作用是打出时间；代码如下
+</p>
+
+<div class="org-src-container">
+<pre class="src src-php">&lt;?php
+//file: plugin/function.xdate.php
+function smarty_function_xdate($params, $template) {
+    return date('Y-m-d H:i:s');
+}
+?&gt;
+</pre>
+</div>
+
+<p>
+当渲染=a.tpl=时，会调用插件=xdate=得到一个当前的时间。。。
+</p>
+
+<p>
+Smarty的例子呢就举到这里；在上面的例子里面我们关注了两个目录
+</p>
+
+<ul class="org-ul">
+<li>template_dir 模板在这个目录下进行查找</li>
+<li>plugins_dir 插件在这个目录下进行查找</li>
+</ul>
+
+<p>
+当然，我们也可以=var_dump($smarty)=来看更多的一些目录配置，不过暂且我们只关心这俩目录。
+</p>
+
+<p>
+fisp里面定制了一些插件，所以需要把这些插件上线的时候放到Smaty的插件目录（=plugins_dir=）下；fisp编译产出后有一些模板，显然也需要把这些模板放到Smarty的模板目录（=template_dir=）下。
+</p>
+
+<p>
+有的时候可能会发现都不知道后端框架把Smarty隐藏到什么地方了，更别说设置了（一般都是已经设置好了的），一般得问下后端开发的同学，再要不，到=display=模板的地方=var_dump=模板对象就能看得到上面说的两个目录的位置了。
+</p>
+
+<p>
+其次来看看fisp的产出目录是怎么样的;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">$ fisp install pc-demo <span class="org-comment-delimiter">#</span><span class="org-comment">&#19979;&#36733;&#19968;&#20010;demo
+</span>$ cd pc-demo/common
+$ fisp release -d output
+$ cd output
+$ tree -L 1
+.
+&#9500;&#9472;&#9472; config
+&#9500;&#9472;&#9472; plugin
+&#9500;&#9472;&#9472; static
+&#9492;&#9472;&#9472; template
+</pre>
+</div>
+
+<p>
+看明白了吗，意思是plugin下的资源放到=plugins_dir=；template下的内容放到=template_dir=。
+</p>
+
+<p>
+当然还出现了两个目录，一个=config=、一个=static=。OH，其实=config=目录对应于=$smarty-&gt;config_dir=目录。=static=目录呢，直接copy到=www=目录下即可（静态服务器的DOCUMENT_ROOT下）。
+</p>
+
+<p>
+OK，标准上线目录已经说完了，我们现在进入正题；关于*想修改目录的时候肿么办的问题*。
+</p>
+</div>
+</div>
+
+<div id="outline-container-利用fis的roadmap.path更改产出路径url" class="outline-4">
+<h4 id="利用fis的roadmap.path更改产出路径url">利用fis的=roadmap.path=更改产出路径、URL</h4>
+<div class="outline-text-4" id="text-利用fis的roadmap.path更改产出路径url">
+<p>
+用了fisp大概知道=fis-conf.js=，一个牛逼而且有点晦涩的配置文件，后缀是=js=，告诉我们它是个JavaScript文件，可以任意写JavaScript代码。
+</p>
+
+<p>
+在改目录之前，我们先来调教一下这个配置文件；
+</p>
+
+<p>
+在整个FIS的配置中，提供了很多为了符合个性化开发需要配置的属性值，不是特别多，大概有=project=、=modules=、=roadmap=、=pack=、=settings=、=server=这几类，其他如果再出现一些稀奇古怪的，那就是/解决方案/自定义的了。
+</p>
+
+<p>
+所有的配置项目可以在<a href="https://github.com/fex-team/fis/wiki">https://github.com/fex-team/fis/wiki</a>上找到。不过我们可以在这块稍微了解一下。
+</p>
+
+<ul class="org-ul">
+<li>project 就是对项目全局做一些配置，什么编码、md5戳的长度等</li>
+<li>modules 配置FIS的几个插件流程上面那些文件该用什么插件处理</li>
+<li>roadmap
+配置某一类文件有哪些属性，并且产出到什么地方去，包括添加什么CDN等等，也是最复杂的一块</li>
+<li>pack 备份静态资源时需要配置这个，你可以把备份认为是合并静态资源</li>
+<li>settings 相对应与=modules=填写的一些插件进行某些配置</li>
+<li>server
+本地server的一些相关配置，比如执行=fis server clean=的时候保留哪些文件等</li>
+</ul>
+
+<blockquote>
+<p>
+为了实现上面移动目录的那个目标，我们只关心=roadmap=的配置情况。
+</p>
+</blockquote>
+
+<p>
+一般，fisp这样的解决方案，里面已经配置了一个牛逼哄哄的配置，特别是fisp经过多年对度厂前端项目的积累，所以是万众挑一的。我们可以很方便的查看这些配置的信息。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>console.log(fis.config.get(<span class="org-string">'roadmap'</span>));
+</pre>
+</div>
+
+<p>
+可以哗啦打出一大串的配置信息；负责文件产出、url更改的配置项是=roadmap.path=
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">// </span><span class="org-comment">file: fis-conf.js
+</span>console.log(fis.config.get(<span class="org-string">'roadmap.path'</span>));
+</pre>
+</div>
+
+<p>
+不出意外的打出了
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">[ { reg: <span class="org-string">'/fis_translate.tpl'</span>,
+    release: <span class="org-string">'${templates}/${namespace}/widget/fis_translate.tpl'</span> },
+  { reg: <span class="org-string">/\/lang\/([^\/]+)\.po/</span>i,
+    release: <span class="org-string">'/config/lang/${namespace}.$1.po'</span> },
+  { reg: <span class="org-string">/^\/widget\/(.*\.tpl)$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    url: <span class="org-string">'${namespace}/widget/$1'</span>,
+    release: <span class="org-string">'${templates}/${namespace}/widget/$1'</span> },
+  { reg: <span class="org-string">/^\/widget\/(.*\.(js|css))$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    release: <span class="org-string">'${statics}/${namespace}/widget/$1'</span> },
+  { reg: <span class="org-string">/^\/page\/(.+\.tpl)$/</span>i,
+    isMod: <span class="org-constant">true</span>,
+    release: <span class="org-string">'${templates}/${namespace}/page/$1'</span>,
+    extras: { isPage: <span class="org-constant">true</span> } },
+  { reg: <span class="org-string">/\.tmpl$/</span>i, release: <span class="org-constant">false</span>, useOptimizer: <span class="org-constant">false</span> },
+  { reg: <span class="org-string">/^\/(static)\/(.*)/</span>i,
+    release: <span class="org-string">'${statics}/${namespace}/$2'</span> },
+  { reg: <span class="org-string">/^\/(config|test)\/(.*)/</span>i,
+    isMod: <span class="org-constant">false</span>,
+    release: <span class="org-string">'/$1/${namespace}/$2'</span> },
+  { reg: <span class="org-string">/^\/(plugin|smarty\.conf$)|\.php$/</span>i },
+  { reg: <span class="org-string">'server.conf'</span>,
+    release: <span class="org-string">'/server-conf/${namespace}.conf'</span> },
+  { reg: <span class="org-string">'domain.conf'</span>, release: <span class="org-string">'/config/$&amp;'</span> },
+  { reg: <span class="org-string">'build.sh'</span>, release: <span class="org-constant">false</span> },
+  { reg: <span class="org-string">'${namespace}-map.json'</span>,
+    release: <span class="org-string">'/config/${namespace}-map.json'</span> },
+  { reg: <span class="org-string">/^.+$/</span>, release: <span class="org-string">'${statics}/${namespace}$&amp;'</span> } ]
+</pre>
+</div>
+
+<p>
+这样一个结果；
+</p>
+
+<p>
+其实就一个数组，里面是一个个的对象；*在FIS处理的时候是从上到下进行匹配的*，假设某一个文件被上面的匹配到了，那么就没有下面规则什么事情了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = [
+    {
+        reg: <span class="org-string">/.*\.js$/</span>,
+        release: <span class="org-string">'/static/js/$&amp;'</span>
+    },
+    {
+        reg: <span class="org-string">/.*\.css$/</span>,
+        release: <span class="org-string">'/static/css/$&amp;'</span>
+    }
+];
+</pre>
+</div>
+
+<p>
+其中对象的
+</p>
+
+<ul class="org-ul">
+<li>reg 是说要匹配某些文件</li>
+<li>release 是说要产出到什么地方去</li>
+</ul>
+
+<p>
+当然每个对象中都会由很多其他的一些属性，我们可以把这段配置理解为，给某些文件添加一些属性，这个属性包括FIS已经占用的，可以在<a href="https://github.com/fis-dev/fis/wiki/%E9%85%8D%E7%BD%AEAPI#roadmappath">roadmap.path</a>这个地方看到，还有一部分可以为了某些插件实现起来方便定义一些私有属性。
+</p>
+
+<blockquote>
+<p>
+当设置了某些属性，这些属性会伴随这个文件在整个编译期内。
+</p>
+</blockquote>
+
+<p>
+OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的奇妙使用方式。
+</p>
+
+<p>
+由于在整个fisp当中，*已经配置*了=roadmap.path=，而且获取出来以后是一个数组。所以就不能用=fis.config.merge=来处理*自定义*的一些*规则*了。这是为什么呢，因为其实=fis.config.merge=就是一个深度=merge=的函数。俩数组里面都是对象再合并，其效果可想而知，会合并的乱糟糟的，如果你用了=merge=来合并一条自定义的属性，可能你已经多次怀疑自己的人生了吧。
+</p>
+
+<p>
+那肿么设置呢，它不是一个数组嘛，在JavaScript里面数组有很多的方法可以添加一些项。当然添加的时候要放在最前面，*用户优先*嘛。
+</p>
+
+<ul class="org-ul">
+<li><p>
+方法一，arr.unshift
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-comment-delimiter">//</span><span class="org-comment">file: fis-conf.js
+</span><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = fis.config.get(<span class="org-string">'roadmap.path'</span>);
+
+path.unshift({
+    reg: <span class="org-string">/\/widget\/some\/.*\.tpl/</span>$,
+    release: <span class="org-string">'/template/$&amp;'</span>
+});
+</pre>
+</div></li>
+
+<li><p>
+方法二，arr.concat
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">path</span> = fis.config.get(<span class="org-string">'roadmap.path'</span>);
+
+<span class="org-keyword">var</span> <span class="org-variable-name">userPath</span> = [{
+    reg: <span class="org-string">/\/widget\/some\/.*\.tpl/</span>$,
+    release: <span class="org-string">'/template/$&amp;'</span>
+}];
+
+userPath = userPath.concat(path); <span class="org-comment-delimiter">//</span><span class="org-comment">userPath&#22312;&#40664;&#35748;path&#21069;
+</span>fis.config.set(<span class="org-string">'roadmap.path'</span>, userPath);
+</pre>
+</div></li>
+
+<li>方法三，自己想</li>
+</ul>
+
+<p>
+所以，配置文件是一个Js文件，可以有很多想象。说道这里，把在fisp里面配置的方法教给大家了，至于你要不要怎么用怎么灵活的用，还得看你想不想了。
+</p>
+
+<p>
+有了配置的方法，那就看配置几种含义吧。其实吧，每一个=path=都对应与一次URL、产出路径的改变。所以稍微拿捏不准，可能就开始骂娘了，如果是我的话基本是怀疑人生。
+</p>
+
+<ul class="org-ul">
+<li><p>
+release 不写
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">'**.js'</span>
+}
+</pre>
+</div>
+
+<p>
+假设不写release，则产出路径就是源码路径；比如我们有个静态资源叫=/static/a.js=，使用的时候是这么使用的=&lt;script src=&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=，则产出的时候产出目录以及URL都不会被修改（相对路径引用除外）。
+</p></li>
+
+<li><p>
+release 写了
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    release: <span class="org-string">'/static/js/$1'</span>
+}
+</pre>
+</div>
+
+<p>
+那按照上面的例子，产出后=/static/a.js=产出到=output/static/js/a.js=，而使用的地方会从=&lt;script src=&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=变为=&lt;script src=&ldquo;/static/js/a.js&rdquo;&gt;&lt;/script&gt;=。
+</p></li>
+
+<li><p>
+release 写了，但是不想改URI [*注意*]
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    url: <span class="org-string">'$&amp;'</span>,
+    release: <span class="org-string">'/www/static/$1'</span>
+}
+</pre>
+</div>
+
+<p>
+我设置产出到了=www=目录下，但是我不想修改引入时的URI，还想保持原来的使用方法，该如何办呢，咦，恰巧上面给了一个例子，可以设置=url=来特定化引用的url。
+</p></li>
+
+<li><p>
+release false
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">{
+    reg: <span class="org-string">'**.js'</span>,
+    release: <span class="org-constant">false</span>
+}
+</pre>
+</div>
+
+<p>
+所有的js不产出鸟。。。
+</p></li>
+</ul>
+
+<p>
+如果细心的同学看到了，我在上面打上了[*注意*]字眼，这个地方确实需要注意，因为这个关乎上线，关乎运行得起来还是跑不起来的问题。
+</p>
+
+<p>
+假设把这条弄懂了，整个FIS的目录操作者可就没有什么不能解决的了。
+</p>
+
+<p>
+为了表述更清楚，我们细化例子（其实就是把所有的东西都说出来）。
+</p>
+
+<ul class="org-ul">
+<li><p>
+源码
+</p>
+
+<pre class="example" id="orgf80ad9c">
+src
+.
+├── index.html
+└── static
+    └── a.js
+</pre></li>
+
+<li><p>
+roadmap.path
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">fis.config.set(<span class="org-string">'roadmap.path'</span>, [{
+    reg: <span class="org-string">/\/static\/(.*\.js)/</span>,
+    url: <span class="org-string">'$&amp;'</span>,
+    release: <span class="org-string">'/www/static/$1'</span>
+}]);
+</pre>
+</div></li>
+
+<li><p>
+产出
+</p>
+
+<pre class="example" id="orgcda38a3">
+output
+.
+├── index.html
+└── www
+    └── static
+        └── a.js
+</pre></li>
+
+<li><p>
+index.html
+</p>
+
+<table>
+
+
+<colgroup>
+<col  class="org-left">
+
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">源码</th>
+<th scope="col" class="org-left">产出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>&lt;script src</code>&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=</td>
+<td class="org-left"><code>&lt;script src</code>&ldquo;/static/a.js&rdquo;&gt;&lt;/script&gt;=</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+当然是相同的，因为虽然有了不同的release但是url保持不变（当然你也可以设置其他的一些URL，可以用url属性）。
+</p>
+
+<blockquote>
+<p>
+注意，假设编译后的url是=/static/a.js=这个样子，那么你就得把www这个目录作为静态资源请求的根目录。或者是做个路由，把=/static=开头的URL全都定位到=www=目录下，才能请求到想要的结果。
+</p>
+</blockquote></li>
+</ul>
+
+<p>
+ok，其实上面这个例子已经把静态文件换个产出路径的方方面面说完了，你学会了吗？
+</p>
+
+<p>
+那么进入Smarty的世界，我们要解决修改fisp的模板路径，在Smarty里面怎么运行。
+</p>
+</div>
+</div>
+
+<div id="outline-container-fis-plus里面涉及到smarty的路径以及如何修改并能正确运行" class="outline-4">
+<h4 id="fis-plus里面涉及到smarty的路径以及如何修改并能正确运行">fis-plus里面涉及到Smarty的路径，以及如何修改并能正确运行</h4>
+<div class="outline-text-4" id="text-fis-plus里面涉及到smarty的路径以及如何修改并能正确运行">
+<p>
+在fisp里面，涉及路径的Smarty函数（指令）常用的有
+</p>
+
+<ul class="org-ul">
+<li><p>
+extends
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%extends file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+include
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+load_config
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%load_config file="&lt;filepath&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+require
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%require name="&lt;id&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+widget
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%widget name="&lt;id&gt;"%&gt;
+</pre>
+</div></li>
+
+<li><p>
+html
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%html framework="&lt;id&gt;"%&gt;
+&lt;%/html%&gt;
+</pre>
+</div></li>
+</ul>
+
+<p>
+其中require、widget、html是fisp独有的定制的一些函数（其实就是插件）。它们位fisp服务，并支撑fisp的正常运行（怎么做到的，可以看源码）。
+</p>
+
+<p>
+其中=&lt;filepath&gt;=就是相对于=$smarty-&gt;template_dir=的相对路径或者是相对于系统根目录的绝对路径。
+</p>
+
+<p>
+SO，假设你要这么用；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="widget/a/a.tpl"%&gt;
+</pre>
+</div>
+
+<p>
+那么渲染的文件是=SMARTY_TEMPLATE_DIR/widget/a/a.tol=，假设你写错了，写成了。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-smarty">&lt;%include file="/widget/a/a.tpl"%&gt;
+</pre>
+</div>
+
+<p>
+这种情况下，会去系统根目录下查找=/widget/a/a.tpl=，咦，一般都会挂掉。
+</p>
+
+<p>
+说完=&lt;filepath&gt;=，再来说一下=&lt;id&gt;=；fisp里面要使用一些资源，至少是在Smarty里面用fisp自定义的一些函数，必须指定资源的=&lt;id&gt;=，这个=&lt;id&gt;=是fisp自定义的一种标识符。规则很简单=&lt;namespace&gt;:&lt;subpath&gt;=，当然这块的=&lt;subpath&gt;=指的是源码的subpath。
+</p>
+
+<p>
+举个小例子，假设在common下有个资源=/static/a.js=的ID就是=common:static/a.js=，/注意subpath第一个字符没有斜杠=/=/
+</p>
+
+<p>
+搞清楚了=&lt;id&gt;=的规则，还得弄懂它是如何工作的，才能解开我们心中的谜团。
+</p>
+
+<p>
+在模板渲染的时候，使用=&lt;id&gt;=加载的资源，有一个特殊的操作，那就是拿这个=&lt;id&gt;=去=map.json=里面找一把，找到对应ID的=uri=并加载渲染之。
+</p>
+
+<p>
+那么问题就来了，*其实对于=widget=渲染的模板，其实它的路径在=map.json=里面，而不像=&lt;filepath&gt;=一样，在源码里面就已经指定了*。
+</p>
+
+<p>
+=map.json=里面的=uri=就是通过=roadmap.path=的=url=调整的，OK，这块uri和url不太一样是吧，其实也算是个设计缺陷吧，不过无伤大雅。
+</p>
+
+<p>
+那么这时候，假设我更改了一个tpl的产出路径，那么就意味着=uri=发生了变化。只有=uri=能和上线时上传的文件路径保持一致才能被正确的渲染。所有的文件路径、url都遵循这个规则（可想而知）。
+</p>
+
+<p>
+所以，修改产出路径的时候，千万要注意修改的目录跟引用的路径是否一致，是否匹配。
+</p>
+
+<blockquote>
+<p>
+=&lt;id&gt;=引用路径在=map.json=里面=&lt;id&gt;=对应的uri，而=&lt;filepath&gt;=呢，直接就是相对或者绝对路径。上线代码时一定一定要保持引用路径能找到磁盘上的文件，不然不报错才怪。
+</p>
+</blockquote>
+
+<p>
+嗯，我想我应该画个图来表征这个关系，但暂时先不画了，等看不懂文字的时候再画。不过我想我已经几近大白话说的，应该不会出现对不上号的情况。
+</p>
+
+<p>
+最后，写了很长一个篇幅介绍上线这回事儿，其实主要是smarty这块，因为出问题比较多的也是这块。
+</p>
+
+<p>
+总结一下，fisp需要把产出的Smarty相关资源放到=config_dir=、=plugins_dir=、=template_dir=这三个目录，渲染就没问题了，当然需要*保持引用路径跟磁盘文件路径对上号*。
+</p>
+</div>
+</div>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-1687066-2');
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+  <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /github/workspace" rel="stylesheet">
+  <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  
+</head>
+<body>
+  <header id="preamble" class="status">
+    <div class="logo">
+      <a href="/">
+        <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
+      </a>
+      <a href="/"><h2>OxUnd. </h2></a>
+      <div id="social">
+        <a title="dmacvicar on Github" href="https://github.com/oxund">
+          <i id="github-icon" class="fa-brands fa-github"></i>
+      	</a>
+        <a title="RSS feed" id="atom" href="https://www.orrafy.com/posts/rss.xml">
+          <i id="rss-icon" class="fa-solid fa-rss"></i>
+        </a>
+    </div>
+    <sub>keep simple and stupid</sub>
+ </header>
+ <main id="main">
+ 
+<h1>&#34;网页加载优化方案：bigpipe，bigrender，lazyrender&#34;</h1>
+<div class="date">30 May 2014</div>
+<div class="content">
+  
+<section id="outline-container-2014-05-30-quickling-1" class="outline-2">
+<h2 id="2014-05-30-quickling-1">2014-05-30-quickling-1</h2>
+<div class="outline-text-2">
+<p>
+开篇之初需要介绍一些网站页面加载的各种性能优化手段，他们分别是=bigrender=、=bigpipe=、=lazyrender=。
+</p>
+
+<ul class="org-ul">
+<li><code>bigrender</code> 一种减少首屏dom节点优化首屏展现的方案；</li>
+<li><code>bigpipe</code> 一种通过chunk输出来优化网页展现的方案；</li>
+<li><code>quickling</code>
+一种加载页面的模式，页面的一个局部可以通过异步请求，请求数据包括渲染好的页面以及静态资源；</li>
+<li><code>lazyrender</code>
+手机上可能网络传输很慢，如果先传输一部分过来展示，然后再根据用户的操作输出剩下的部分，无疑是可以提高首屏时间的。整个方案就命名为=lazyrender=</li>
+</ul>
+</div>
+
+<div id="outline-container-bigrender" class="outline-4">
+<h4 id="bigrender">bigrender</h4>
+<div class="outline-text-4" id="text-bigrender">
+<p>
+详细说一下bigrender如何实现的，一个页面可能占几屏，首先出现在用户视野里的自然是第一屏。一次渲染如果把所有都渲染，无疑需要比较长的时间，这时候用户无法操作界面甚至于无法看到页面。bigrender的思路是这样的；
+</p>
+
+<ul class="org-ul">
+<li>先渲染首屏，其余的部分的html被放到注释里面（或=textarea=），这样就保证不被渲染，较少首屏时间。</li>
+<li>当用户向下查看次屏的内容时，再触发脚本渲染次屏的内容。</li>
+<li>依次展现整个网页</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-bigpipe" class="outline-4">
+<h4 id="bigpipe">bigpipe</h4>
+<div class="outline-text-4" id="text-bigpipe">
+<p>
+bigpipe对服务器要求比较高，需要支持chunk输出。其实就是在同一个链接上将一个页面分段输出。需要服务器端能并行处理页面，假设页面可以分为三屏，每屏都对应一些数据。当某一屏的数据获取成功，其可以马上返回给浏览器（也就是pipe的方式输出），这样对应的屏就展现出来了。如果支持并行处理，再以chunk的方式输出，无疑会让浏览器加载展现会快很多。
+</p>
+
+<p>
+对于上面说的举个例子；假设页面分为三部分A，B，C，A的数据是调用后端服务层=api_a=得到，B是=api_b=，C是=api_c=。
+</p>
+
+<p>
+<i>node.js示例</i>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript"><span class="org-keyword">var</span> <span class="org-variable-name">asyncMap</span> = require(<span class="org-string">'slide'</span>).asyncMap;
+<span class="org-keyword">var</span> <span class="org-variable-name">app</span> = require(<span class="org-string">'express'</span>)();
+
+app.get(<span class="org-string">'/'</span>, <span class="org-keyword">function</span> (<span class="org-variable-name">req</span>, <span class="org-variable-name">res</span>) {
+    <span class="org-comment-delimiter">//</span><span class="org-comment">&#24182;&#34892;&#22788;&#29702;
+</span>    asyncMap(
+        [
+            <span class="org-string">"http://api.xxx.com/api_a"</span>,
+            <span class="org-string">"http://api.xxx.com/api_b"</span>,
+            <span class="org-string">"http://api.xxx.com/api_c"</span>
+        ],
+        <span class="org-keyword">function</span>(<span class="org-variable-name">url</span>, <span class="org-variable-name">cb</span>) {
+            http.get(url, <span class="org-keyword">function</span>(<span class="org-variable-name">r</span>) {
+                <span class="org-keyword">var</span> <span class="org-variable-name">d</span> = <span class="org-string">''</span>;
+                r.on(<span class="org-string">'data'</span>, <span class="org-keyword">function</span> (<span class="org-variable-name">c</span>) { d += c.toString(); });
+                r.on(<span class="org-string">'end'</span>, <span class="org-keyword">function</span>() {
+                    res.write(d); <span class="org-comment-delimiter">//</span><span class="org-comment">&#30452;&#25509;&#36755;&#20986;
+</span>                    cb(<span class="org-constant">null</span>, <span class="org-string">''</span>);
+                });
+            });
+        },
+        <span class="org-keyword">function</span>(<span class="org-variable-name">err</span>, <span class="org-variable-name">r</span>) {
+            res.end();
+        };
+    );
+});
+
+app.listen(3000);
+</pre>
+</div>
+
+<p>
+上面就是一个并行化的例子，当然了如果不是api调用，查询数据库也是同样的道理。
+</p>
+
+<p>
+可能会有这样的疑问，如何精准控制页面的展现。比如可能第二屏先出来，导致用户看到的是第二屏，而第一屏跑到了第二屏下面；其实这个已经有成型的解决方案了，比如facebook，微博等都实现了bigpipe。
+</p>
+
+<p>
+解决上面问题的大致思路是，先给浏览器吐一个结构。
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"first"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"second"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+</pre>
+</div>
+
+<p>
+然后在html结束后，输出一些js代码来渲染内容上去；比如
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"first"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">div</span> <span class="org-variable-name">id</span>=<span class="org-string">"second"</span>&gt;&lt;/<span class="org-function-name">div</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+&lt;<span class="org-function-name">script</span>&gt;render('first', function() {/*first&#20869;&#23481;*/});&lt;/<span class="org-function-name">script</span>&gt; <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#31532;&#19968;&#27425;chunk</span><span class="org-comment-delimiter"> --&gt;</span>
+&lt;<span class="org-function-name">script</span>&gt;render('second', function() {/*second&#20869;&#23481;*/});&lt;/<span class="org-function-name">script</span>&gt; <span class="org-comment-delimiter">&lt;!-- </span><span class="org-comment">&#31532;&#20108;&#27425;chunk</span><span class="org-comment-delimiter"> --&gt;</span>
+</pre>
+</div>
+
+<p>
+这样就完美搞定页面渲染的问题，并且提升了不少性能，一个部分一个部分渲染的嘛~
+</p>
+</div>
+</div>
+
+<div id="outline-container-lazyrender" class="outline-4">
+<h4 id="lazyrender">lazyrender</h4>
+<div class="outline-text-4" id="text-lazyrender">
+<p>
+在手机网络下，html如果太大，会传输很长时间。这时候如果把页面拆解为几部分然后分块请求，将有利于页面的展示。当然了，如果后端比较龟速，分成几块也可以使用相同的方式去加快页面的展现。
+</p>
+
+<p>
+lazyrender就是这个思路。大概做法就是，当页面渲染的时候，把首屏先传输给浏览器进行展示，其他屏或者不重要的东西给页面打一段js。大概是这个样子的；
+</p>
+
+<div class="org-src-container">
+<pre class="src src-html">&lt;<span class="org-function-name">html</span>&gt;
+    ...
+    &lt;<span class="org-function-name">div</span>&gt;&#39318;&#23631;&#20195;&#30721;&lt;/<span class="org-function-name">div</span>&gt;
+    &lt;<span class="org-function-name">script</span>&gt;lazyrender('second');&lt;/<span class="org-function-name">script</span>&gt;
+    ...
+&lt;/<span class="org-function-name">html</span>&gt;
+</pre>
+</div>
+
+<p>
+当首屏展现完成后，可以触发次屏的加载。使用quickling的方式加载次屏的html，css，js等然后进行渲染。
+</p>
+</div>
+</div>
+
+<div id="outline-container-总结" class="outline-4">
+<h4 id="总结">总结</h4>
+<div class="outline-text-4" id="text-总结">
+<p>
+这些方案解释就那么回事儿，但是实现起来确实比较麻烦。好在去年实现了一套支持bigrender，lazyrender的解决方案。
+</p>
+
+<ul class="org-ul">
+<li><a href="https://github.com/xiangshouding/bigpipe.smarty">https://github.com/xiangshouding/bigpipe.smarty</a></li>
+</ul>
+
+<p>
+<i>各种环境问题导致不支持pipe输出</i>
+</p>
+</div>
+</div>
+</section>
+
+</div>
+
+ </main>
+
+<hr/>
+ 
+ <p class='disclaimer'></p>
+
+  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+</body>
+</html>
