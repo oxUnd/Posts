@@ -1,0 +1,183 @@
+#+TITLE: "yog，简单易用的node框架"
+#+DATE: 2014-07-30 14:27:53
+#+CATEGORIES: web-dev
+#+AUTHOR: 
+
+* 2014-07-30-yog
+
+风风火火又是一个多月过去了，炎热的北京夏天热得每个人都很浮躁，空调吱呀吱呀，有同事就咆哮大骂起来了，殊不知空调这玩意儿也能让TA生气。说偏了，回到正文。
+
+就在着炎热的夏天，项目组开发了一套node的开发框架，[[https://github.com/fex-team/yog][yog]]。
+
+[[https://github.com/fex-team/yog][yog]]解决了什么问题呢？
+
+- 中间件维护问题
+- 路由
+- bigpipe支持
+- mvc封装
+- 目录规范
+- 开发模式
+
+*** 中间件维护问题
+:PROPERTIES:
+:CUSTOM_ID: 中间件维护问题
+:END:
+用过=express=的人都知道，中间件维护起来确实挺麻烦；需要以这样
+
+#+begin_src javascript
+app.use(static());
+app.use(router());
+#+end_src
+
+硬编码的方式挂载中间件；这样假设某一天需要添加中间件时，还得考虑要加载哪两个的中间；所以yog利用配置文件配置进去。
+
+#+begin_src json
+{
+    "middleware": {
+        "urlencoded": {
+            "enabled": true,
+            "priority": 50,
+            "module": {
+                "arguments": [
+                    {
+                        "extended": true
+                    }
+                ]
+            }
+        }
+    }
+}
+#+end_src
+
+上面就是一个例子，中间件=urlencoded=以这样一个方式配置到框架中；
+
+*** 路由
+:PROPERTIES:
+:CUSTOM_ID: 路由
+:END:
+说到路由，假设用=express=的方式解决的话是如下这个样子的；
+
+#+begin_src javascript
+app.get('/xxx', requestHandle);
+#+end_src
+
+如果按照这种方式，所有的路由可能需要写到某一个文件里面；就比如=django=就是配置在一个文件里面的，这样的好处是所有的路由情况都可以一目了然；
+但项目大了以后放到同一个地方确实会不方便，一般会选择使用一些规则来命中某一个Action，比如根据URI的信息来做匹配执行代码，这种方法很多框架都使用；
+
+而=yog=里面结合了两种方式，先用规则的方式命中某一个=controller=，然后在=controller=中书写关于这个=controller=的路由规则，比如：
+
+#+begin_quote
+http://127.0.0.1/user/get
+#+end_quote
+
+/=user=/ 命中 =controllers/user.js=
+
+#+begin_src javascript
+//user.js
+
+module.exports = function (router) {
+    router.get('/get', function (req, res) {
+        //balabala...
+    });
+};
+#+end_src
+
+在项目启动的时候，会扫描=controllers=目录下的文件，全部挂载到运行环境中；
+
+通过对=中间件=的处理以及=router=的处理；入口文件就相当简单了；
+
+#+begin_src javascript
+var app = require('express')();
+var yog = require('yog');
+
+app.use(yog());
+app.listen(4000);
+#+end_src
+
+*** bigpipe支持
+:PROPERTIES:
+:CUSTOM_ID: bigpipe支持
+:END:
+关于BigPipe，前面已经写了一篇博文说明[[/posts/web-dev/quickling-1/][网页加载优化方案：bigpipe，bigrender，lazyrender]]。
+
+以前在PHP里面实现，无法做到并行获取数据，然node就不一样了，可以随意并行，所以[[https://github.com/fex-team/yog][yog]]对bigpipe的支持是很完整的；它可以控制任意一小块页面输出，可以很方便的做性能优化。
+
+那是如何实现的呢？
+
+具体的实现可以阅读源代码[[https://github.com/fex-team/yog-bigpipe][yog-bigpipe]]。大概总结是这样的；
+
+- 使用模板的钩子标识每个需要=pipe=出来的区域
+- 渲染时把这些区域抠出来，留个占位符=<div id="id_100"></div>=
+- 后获取=pipe=区域的内容，并输出给浏览器
+- chunck输出
+
+具体使用可以下载[[https://github.com/fex-team/yog-app][示例]]，跑一把就知道了。
+
+*** MVC封装
+:PROPERTIES:
+:CUSTOM_ID: mvc封装
+:END:
+说到此处，[[https://github.com/fex-team/yog][yog]]其实只负责了=view=和=controller=层，因为按照经验来看，=model=层迁移node阻力很大，暂时没有对这层的覆盖，后续会陆续搞定这层；
+
+MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=view=。
+
+*** 目录规范
+:PROPERTIES:
+:CUSTOM_ID: 目录规范
+:END:
+这节说一下目录规范，其实这些都在[[http://oak.baidu.com/docs/yogurt][文档]]中有详细的说明；
+
+#+begin_src sh
+➜  yog-app git:(master) ✗ tree -L 1
+.
+├── config
+├── controllers # controller
+├── models # model
+├── views  # view
+├── public    # 静态资源文件夹
+└── server.js # 入口文件
+#+end_src
+
+*** 开发模式
+:PROPERTIES:
+:CUSTOM_ID: 开发模式
+:END:
+[[/images/dev/rd-fe.png]]
+
+如图，述说开发模式，不得不上一幅图；
+
+- RD 后端开发
+- FE 前端开发
+
+**** A开发模式
+:PROPERTIES:
+:CUSTOM_ID: a开发模式
+:END:
+FE写完页面，然后把写好的页面交给RD进行模板化，也就是*模板*这个东西在RD手上，也就是归于*后端业务逻辑*
+
+这种模式的不好的地方是，前端页面展现显然是经常会变化的，那么来回这么折腾，费时费力不说还费钱；
+
+不过貌似很多公司都是*A开发模式*
+
+**** B开发模式
+:PROPERTIES:
+:CUSTOM_ID: b开发模式
+:END:
+为了解决上面的问题，出现了B开发模式，B开发模式是这样的；FE负责了写*模板*这个事情，每次迭代都很方便，有UI修改，只需要上模板就行，这时候一个频繁的工作由FE完成；
+
+当然，这种开发模式也是有问题的；比如RD没有开发完成，FE就没有数据来测试自己的代码了；这时候需要一套本地模拟环境的工具；比如现在的[[http://oak.baidu.com/docs/fis-plus][fis-plus]]就完美模拟了线上环境；
+
+还有一个问题是啥呢，那就是每次还需要跟RD对接口，对数据结构，每次添加修改点数据也很麻烦；
+
+到后来就出现了C开发模式
+
+**** C开发模式
+:PROPERTIES:
+:CUSTOM_ID: c开发模式
+:END:
+C开发模式就是建立*大前端*，FE负责UI层后端逻辑以及前端相关所有事物，这种模式相当不错，处理问题或者添加功能只需要FE来搞就行，没有了额外的沟通开销，开发顺畅了不少。
+
+但，也许FE需要学习一门后端语言，当然这个不是问题；
+
+[[https://github.com/fex-team/yog][yog]]
+专提供给FE同学的后端UI开发框架，不巧语言也是FE同学熟悉的JavaScript（nodejs），这样似乎可以方便的使用=C开发模式=。

@@ -1,0 +1,85 @@
+#+TITLE: "Emacs使用以及简单优化"
+#+DATE: 2022-09-17 22:26:30 +0800
+#+CATEGORIES: 2022/09
+#+AUTHOR: 
+
+* 2022-09-17-01
+
+过去了几天，一直尝试在用 emacs
+做想做的事情，写想写的东西。使用方法大概基本掌握了，学习曲线确实还是有的。好在
+elisp
+是个不错的语言，能够完成几乎想完成的大部分事情。就这样，写了一套自己用的配置，以及熟悉了一些好用的插件。
+
+今天，对加载 =.el= 配置进行大量的优化，基本都是靠 emacs 自己的
+bytecode。整体效率有提升，但没有做打点统计时间的优化程度。
+
+通过函数 /byte-compile-file/ 能够把 =.el= 编译成 =.elc= 字节码文件，加载
+=.elc= 不再需要编译，性能有个不错的提升，肉眼可见。
+
+尝试美化
+=*Completions*=，找了几个插件，都没有找到合适、简单、易用的方法，暂时作罢。就是这样，折腾编辑器就想把每个区域都进行定制，尝试定制的乐趣。
+
+突然打开 =vim= 发现以前常用的，快捷键都快生疏了。后面可能在 =emacs=
+模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
+
+#+begin_example
+,#+BEGIN_SRC emacs-lisp
+  (defun load-b (file)
+    (if (file-exist-p (file-name-with-extension file ".elc"))
+        (load file) ;; .elc .el ...
+      (progn
+        (byte-compile-file (file-name-with-extension file ".el"))
+        (load file))))
+  ;; example
+  (load-b "path/to/.el/file")
+,#+END_SRC
+#+end_example
+
+加载插件文件时
+
+- =load-b= 加载自定义的插件或者配置文件，不使用 =require=
+- =use-package= 加载第三方扩展
+
+基本思路如果没有编译成字节码，就先编译后加载，如果已经有 =.elc= 文件直接
+=load=。其中有个问题是当我们进行配置变更时希望能够重新编译，其中
+EmacsWiki 给了一个明确的方法。在保存 =.el=
+文件时进行编译，这样能满足大部分的诉求。但当改坏了怎么办，或者由于不当操作导致无法重新编译怎么办？应该有很好的办法，但我现在没有时间做更多的研究，暂时就用最粗暴的方式。删除除了
+=elpa= 文件夹下其他所有 =.elc= 文件。
+
+#+begin_example
+,#+BEGIN_SRC bash
+  find ./a ./b ./c -name '*.elc' | xargs rm
+,#+END_SRC
+#+end_example
+
+为了后续方便，使用 =Makefile=
+
+#+begin_example
+,#+BEGIN_SRC makefile
+  .PHONY: clean
+      clean:
+          find ./a ./b ./c -name '*.elc' | xargs rm
+  .PHONY: all
+      all:
+          echo "Nothing...."
+,#+END_SRC
+#+end_example
+
+在出现错误时 =make clean= 即可。
+
+简单折腾，使用 emacs 随时面临大折腾的可能，但学习面向 character
+编程的语言，确实感觉不错。
+
+......
+
+突然看了一下，=load-b=
+写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
+
+#+begin_example
+,#+BEGIN_SRC emacs-lisp
+  (defun load-b (file)
+    (unless (file-exist-p (file-name-with-extension file ".elc"))
+      (byte-compile-file (file-name-with-extension file ".el")))
+    (load file))
+,#+END_SRC
+#+end_example

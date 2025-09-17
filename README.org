@@ -1,0 +1,22 @@
+#+title: My homepage with org-mode
+#+author: OxUnd
+#+date: <2025-09-17 Wed>
+#+SLUG: README
+
+[[https://github.com/dmacvicar/site.org/actions?query=workflow%3A%22Build+and+publish+to+pages%22][file:https://github.com/dmacvicar/site.org/workflows/Build%20and%20publish%20to%20pages/badge.svg]]
+
+* Introduction
+
+This is the source for my website. It is managed using Emacs and [[https://orgmode.org][org-mode]].
+
+The latest incarnation is based on [[https://github.com/dmacvicar/site.org][site.org]] and [[https://emacs.love/weblorg/][weblorg]], a wrapper on top of [[https://orgmode.org/manual/Exporting.html][org-export]].
+
+It used to be a heavily customized org-publish setup, but weblorg puts all together in a simpler setup and add support for Jinja like templates.
+
+For details about the original implementation see [[file:posts/2019-09-03-migrating-from-jekyll-to-org/index.org][the introductory post]] and the [[https://github.com/dmacvicar/site.org/blob/75e54006a7384cfe8504ab8c6b215ab081d3d8ec/publish.el][\faGithub original source]].
+
+* License
+
+The code used for generating the site is licensed under the [[file:LICENSE][MIT]] license.
+
+The content of the site, Copyright (©) 2014-2025 {{{author}}}.
