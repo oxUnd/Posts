@@ -14,7 +14,7 @@ jobs:
     - name: build
       env:
         ENV: production
-      uses: docker://silex/emacs
+      uses: docker://silex/emacs:29.4-debian-ci
       if: github.event.deleted == false
       with:
         args: ./build.sh
