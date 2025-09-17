@@ -18,7 +18,7 @@
     <description><![CDATA[]]></description>
     <language>en</language>
     <pubDate>Tue, 07 May 2024 08:26:00 +0000</pubDate>
-    <lastBuildDate>Wed, 17 Sep 2025 10:06:48 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Sep 2025 10:31:48 +0000</lastBuildDate>
     <generator>weblorg 0.1.0 (https://emacs.love/weblorg)</generator>
     <webMaster>root</webMaster>
     <image>
@@ -98,7 +98,7 @@ Copilot），基本都能找到答案。主要是修改注册表。但其中稍�
 fonts.reg
 </p>
 
-<pre class="example" id="orgd774df1">
+<pre class="example" id="org18e9ad9">
 Windows Registry Editor Version 5.00
 
 [HKEY_CURRENT_USER\Control Panel\Desktop]
@@ -124,7 +124,7 @@ Windows Registry Editor Version 5.00
 <li>设置以下注册表变量使能够支持 Retina 显示效果</li>
 </ul>
 
-<pre class="example" id="org098ee32">
+<pre class="example" id="org6d38657">
 [HKEY_CURRENT_USER\Software\Wine\Mac Driver]
 "RetinaMode" = "Y"
 </pre>
@@ -210,7 +210,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 </p>
 
-<pre class="example" id="org3322548">
+<pre class="example" id="org05b532a">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -240,7 +240,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 <code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
 </p>
 
-<pre class="example" id="orgbd9c0c3">
+<pre class="example" id="org48e9724">
 #+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 #+END_SRC
@@ -250,7 +250,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 为了后续方便，使用 <code>Makefile</code>
 </p>
 
-<pre class="example" id="orgfe19fe0">
+<pre class="example" id="org0d25696">
 #+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -279,7 +279,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 </p>
 
-<pre class="example" id="orgfe43ff8">
+<pre class="example" id="org89a65ca">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
@@ -779,7 +779,7 @@ foo(1, 2, 'test');
 其输出
 </p>
 
-<pre class="example" id="org0110062">
+<pre class="example" id="org046a04e">
 array(1) {
   [0]=&gt;
   array(4) {
@@ -1047,7 +1047,7 @@ node-gyp 进行编译的时候，其会下载当前使用 node
 library。这个过程很漫长，我忍无可忍就开始寻求办法，看源码中是否留了直接指定源码包的接口，过不其然其中包含这样的接口。
 </p>
 
-<pre class="example" id="orge1b5eec">
+<pre class="example" id="orgf5bcb0e">
 node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 </pre>
 
@@ -1061,7 +1061,7 @@ node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 node 版本下的插件使用如下命令。
 </p>
 
-<pre class="example" id="orge70c5cd">
+<pre class="example" id="org5f56ba8">
 node-gyp rebuild --target=0.10.0
 </pre>
 
@@ -1073,7 +1073,7 @@ node-gyp rebuild --target=0.10.0
 有时候还需要在同一台机器上编译不同体系（x86，x64）下的插件
 </p>
 
-<pre class="example" id="orge95c6c3">
+<pre class="example" id="org0dab971">
 node-gyp rebuild --arch=ia32
 node-gyp rebuild --arch=x64
 </pre>
@@ -1117,7 +1117,7 @@ node-gyp 在 Windows 上会生成 visual studio 项目文件可直接用 VS
 使用 gyp 的做法
 </p>
 
-<pre class="example" id="org6010239">
+<pre class="example" id="org74a0ddc">
 gyp build.gyp --depth=. --generator-output=./output -f cmake
 gyp build.gyp --depth=. --generator-output=./output -f ninja
 </pre>
@@ -1126,7 +1126,7 @@ gyp build.gyp --depth=. --generator-output=./output -f ninja
 使用 node-gyp 的做法
 </p>
 
-<pre class="example" id="org6482396">
+<pre class="example" id="org78942ce">
 很遗憾，其没有留接口，代码写死
 win =&gt; msbuild
 mac, linux, ... =&gt; make
@@ -1148,7 +1148,7 @@ mac, linux, ... =&gt; make
 上图红框框住的地方不正是 gyp 的调用，抠出来
 </p>
 
-<pre class="example" id="orge675daa">
+<pre class="example" id="orgbfe97c1">
 /Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
 </pre>
 
@@ -1181,7 +1181,7 @@ node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 
 <code>--debug</code> 参数即可。
 </p>
 
-<pre class="example" id="org93a2621">
+<pre class="example" id="org4ff8059">
 ./configure --debug
 </pre>
 
@@ -1506,7 +1506,7 @@ Objc，可以使用积攒已久的开源财富。
 举例；
 </p>
 
-<pre class="example" id="org4682cde">
+<pre class="example" id="org93a005f">
 appicon.icns
 </pre>
 
@@ -1668,7 +1668,7 @@ fisp 就选用了 Smarty 作为模板语言。
 不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；
 </p>
 
-<pre class="example" id="org5512745">
+<pre class="example" id="orga9884b2">
 .
 ├── controller
 ├── model
@@ -1739,7 +1739,7 @@ class Index extends Controller {
 跟上面一样，后端目录依然是如下这个形式
 </p>
 
-<pre class="example" id="orgc2467f0">
+<pre class="example" id="org1542f6b">
 .
 ├── controller
 ├── model
@@ -1751,7 +1751,7 @@ class Index extends Controller {
   [[http://www.smarty.net][Smarty]] 放到 =lib/smarty</code> 目录下；
 </p>
 
-<pre class="example" id="orgf4fec90">
+<pre class="example" id="org210901e">
 .
 ├── controller
 ├── lib
@@ -2563,7 +2563,7 @@ release false
 源码
 </p>
 
-<pre class="example" id="orgbc9ed01">
+<pre class="example" id="orgdd5baae">
 src
 .
 ├── index.html
@@ -2588,7 +2588,7 @@ roadmap.path
 产出
 </p>
 
-<pre class="example" id="orgbf9e4a3">
+<pre class="example" id="org473d15c">
 output
 .
 ├── index.html
@@ -2998,7 +2998,7 @@ MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=vi
 <h4 id="开发模式">开发模式</h4>
 <div class="outline-text-4" id="text-开发模式">
 
-<figure id="org4648f58">
+<figure id="org335de41">
 <img src="file:///images/dev/rd-fe.png" alt="rd-fe.png">
 
 </figure>
@@ -3541,7 +3541,7 @@ OK, 这是一个系列文章=Awesome App=，我想给大家分享一些我觉得
 </p>
 
 
-<figure id="orgb3a8e6d">
+<figure id="org16aa7f3">
 <img src="file:///images/app/dayone-main.png" alt="dayone-main.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Day One</figcaption>

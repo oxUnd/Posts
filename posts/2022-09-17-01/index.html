@@ -3,13 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1687066-2"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-1687066-2');
-  </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
   <link href="https://www.orrafy.com/css/reset.css?v=fatal: detected dubious ownership in repository at &#39;/github/workspace&#39;
 To add an exception for this directory, call:
@@ -75,7 +68,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 </p>
 
-<pre class="example" id="org4157bef">
+<pre class="example" id="orgeb6f064">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -105,7 +98,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 <code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
 </p>
 
-<pre class="example" id="orga5d7e68">
+<pre class="example" id="orgf2177fe">
 #+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 #+END_SRC
@@ -115,7 +108,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 为了后续方便，使用 <code>Makefile</code>
 </p>
 
-<pre class="example" id="orga49133b">
+<pre class="example" id="org2d6ec44">
 #+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -144,7 +137,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 </p>
 
-<pre class="example" id="org4f3e3a6">
+<pre class="example" id="orgb627690">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
