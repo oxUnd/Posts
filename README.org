@@ -3,7 +3,7 @@
 #+date: <2025-09-17 Wed>
 #+SLUG: README
 
-[[https://github.com/dmacvicar/site.org/actions?query=workflow%3A%22Build+and+publish+to+pages%22][file:https://github.com/dmacvicar/site.org/workflows/Build%20and%20publish%20to%20pages/badge.svg]]
+[[https://github.com/oxund/posts/actions?query=workflow%3A%22Build+and+publish+to+pages%22][file:https://github.com/oxund/posts/workflows/Build%20and%20publish%20to%20pages/badge.svg]]
 
 * Introduction
 
