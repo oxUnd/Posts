@@ -14,7 +14,7 @@ jobs:
     - name: build
       env:
         ENV: production
-      uses: docker://iquiw/alpine-emacs
+      uses: docker://silex/emacs
       if: github.event.deleted == false
       with:
         args: ./build.sh
