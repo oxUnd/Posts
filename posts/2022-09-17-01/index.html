@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
-  <link href="https://www.orrafy.com/css/reset.css?v=0f2d18a" rel="stylesheet">
-  <link href="https://www.orrafy.com/css/site.css?v=0f2d18a" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/reset.css?v=f8c5aed" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=f8c5aed" rel="stylesheet">
   <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
   
 </head>
@@ -62,7 +62,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 </p>
 
-<pre class="example" id="orgf194980">
+<pre class="example" id="orge74c358">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -92,7 +92,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 <code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
 </p>
 
-<pre class="example" id="org66a8c93">
+<pre class="example" id="org95b892a">
 #+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 #+END_SRC
@@ -102,7 +102,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 为了后续方便，使用 <code>Makefile</code>
 </p>
 
-<pre class="example" id="org31fd82f">
+<pre class="example" id="org291ad96">
 #+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -131,7 +131,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 </p>
 
-<pre class="example" id="org9537e72">
+<pre class="example" id="orgcf067c4">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
@@ -150,6 +150,6 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
  
  <p class='disclaimer'></p>
 
-  <p>Last updated 17 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+  <p>Last updated 20 Sep 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
 </body>
 </html>
