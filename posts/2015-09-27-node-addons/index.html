@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
-  <link href="https://www.orrafy.com/css/reset.css?v=f8c5aed" rel="stylesheet">
-  <link href="https://www.orrafy.com/css/site.css?v=f8c5aed" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/reset.css?v=0764491" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=0764491" rel="stylesheet">
   <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
   
 </head>
@@ -110,7 +110,7 @@ node-gyp 进行编译的时候，其会下载当前使用 node
 library。这个过程很漫长，我忍无可忍就开始寻求办法，看源码中是否留了直接指定源码包的接口，过不其然其中包含这样的接口。
 </p>
 
-<pre class="example" id="org0039f6c">
+<pre class="example" id="org4b656c5">
 node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 </pre>
 
@@ -124,7 +124,7 @@ node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 node 版本下的插件使用如下命令。
 </p>
 
-<pre class="example" id="org0d1cc97">
+<pre class="example" id="org02875ba">
 node-gyp rebuild --target=0.10.0
 </pre>
 
@@ -136,7 +136,7 @@ node-gyp rebuild --target=0.10.0
 有时候还需要在同一台机器上编译不同体系（x86，x64）下的插件
 </p>
 
-<pre class="example" id="org10a97b6">
+<pre class="example" id="org51381d4">
 node-gyp rebuild --arch=ia32
 node-gyp rebuild --arch=x64
 </pre>
@@ -180,7 +180,7 @@ node-gyp 在 Windows 上会生成 visual studio 项目文件可直接用 VS
 使用 gyp 的做法
 </p>
 
-<pre class="example" id="orga2cd638">
+<pre class="example" id="orge2094c7">
 gyp build.gyp --depth=. --generator-output=./output -f cmake
 gyp build.gyp --depth=. --generator-output=./output -f ninja
 </pre>
@@ -189,7 +189,7 @@ gyp build.gyp --depth=. --generator-output=./output -f ninja
 使用 node-gyp 的做法
 </p>
 
-<pre class="example" id="org3871afb">
+<pre class="example" id="org1c89c26">
 很遗憾，其没有留接口，代码写死
 win =&gt; msbuild
 mac, linux, ... =&gt; make
@@ -211,7 +211,7 @@ mac, linux, ... =&gt; make
 上图红框框住的地方不正是 gyp 的调用，抠出来
 </p>
 
-<pre class="example" id="orga1f1633">
+<pre class="example" id="org40a3772">
 /Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
 </pre>
 
@@ -244,7 +244,7 @@ node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 
 <code>--debug</code> 参数即可。
 </p>
 
-<pre class="example" id="orgf9c844b">
+<pre class="example" id="org6812618">
 ./configure --debug
 </pre>
 
