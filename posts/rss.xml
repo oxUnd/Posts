@@ -18,7 +18,7 @@
     <description><![CDATA[]]></description>
     <language>en</language>
     <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate>
-    <lastBuildDate>Sat, 20 Sep 2025 02:08:02 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 22 Sep 2025 03:31:58 +0000</lastBuildDate>
     <generator>weblorg 0.1.0 (https://emacs.love/weblorg)</generator>
     <webMaster>root</webMaster>
     <image>
@@ -34,12 +34,17 @@
       <author>root</author>
       <guid isPermaLink="false">https://www.orrafy.com//posts/2025-09-20-it-s-omarchy/</guid>
       <pubDate>Sat, 20 Sep 2025 00:00:00 +0000</pubDate>
-      <description><![CDATA[<p>
+      <description><![CDATA[
+
+<section id="outline-container-omarchy-dwm" class="outline-2">
+<h2 id="omarchy-dwm">omarchy &amp; dwm</h2>
+<div class="outline-text-2">
+<p>
 最近被 DWM 的简易、折腾的哲学迷的五迷三道，花了些许时间虚拟机玩了一下，确实是精简，但是只能停留在虚拟机阶段。如果拿来平时在家开发使用，需要做大量的配置工作，虽然这个过程享乐，但估计没有那么多时间了。
 </p>
 
 <p>
-在坛子上逛的时候有人推荐 omarchy，可以认为是使用过 hyprland 的一整套解决方案，比较完毕，不需要太多的折腾。也是非常精简的一套定制系统套件。看了作者的视频，感觉弄得真是不错，遂萌生了安装使用 TA 的想法。
+在坛子上逛的时候有人推荐 omarchy，可以认为是使用过 hyprland 的一整套解决方案，比较完备，不需要太多的折腾。也是非常精简的一套定制系统套件。看了作者的视频，感觉弄得真是不错，遂萌生了安装使用 TA 的想法。
 </p>
 
 <p>
@@ -49,6 +54,8 @@
 <p>
 未来，在家就使用 omarchy，先用，再在巨人的肩膀上进行定制，享受这个乐趣。
 </p>
+</div>
+</section>
 ]]></description>
     </item>
     
@@ -122,7 +129,7 @@ Copilot），基本都能找到答案。主要是修改注册表。但其中稍�
 fonts.reg
 </p>
 
-<pre class="example" id="org57ff1f0">
+<pre class="example" id="orgf94e5a0">
 Windows Registry Editor Version 5.00
 
 [HKEY_CURRENT_USER\Control Panel\Desktop]
@@ -148,7 +155,7 @@ Windows Registry Editor Version 5.00
 <li>设置以下注册表变量使能够支持 Retina 显示效果</li>
 </ul>
 
-<pre class="example" id="org7c64a3a">
+<pre class="example" id="org25820ef">
 [HKEY_CURRENT_USER\Software\Wine\Mac Driver]
 "RetinaMode" = "Y"
 </pre>
@@ -234,7 +241,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 </p>
 
-<pre class="example" id="orgd10dca0">
+<pre class="example" id="org9e38949">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -264,7 +271,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 <code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
 </p>
 
-<pre class="example" id="org5dc03bd">
+<pre class="example" id="org83d836d">
 #+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 #+END_SRC
@@ -274,7 +281,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 为了后续方便，使用 <code>Makefile</code>
 </p>
 
-<pre class="example" id="orgb9cba29">
+<pre class="example" id="org58da26b">
 #+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -303,7 +310,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 </p>
 
-<pre class="example" id="org0a2228c">
+<pre class="example" id="org56381fb">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
@@ -803,7 +810,7 @@ foo(1, 2, 'test');
 其输出
 </p>
 
-<pre class="example" id="org0e5a170">
+<pre class="example" id="org9c279e6">
 array(1) {
   [0]=&gt;
   array(4) {
@@ -1071,7 +1078,7 @@ node-gyp 进行编译的时候，其会下载当前使用 node
 library。这个过程很漫长，我忍无可忍就开始寻求办法，看源码中是否留了直接指定源码包的接口，过不其然其中包含这样的接口。
 </p>
 
-<pre class="example" id="orgea2ceb0">
+<pre class="example" id="orgf667637">
 node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 </pre>
 
@@ -1085,7 +1092,7 @@ node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 node 版本下的插件使用如下命令。
 </p>
 
-<pre class="example" id="org29ef420">
+<pre class="example" id="org5f4ee3d">
 node-gyp rebuild --target=0.10.0
 </pre>
 
@@ -1097,7 +1104,7 @@ node-gyp rebuild --target=0.10.0
 有时候还需要在同一台机器上编译不同体系（x86，x64）下的插件
 </p>
 
-<pre class="example" id="org943ea98">
+<pre class="example" id="orgb8f16a9">
 node-gyp rebuild --arch=ia32
 node-gyp rebuild --arch=x64
 </pre>
@@ -1141,7 +1148,7 @@ node-gyp 在 Windows 上会生成 visual studio 项目文件可直接用 VS
 使用 gyp 的做法
 </p>
 
-<pre class="example" id="org551bbdf">
+<pre class="example" id="org81a0a2a">
 gyp build.gyp --depth=. --generator-output=./output -f cmake
 gyp build.gyp --depth=. --generator-output=./output -f ninja
 </pre>
@@ -1150,7 +1157,7 @@ gyp build.gyp --depth=. --generator-output=./output -f ninja
 使用 node-gyp 的做法
 </p>
 
-<pre class="example" id="org2cb4a76">
+<pre class="example" id="org3891d17">
 很遗憾，其没有留接口，代码写死
 win =&gt; msbuild
 mac, linux, ... =&gt; make
@@ -1172,7 +1179,7 @@ mac, linux, ... =&gt; make
 上图红框框住的地方不正是 gyp 的调用，抠出来
 </p>
 
-<pre class="example" id="orgb56a9e5">
+<pre class="example" id="org743761d">
 /Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
 </pre>
 
@@ -1205,7 +1212,7 @@ node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 
 <code>--debug</code> 参数即可。
 </p>
 
-<pre class="example" id="org8d9b0d9">
+<pre class="example" id="org5a6c4d0">
 ./configure --debug
 </pre>
 
@@ -1530,7 +1537,7 @@ Objc，可以使用积攒已久的开源财富。
 举例；
 </p>
 
-<pre class="example" id="org83fc937">
+<pre class="example" id="org3744454">
 appicon.icns
 </pre>
 
@@ -1621,7 +1628,7 @@ fisp 就选用了 Smarty 作为模板语言。
 不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；
 </p>
 
-<pre class="example" id="org027d120">
+<pre class="example" id="org0801f81">
 .
 ├── controller
 ├── model
@@ -1692,7 +1699,7 @@ class Index extends Controller {
 跟上面一样，后端目录依然是如下这个形式
 </p>
 
-<pre class="example" id="orgdc164f5">
+<pre class="example" id="orgd1b0f86">
 .
 ├── controller
 ├── model
@@ -1704,7 +1711,7 @@ class Index extends Controller {
   [[http://www.smarty.net][Smarty]] 放到 =lib/smarty</code> 目录下；
 </p>
 
-<pre class="example" id="orgb399457">
+<pre class="example" id="org5d6de0b">
 .
 ├── controller
 ├── lib
@@ -2516,7 +2523,7 @@ release false
 源码
 </p>
 
-<pre class="example" id="orgbb7abb4">
+<pre class="example" id="org9c6d985">
 src
 .
 ├── index.html
@@ -2541,7 +2548,7 @@ roadmap.path
 产出
 </p>
 
-<pre class="example" id="org02a85e3">
+<pre class="example" id="org2c1ad25">
 output
 .
 ├── index.html
@@ -2951,7 +2958,7 @@ MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=vi
 <h4 id="开发模式">开发模式</h4>
 <div class="outline-text-4" id="text-开发模式">
 
-<figure id="org3a7d619">
+<figure id="orgac0d200">
 <img src="file:///images/dev/rd-fe.png" alt="rd-fe.png">
 
 </figure>
@@ -3494,7 +3501,7 @@ OK, 这是一个系列文章=Awesome App=，我想给大家分享一些我觉得
 </p>
 
 
-<figure id="org644a566">
+<figure id="org2c9b3a6">
 <img src="file:///images/app/dayone-main.png" alt="dayone-main.png">
 
 <figcaption><span class="figure-number">Figure 1: </span>Day One</figcaption>
