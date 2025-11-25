@@ -22,7 +22,7 @@
     <generator>{{ meta.generator }}</generator>
     <webMaster>{{ site_owner }}</webMaster>
     <image>
-      <url>https://www.gravatar.com/avatar/3b67365812827fa25df5093b38934a8f?s=80</url>
+      <url>https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80</url>
       <title>Blog Author ({{ site_owner }})</title>
       <link>{{ url_for("index") }}</link>
     </image>
