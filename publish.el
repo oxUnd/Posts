@@ -42,7 +42,7 @@
  :template "post.html"
  :input-pattern "posts/**/index.org"
  :output "public/posts/{{ slug }}/index.html"
- :url "//posts/{{ slug }}/"
+ :url "/posts/{{ slug }}/"
  ; modifies slug to include the date
  :input-parser #'custom/parse-org-file)
 
@@ -52,7 +52,7 @@
   :template "blog.html"
   :input-pattern "posts/**/index.org"
   :output "public/posts/index.html"
-  :url "//posts/"
+  :url "/posts/"
   ; modifies slug to include the date
   :input-parser #'custom/parse-org-file)
 
