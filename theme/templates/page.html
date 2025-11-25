@@ -2,9 +2,10 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block main %}
-<h1>{{ post.title }}</h1>
-<div class="content">
-  {{ post.html | safe }}
+<div class="heti heti--classic">
+  <h1>{{ post.title }}</h1>
+  <div class="content">
+    {{ post.html | safe }}
+  </div>
 </div>
 {% endblock %}
-
