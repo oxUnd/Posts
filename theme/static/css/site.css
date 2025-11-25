@@ -10,13 +10,21 @@
   font-style:normal
 }
 
+html {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
 body {
-  margin: 0 auto;
+  margin: 2em auto;
   max-width: 50em;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   padding: 4em 1em;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+  min-height: calc(100vh - 4em);
 }
 
 #github-icon { color: black; }
