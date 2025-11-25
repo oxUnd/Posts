@@ -27,6 +27,10 @@ body {
   min-height: calc(100vh - 4em);
 }
 
+article {
+  margin: auto;
+}
+
 #github-icon { color: black; }
 #hacker-news-icon { color: #ff6600; }
 #bluesky-icon { color: rgb(16, 131, 254); }
