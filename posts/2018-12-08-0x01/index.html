@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
-  <link href="https://www.orrafy.com/css/reset.css?v=b1ae4ad" rel="stylesheet">
-  <link href="https://www.orrafy.com/css/site.css?v=b1ae4ad" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/reset.css?v=49e8814" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=49e8814" rel="stylesheet">
   <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="//unpkg.com/heti/umd/heti.min.css">
   
 </head>
 <body>
-  <header id="preamble" class="status">
+  <header id="preamble" class="status heti heti--classic">
     <div class="logo">
       <a href="/">
         <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
@@ -25,7 +26,7 @@
         </a>
     </div>
  </header>
- <main id="main">
+ <main id="main" class="heti heti--classic">
  
 <h1>2018-12-08-0x01</h1>
 <div class="date">08 Dec 2018</div>
@@ -222,5 +223,10 @@ Surface 差不少，后续假设入电脑，还是找官方电脑比较合适。
  <p class='disclaimer'></p>
 
   <p>Last updated 25 Nov 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+  <script src="//unpkg.com/heti/umd/heti-addon.min.js"></script>
+  <script>
+    const heti = new Heti('.heti');
+    heti.autoSpacing();
+  </script>
 </body>
 </html>

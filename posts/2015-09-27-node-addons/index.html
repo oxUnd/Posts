@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
-  <link href="https://www.orrafy.com/css/reset.css?v=b1ae4ad" rel="stylesheet">
-  <link href="https://www.orrafy.com/css/site.css?v=b1ae4ad" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/reset.css?v=49e8814" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=49e8814" rel="stylesheet">
   <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="//unpkg.com/heti/umd/heti.min.css">
   
 </head>
 <body>
-  <header id="preamble" class="status">
+  <header id="preamble" class="status heti heti--classic">
     <div class="logo">
       <a href="/">
         <img src="https://0.gravatar.com/avatar/6187fb849f337554f1515012aedd06d55365e8ac6f170cbadfaaf94d5e3790cd?s=80" class="avatar" alt="My icon."/>
@@ -25,7 +26,7 @@
         </a>
     </div>
  </header>
- <main id="main">
+ <main id="main" class="heti heti--classic">
  
 <h1>&#34;如何方便快捷的进行 node-addons 开发&#34;</h1>
 <div class="date">27 Sep 2015</div>
@@ -109,7 +110,7 @@ node-gyp 进行编译的时候，其会下载当前使用 node
 library。这个过程很漫长，我忍无可忍就开始寻求办法，看源码中是否留了直接指定源码包的接口，过不其然其中包含这样的接口。
 </p>
 
-<pre class="example" id="org02d256a">
+<pre class="example" id="orgd874376">
 node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 </pre>
 
@@ -123,7 +124,7 @@ node-gyp rebuild --tarball=&lt;path to node soruce tar.gz&gt;
 node 版本下的插件使用如下命令。
 </p>
 
-<pre class="example" id="org65cc038">
+<pre class="example" id="org82a5d41">
 node-gyp rebuild --target=0.10.0
 </pre>
 
@@ -135,7 +136,7 @@ node-gyp rebuild --target=0.10.0
 有时候还需要在同一台机器上编译不同体系（x86，x64）下的插件
 </p>
 
-<pre class="example" id="org0779862">
+<pre class="example" id="org51755be">
 node-gyp rebuild --arch=ia32
 node-gyp rebuild --arch=x64
 </pre>
@@ -179,7 +180,7 @@ node-gyp 在 Windows 上会生成 visual studio 项目文件可直接用 VS
 使用 gyp 的做法
 </p>
 
-<pre class="example" id="orgc558a3b">
+<pre class="example" id="org545d056">
 gyp build.gyp --depth=. --generator-output=./output -f cmake
 gyp build.gyp --depth=. --generator-output=./output -f ninja
 </pre>
@@ -188,7 +189,7 @@ gyp build.gyp --depth=. --generator-output=./output -f ninja
 使用 node-gyp 的做法
 </p>
 
-<pre class="example" id="org5ee861d">
+<pre class="example" id="org2fd11c6">
 很遗憾，其没有留接口，代码写死
 win =&gt; msbuild
 mac, linux, ... =&gt; make
@@ -210,7 +211,7 @@ mac, linux, ... =&gt; make
 上图红框框住的地方不正是 gyp 的调用，抠出来
 </p>
 
-<pre class="example" id="orgd9ea86e">
+<pre class="example" id="org62102cf">
 /Users/shouding/Bin/lib/node_modules/node-gyp/gyp/gyp_main.py binding.gyp -f make -I /Users/shouding/Dev/fis2/dev/images/build/config.gypi -I /Users/shouding/Bin/lib/node_modules/node-gyp/addon.gypi -I /Users/shouding/.node-gyp/4.1.1/include/node/common.gypi -Dlibrary=shared_library -Dvisibility=default -Dnode_root_dir=/Users/shouding/.node-gyp/4.1.1 -Dnode_gyp_dir=/Users/shouding/Bin/lib/node_modules/node-gyp -Dnode_lib_file=node.lib -Dmodule_root_dir=/Users/shouding/Dev/fis2/dev/images --depth=.  --no-parallel --generator-output build -Goutput_dir=.
 </pre>
 
@@ -243,7 +244,7 @@ node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 
 <code>--debug</code> 参数即可。
 </p>
 
-<pre class="example" id="org983ffc8">
+<pre class="example" id="orgdb3a3ca">
 ./configure --debug
 </pre>
 
@@ -273,5 +274,10 @@ node，俗称 node_g；这个需要自己编译 node 才能得到，编译 node 
  <p class='disclaimer'></p>
 
   <p>Last updated 25 Nov 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+  <script src="//unpkg.com/heti/umd/heti-addon.min.js"></script>
+  <script>
+    const heti = new Heti('.heti');
+    heti.autoSpacing();
+  </script>
 </body>
 </html>
