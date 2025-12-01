@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
-  <link href="https://www.orrafy.com/css/reset.css?v=57015ef" rel="stylesheet">
-  <link href="https://www.orrafy.com/css/site.css?v=57015ef" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/reset.css?v=1cc0af0" rel="stylesheet">
+  <link href="https://www.orrafy.com/css/site.css?v=1cc0af0" rel="stylesheet">
   <link rel="preload" href="https://www.orrafy.com/fonts/blockzone-webfont.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="//unpkg.com/heti/umd/heti.min.css">
   
@@ -63,7 +63,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 </p>
 
-<pre class="example" id="orgdfaf407">
+<pre class="example" id="org62c7e4f">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -93,7 +93,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 <code>elpa</code> 文件夹下其他所有 <code>.elc</code> 文件。
 </p>
 
-<pre class="example" id="orgf432f3f">
+<pre class="example" id="org2008e46">
 #+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 #+END_SRC
@@ -103,7 +103,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 为了后续方便，使用 <code>Makefile</code>
 </p>
 
-<pre class="example" id="orgb9e25cb">
+<pre class="example" id="orge85049c">
 #+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -132,7 +132,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 </p>
 
-<pre class="example" id="orgffb6690">
+<pre class="example" id="orgf862176">
 #+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
@@ -152,7 +152,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el</code>
  
  <p class='disclaimer'></p>
 
-  <p>Last updated 30 Nov 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
+  <p>Last updated 01 Dec 2025. Built with <a href="https://www.gnu.org/software/emacs/">Emacs</a> 29.4 (<a href="https://orgmode.org/">Org</a> mode 9.6.15). <a href="https://www.orrafy.com/readme.html">Details</a>.</p>
   <script src="//unpkg.com/heti/umd/heti-addon.min.js"></script>
   <script>
     const heti = new Heti('.heti');
