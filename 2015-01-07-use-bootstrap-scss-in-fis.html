@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OxUnd.</title>
+<title>在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用</title>
 <meta name="generator" content="mvi">
 <style data-library="heti@0.9.6">/*!
  * Project: Heti
@@ -426,7 +426,7 @@ main:has(> .home-feature) > .content {
 </span>
 </a>
 <nav class="site-links" aria-label="站点导航">
-<a class="site-link" href="/" rel="home" aria-current="page">首页</a>
+<a class="site-link" href="/" rel="home">首页</a>
 <a class="site-link" href="https://github.com/oxund">GitHub <span class="site-external" aria-hidden="true">↗</span></a>
 </nav>
 </header>
@@ -449,67 +449,129 @@ main:has(> .home-feature) > .content {
 </select></label>
 </div>
 <main class="heti--classic">
-<figure class="home-feature">
-<div class="home-feature-frame">
-<img src="assets/home/feature.webp" alt="本次发布随机选取的黑白风景照片">
-</div>
-<figcaption>Random frame for this release · <a href="https://picsum.photos/">Picsum</a></figcaption>
-</figure>
+<header class="document-header">
+<div class="eyebrow">Org document</div>
+<h1>在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用</h1>
+<div class="byline"><span class="date">2015-01-07 10:43:00</span></div>
+</header>
+<aside class="toc"><details class="toc-details" open><summary class="toc-label">目录</summary><nav><ul>
+<li class="level-1"><a href="#section-1">2015-01-07-use-bootstrap-scss-in-fis</a></li>
+<li class="level-3"><a href="#section-2">准备工作</a></li>
+<li class="level-3"><a href="#section-3">开始调教</a></li>
+<li class="level-4"><a href="#section-4">准备bootstrap源码</a></li>
+<li class="level-4"><a href="#section-5">在fis中使用</a></li>
+<li class="level-4"><a href="#section-6">使用bootstrap</a></li>
+</ul></nav></details></aside>
 <article class="content heti heti--classic" lang="zh-CN">
-<h2 id="section-1">Projects/Code</h2>
+<h2 id="section-1">2015-01-07-use-bootstrap-scss-in-fis</h2>
+<p>从题目不难看出，我最近要开始写点关于fis使用的博文了。fis固然好，但一些使用上的细节，不是靠看文档就能看得明白使用得顺心的；</p>
+<p>好吧，本来应该把文档写得风趣一点，奈何大家写文档都是一板一眼，不好扭过来。</p>
+<p>闲话少扯......</p>
+<p>最近在整理官网，官网由于时间的推移，用户认知的改变需要做一些调整。展示给用户的内容呢要突出重点，所以呢我就放下手头乌七八糟的事情，开始了设计页面的事情；选来选去还是决定选择bootstrap干净利落；</p>
+<p>bootstrap提供了less、sass等异构语言（变种语言）的版本，如今如果搞前端不用点这些都觉着丢人。那么问题来了，在fis里面如何使用上bootstrap的less或者sass版本呢？</p>
+<p>由于我要使用的是<code>sass</code>，就来写写bootstrap的sass版本在fis的使用吧。</p>
+<h4 id="section-2">准备工作</h4>
 <ul>
-<li>比较喜欢的项目
-<ul>
-<li><a href="https://github.com/torvalds/linux">Linux</a> — Linux 内核源码
+<li>安装fis <code>npm install -g fis</code>
 </li>
-<li><a href="https://github.com/nginx/nginx">nginx</a> — Web 服务器与反向代理
+<li>安装fis-parser-sass插件 <code>npm install -g fis-parser-sass</code>
 </li>
-<li><a href="https://github.com/ruby/ruby">Ruby</a> — Ruby 语言实现
+<li>下载<a href="https://github.com/twbs/bootstrap-sass/archive/v3.3.1.tar.gz">bootstrap-sass</a>
 </li>
 </ul>
-</li>
-</ul>
-<h2 id="section-2">Posts</h2>
+<h4 id="section-3">开始调教</h4>
+<h5 id="section-4">准备bootstrap源码</h5>
+<p>不出意外的话，下来下来的bootstrap-sass解压后目录下有一大坨的东西，如这样</p>
+<div class="code-block"><div class="code-label">sh</div><pre><code class="language-sh">$ tree -L 2
+.
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── Gemfile
+├── LICENSE
+├── README.md
+├── Rakefile
+├── assets
+│   ├── fonts
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+├── bootstrap-sass.gemspec
+├── bower.json
+├── composer.json
+├── lib
+│   ├── bootstrap-sass
+│   └── bootstrap-sass.rb
+├── package.json
+├── sache.json
+├── tasks
+│   ├── bower.rake
+│   ├── converter
+│   └── converter.rb
+├── templates
+│   └── project
+└── test
+    ├── compass_test.rb
+    ├── compilation_test.rb
+    ├── dummy_node_mincer
+    ├── dummy_rails
+    ├── dummy_sass_only
+    ├── gemfiles
+    ├── node_mincer_test.rb
+    ├── node_sass_compile_test.sh
+    ├── pages_test.rb
+    ├── sass_test.rb
+    ├── sprockets_rails_test.rb
+    ├── support
+    ├── test_helper.rb
+    └── test_helper_rails.rb</code></pre></div>
+<p>看到很多东西，特别是<code>.json</code>结尾的，都是提供给包管理用的，现在提供库的这些开发者也是蛮拼的，不过在他们的行列里面以后也会有<code>fis的包管理配置文件</code>的，😄i</p>
+<p>这么多东西，其实有用的就<code>assets</code>下的;那么其他东西是什么呢，由于sass是用ruby写的其他的东西都是一些编译出css的程序，忽略它们就好。</p>
+<p>不用的东西那么多，果断copy出有用的东西（<code>assets</code>目录下的内容）。</p>
+<div class="code-block"><div class="code-label">sh</div><pre><code class="language-sh">➜  bootstrap  tree -L 1
+.
+├── fonts
+├── images
+├── javascripts
+└── stylesheets</code></pre></div>
+<p><code>sass</code>文件都在<code>stylesheets</code>下面；</p>
+<h5 id="section-5">在fis中使用</h5>
+<p>创建一个文件夹，作为fis的项目目录，并新建<code>fis-conf.js</code></p>
+<div class="code-block"><div class="code-label">sh</div><pre><code class="language-sh">$ mkdir fis-ui
+$ touch fis-conf.js</code></pre></div>
+<blockquote><p>windows用户可右键创建</p></blockquote>
+<p>然后把准备好的源码<code>bootstrap</code>目录放到<code>fis-ui/static/</code>下面；</p>
+<p>配置配置文件</p>
+<div class="code-block"><div class="code-label">javascript</div><pre><code class="language-javascript">// file: fis-conf.js
+fis.config.set(&#39;project.exclude&#39;, &#39;**/_*.scss&#39;); // [1]
+fis.config.set(&#39;modules.parser.scss&#39;, &#39;sass&#39;); //启用fis-parser-sass插件当处理文件后缀是`.scss`。
+fis.config.set(&#39;roadmap.ext.scss&#39;, &#39;css&#39;); //`.scss`的文件最后编译产出成`.css`文件。
+
+//给插件fis-parser-sass配置信息
+fis.config.set(&#39;settings.parser.sass&#39;, {
+    &#39;include_paths&#39;: [__dirname, path.join(__dirname, &#39;static&#39;, &#39;bootstrap&#39;, &#39;stylesheets&#39;)] //[2]
+});</code></pre></div>
+<p><em>解释：</em></p>
 <ul>
-<li><a href="2025-11-30-suckless-dwm.html">折腾不止，使用 DWM</a>
+<li>[1]，<code>_</code>开头的这些文件，可以认为是定义的sass组件，会被sass最终编译内嵌到其他文件中
 </li>
-<li><a href="2024-05-07-wine-macos-m1.html">在 macOS 上使用 wine 9.0</a>
+<li>[2]，这句告诉sass这个插件，遇到<code>@import</code>时，去什么目录查找文件。
 </li>
-<li><a href="2022-09-17-01.html">Emacs使用以及简单优化</a>
-</li>
-<li><a href="2021-04-04-0-now-life.html">写在这个小假期，祭祖抑或是旅游或是居家</a>
-</li>
-<li><a href="2018-12-08-0x01.html">2018-12-08-0x01</a>
-</li>
-<li><a href="2017-01-12-mazda-01.html">17 年马自达 CX-4 爆胎纪</a>
-</li>
-<li><a href="2016-11-08-dev-php-0001.html">弱类型下的参数类型检查</a>
-</li>
-<li><a href="2016-03-04-note-no.2.html">买了一台黑莓手机</a>
-</li>
-<li><a href="2016-01-31-disk-space.html">本周软件 - OmniDiskSweeper</a>
-</li>
-<li><a href="2015-09-27-node-addons.html">如何方便快捷的进行 node-addons 开发</a>
-</li>
-<li><a href="2015-09-22-create-mac-app.html">Markdown Helper，一次 Mac App 开发之旅</a>
-</li>
-<li><a href="2015-05-08-fis-plus-online.html">fis-plus篇，fisp 项目如何在线上跑起来</a>
-</li>
-<li><a href="2015-01-07-use-bootstrap-scss-in-fis.html">在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用</a>
-</li>
-<li><a href="2014-12-06-fisp-online-smarty.html">fis-plus上线篇之搞定smarty环境</a>
-</li>
-<li><a href="2014-07-30-yog.html">yog，简单易用的node框架</a>
-</li>
-<li><a href="2014-07-13-xcode-test.html">初用xcode 5</a>
-</li>
-<li><a href="2014-06-13-node-1.html">用nodejs构建网站</a>
-</li>
-<li><a href="2014-05-30-quickling-1.html">网页加载优化方案：bigpipe，bigrender，lazyrender</a>
-</li>
-<li><a href="2013-11-17-dayone.html">Awesome App: Day One</a>
+<li>fis-parser-sass是一个编译sass编译工具
 </li>
 </ul>
+<h5 id="section-6">使用bootstrap</h5>
+<p>假设页面的样式文件是<code>/static/index.scss</code>，那么使用就很简单了；</p>
+<div class="code-block"><div class="code-label">css</div><pre><code class="language-css">@import &#39;_bootstrap.scss&#39;; /*从某一个include_path找到文件*/</code></pre></div>
+<p>然后在页面引入这个index.scss即可；</p>
+<div class="code-block"><div class="code-label">html</div><pre><code class="language-html">&lt;link href=&quot;/static/index.scss&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;&gt;</code></pre></div>
+<p>当然在<code>index.scss</code>里面可以使用任意的<code>bootstrap</code>定义的<code>var</code>、<code>mixin</code>、<code>...</code>了。</p>
+<p>fis编译查看</p>
+<div class="code-block"><div class="code-label">sh</div><pre><code class="language-sh">$ fis release
+or
+$ fis release -wL
+$ fis server start</code></pre></div>
+<hr>
+<p>DONE.</p>
 </article>
 </main>
 <script data-library="highlight.js@11.11.1">

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OxUnd.</title>
+<title>弱类型下的参数类型检查</title>
 <meta name="generator" content="mvi">
 <style data-library="heti@0.9.6">/*!
  * Project: Heti
@@ -426,7 +426,7 @@ main:has(> .home-feature) > .content {
 </span>
 </a>
 <nav class="site-links" aria-label="站点导航">
-<a class="site-link" href="/" rel="home" aria-current="page">首页</a>
+<a class="site-link" href="/" rel="home">首页</a>
 <a class="site-link" href="https://github.com/oxund">GitHub <span class="site-external" aria-hidden="true">↗</span></a>
 </nav>
 </header>
@@ -449,67 +449,95 @@ main:has(> .home-feature) > .content {
 </select></label>
 </div>
 <main class="heti--classic">
-<figure class="home-feature">
-<div class="home-feature-frame">
-<img src="assets/home/feature.webp" alt="本次发布随机选取的黑白风景照片">
-</div>
-<figcaption>Random frame for this release · <a href="https://picsum.photos/">Picsum</a></figcaption>
-</figure>
+<header class="document-header">
+<div class="eyebrow">Org document</div>
+<h1>弱类型下的参数类型检查</h1>
+<div class="byline"><span class="date">2016-11-08 10:02:04 +0800</span></div>
+</header>
 <article class="content heti heti--classic" lang="zh-CN">
-<h2 id="section-1">Projects/Code</h2>
-<ul>
-<li>比较喜欢的项目
-<ul>
-<li><a href="https://github.com/torvalds/linux">Linux</a> — Linux 内核源码
+<h2 id="section-1">2016-11-08-dev-php-0001</h2>
+<p>昨天看到一个项目，特别好奇的看了一眼，顿觉世界人民还是智慧满天下的。</p>
+<p>大家可能都知道，php 是弱类型的，那么就意味着有各种可能性，bug 能在代码中游离，不顾一切。</p>
+<p>好了，段子说完了，我们开始说正题。</p>
+<p>如果要做到参数检查，无非两点</p>
+<ol>
+<li>语言本身支持
 </li>
-<li><a href="https://github.com/nginx/nginx">nginx</a> — Web 服务器与反向代理
+<li>写校验
 </li>
-<li><a href="https://github.com/ruby/ruby">Ruby</a> — Ruby 语言实现
+</ol>
+<p>对于第一点可以选择 hacklang，不缀述了。本文围绕第二点，可能看到这儿你会觉得我偏你感情，校验谁不会，但客官先别急。</p>
+<p>我以前也是如同你这般，检验参数谁不会的态度走了这么久...但当我看到昨天那个项目的时候，有必要写一篇出来。</p>
+<p>昨天看到的项目的校验是这么写的</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">&lt;?php
+
+function foo($a, $b) {
+  Argument::i()
+    -&gt;test(1, &#39;string&#39;)
+    -&gt;test(2, &#39;number&#39;);
+}</code></pre></div>
+<p>而通常我们写是这么写的</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">&lt;?php
+
+function foo($a, $b) {
+    if (!is_string($a) || !is_numeric($b)) {
+        throw new ArgumentInvalidException(&#39;xxx&#39;);
+    }
+}</code></pre></div>
+<p>摔桌子......</p>
+<p>一个是完全有规律有节奏的校验，一个是没有共性 case by case 的校验。</p>
+<p>最近也是对数据的校验产生了浓厚的兴趣，原因无他，因为没有一个能把这个事情干漂亮的。</p>
+<p>看到这儿，大家可能也想知道是如何做的？</p>
+<p>在整个 PHP 体系里面，奇技淫巧数不胜数，当然从侧面讲是“高级特性”。要想做到上面写到的这块代码描述的情况，也不是什么难事儿。咋们可以幻想一下，实现此类功能，应该如何做；</p>
+<ul>
+<li>首先得获取到调用参数的运行时变量值
+</li>
+<li>然后给定规则校验这个值是否 OK
 </li>
 </ul>
-</li>
-</ul>
-<h2 id="section-2">Posts</h2>
-<ul>
-<li><a href="2025-11-30-suckless-dwm.html">折腾不止，使用 DWM</a>
-</li>
-<li><a href="2024-05-07-wine-macos-m1.html">在 macOS 上使用 wine 9.0</a>
-</li>
-<li><a href="2022-09-17-01.html">Emacs使用以及简单优化</a>
-</li>
-<li><a href="2021-04-04-0-now-life.html">写在这个小假期，祭祖抑或是旅游或是居家</a>
-</li>
-<li><a href="2018-12-08-0x01.html">2018-12-08-0x01</a>
-</li>
-<li><a href="2017-01-12-mazda-01.html">17 年马自达 CX-4 爆胎纪</a>
-</li>
-<li><a href="2016-11-08-dev-php-0001.html">弱类型下的参数类型检查</a>
-</li>
-<li><a href="2016-03-04-note-no.2.html">买了一台黑莓手机</a>
-</li>
-<li><a href="2016-01-31-disk-space.html">本周软件 - OmniDiskSweeper</a>
-</li>
-<li><a href="2015-09-27-node-addons.html">如何方便快捷的进行 node-addons 开发</a>
-</li>
-<li><a href="2015-09-22-create-mac-app.html">Markdown Helper，一次 Mac App 开发之旅</a>
-</li>
-<li><a href="2015-05-08-fis-plus-online.html">fis-plus篇，fisp 项目如何在线上跑起来</a>
-</li>
-<li><a href="2015-01-07-use-bootstrap-scss-in-fis.html">在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用</a>
-</li>
-<li><a href="2014-12-06-fisp-online-smarty.html">fis-plus上线篇之搞定smarty环境</a>
-</li>
-<li><a href="2014-07-30-yog.html">yog，简单易用的node框架</a>
-</li>
-<li><a href="2014-07-13-xcode-test.html">初用xcode 5</a>
-</li>
-<li><a href="2014-06-13-node-1.html">用nodejs构建网站</a>
-</li>
-<li><a href="2014-05-30-quickling-1.html">网页加载优化方案：bigpipe，bigrender，lazyrender</a>
-</li>
-<li><a href="2013-11-17-dayone.html">Awesome App: Day One</a>
-</li>
-</ul>
+<p>可以看到，就如第一段代码描述的，感觉只有设定规则，并没有去获取函数参数值。这块就让我百思不得姐了；</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">&lt;?php
+
+
+function foo() {
+    var_dump(debug_backtrace());
+}
+
+foo(1, 2, &#39;test&#39;);</code></pre></div>
+<p>其输出</p>
+<pre>array(1) {
+  [0]=&gt;
+  array(4) {
+    [&quot;file&quot;]=&gt;
+    string(31) &quot;/Users/shouding/Downloads/t.php&quot;
+    [&quot;line&quot;]=&gt;
+    int(8)
+    [&quot;function&quot;]=&gt;
+    string(3) &quot;foo&quot;
+    [&quot;args&quot;]=&gt;
+    array(3) {
+      [0]=&gt;
+      int(1)
+      [1]=&gt;
+      int(2)
+      [2]=&gt;
+      string(4) &quot;test&quot;
+    }
+  }
+}</pre>
+<p>居然用了 <code>debug_backtrace</code> 函数，虽然这样能拿到参数，但我想性能损耗也是比较大的。</p>
+<p>可能你会突然说，我操，原来用来这个东西，但其实我们很少用到这些，因为某公司还处在 PHP 5.2 的水平上。</p>
+<p>但，文法确实很赞，给了我一些思路。</p>
+<p>如果协助以编译工具，或者稍微写代码的时候允许繁琐一点，就能比较完美的实现函数参数类型校验了。</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">&lt;?php
+
+function foo($a, $b) {
+    Argument::i(func_get_args())
+        -&gt;test(1, &#39;string&#39;)
+        -&gt;test(2, &#39;number&#39;);
+}</code></pre></div>
+<p>文法、性能上都有所考虑了。</p>
+<p>我还没说完，等我晚上更。</p>
 </article>
 </main>
 <script data-library="highlight.js@11.11.1">

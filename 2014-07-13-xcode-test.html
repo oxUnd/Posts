@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OxUnd.</title>
+<title>初用xcode 5</title>
 <meta name="generator" content="mvi">
 <style data-library="heti@0.9.6">/*!
  * Project: Heti
@@ -426,7 +426,7 @@ main:has(> .home-feature) > .content {
 </span>
 </a>
 <nav class="site-links" aria-label="站点导航">
-<a class="site-link" href="/" rel="home" aria-current="page">首页</a>
+<a class="site-link" href="/" rel="home">首页</a>
 <a class="site-link" href="https://github.com/oxund">GitHub <span class="site-external" aria-hidden="true">↗</span></a>
 </nav>
 </header>
@@ -449,67 +449,44 @@ main:has(> .home-feature) > .content {
 </select></label>
 </div>
 <main class="heti--classic">
-<figure class="home-feature">
-<div class="home-feature-frame">
-<img src="assets/home/feature.webp" alt="本次发布随机选取的黑白风景照片">
-</div>
-<figcaption>Random frame for this release · <a href="https://picsum.photos/">Picsum</a></figcaption>
-</figure>
+<header class="document-header">
+<div class="eyebrow">Org document</div>
+<h1>初用xcode 5</h1>
+<div class="byline"><span class="date">2014-07-13 19:00:58</span></div>
+</header>
 <article class="content heti heti--classic" lang="zh-CN">
-<h2 id="section-1">Projects/Code</h2>
+<h2 id="section-1">2014-07-13-xcode-test</h2>
+<p>今天闲来无事，想起了周五学芝提到的异步IO问题，以前看过这方面的内容，但已经很模糊了，打算找出来看看。</p>
+<p>当我调用<code>mvim</code>进行尝试的时候，以前没有配置过，在不知道API是啥的时候，没有提示。这个实在难容，就打开了装了很久但没怎么用过的<code>xcode 5</code>。</p>
+<p>在使用它的时候多多少少有些不太自在，特别是以前管用的一些用法不怎么灵光了。</p>
 <ul>
-<li>比较喜欢的项目
-<ul>
-<li><a href="https://github.com/torvalds/linux">Linux</a> — Linux 内核源码
+<li>当我要注释一段代码的时候，我用<code>&lt;Command-/&gt;</code>，当我想取消注释的时候，不好使了，又添加了一遍注释。
 </li>
-<li><a href="https://github.com/nginx/nginx">nginx</a> — Web 服务器与反向代理
+<li>当我代码乱了后，没办法方便<code>format</code>
 </li>
-<li><a href="https://github.com/ruby/ruby">Ruby</a> — Ruby 语言实现
+<li>当我提示选错的时候，残留的代码还要删除，我又得提起鼠标开始删了（貌似鼠标被放在公司了，没带。。。）。
 </li>
 </ul>
-</li>
-</ul>
-<h2 id="section-2">Posts</h2>
+<p>此时我已经凌乱了。再看向代码的显示主题，就有打开vim的冲动了。</p>
+<p>不过新知识实在需要xcode这样的IDE。索性查了查看有没有好用的插件。</p>
+<p>网络总是发展很快，而沉淀很多。google第一二条就是想要的。</p>
 <ul>
-<li><a href="2025-11-30-suckless-dwm.html">折腾不止，使用 DWM</a>
+<li><a href="http://nshipster.com/xcode-plugins/">http:/<em>nshipster.com</em>xcode-plugins/</a>
 </li>
-<li><a href="2024-05-07-wine-macos-m1.html">在 macOS 上使用 wine 9.0</a>
-</li>
-<li><a href="2022-09-17-01.html">Emacs使用以及简单优化</a>
-</li>
-<li><a href="2021-04-04-0-now-life.html">写在这个小假期，祭祖抑或是旅游或是居家</a>
-</li>
-<li><a href="2018-12-08-0x01.html">2018-12-08-0x01</a>
-</li>
-<li><a href="2017-01-12-mazda-01.html">17 年马自达 CX-4 爆胎纪</a>
-</li>
-<li><a href="2016-11-08-dev-php-0001.html">弱类型下的参数类型检查</a>
-</li>
-<li><a href="2016-03-04-note-no.2.html">买了一台黑莓手机</a>
-</li>
-<li><a href="2016-01-31-disk-space.html">本周软件 - OmniDiskSweeper</a>
-</li>
-<li><a href="2015-09-27-node-addons.html">如何方便快捷的进行 node-addons 开发</a>
-</li>
-<li><a href="2015-09-22-create-mac-app.html">Markdown Helper，一次 Mac App 开发之旅</a>
-</li>
-<li><a href="2015-05-08-fis-plus-online.html">fis-plus篇，fisp 项目如何在线上跑起来</a>
-</li>
-<li><a href="2015-01-07-use-bootstrap-scss-in-fis.html">在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用</a>
-</li>
-<li><a href="2014-12-06-fisp-online-smarty.html">fis-plus上线篇之搞定smarty环境</a>
-</li>
-<li><a href="2014-07-30-yog.html">yog，简单易用的node框架</a>
-</li>
-<li><a href="2014-07-13-xcode-test.html">初用xcode 5</a>
-</li>
-<li><a href="2014-06-13-node-1.html">用nodejs构建网站</a>
-</li>
-<li><a href="2014-05-30-quickling-1.html">网页加载优化方案：bigpipe，bigrender，lazyrender</a>
-</li>
-<li><a href="2013-11-17-dayone.html">Awesome App: Day One</a>
+<li><a href="http://iosdevtips.co/post/82232620790/best-xcode-plugins">http:/<em>iosdevtips.co</em>post<em>82232620790</em>best-xcode-plugins</a>
 </li>
 </ul>
+<p>上面两篇文章介绍了一些常用的插件。其中有<code>xvim</code>，秉着尝试一把的念头试了试，发现这东西确实很好用，给了<code>xcode</code>另一条生命，随用之。</p>
+<p>后装上了最爱的代码颜色主题 <code>base16-ocean</code>，看着整个开发环境顺眼多了。</p>
+<ul>
+<li><a href="https://github.com/chriskempson/base16">https:/<em>github.com</em>chriskempson/base16</a>
+</li>
+</ul>
+<hr>
+<p>周末完了，多学多看，周末拿起《Unix 环境高级编程》开始看了看<code>socket</code>方面的知识和<code>异步io</code>方面的知识，翻译真不咋地，很多错误。</p>
+<p>虽然很多人都给socket例子，我这块也贴一个。</p>
+<p>&lt;%gist xiangshouding/d5e53c83b83c71954675 %&gt;</p>
+<p>随口唠叨一篇，下周工作快乐。</p>
 </article>
 </main>
 <script data-library="highlight.js@11.11.1">
