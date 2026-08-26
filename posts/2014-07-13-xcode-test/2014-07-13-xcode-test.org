@@ -1,5 +1,5 @@
-#+TITLE: "初用xcode 5"
-#+DATE: 2014-07-13 19:00:58 
+#+TITLE: 初用xcode 5
+#+DATE: 2014-07-13 19:00:58
 #+CATEGORIES: osx
 #+AUTHOR: 
 

@@ -3,20 +3,69 @@
 #+date: <2025-09-17 Wed>
 #+SLUG: README
 
-[[https://github.com/oxund/posts/actions?query=workflow%3A%22Build+and+publish+to+pages%22][file:https://github.com/oxund/posts/workflows/Build%20and%20publish%20to%20pages/badge.svg]]
-
 * Introduction
 
-This is the source for my website. It is managed using Emacs and [[https://orgmode.org][org-mode]].
+This is the source for my website. It is written in [[https://orgmode.org][Org mode]]
+and exported by **mvi**.
 
-The latest incarnation is based on [[https://github.com/dmacvicar/site.org][site.org]] and [[https://emacs.love/weblorg/][weblorg]], a wrapper on top of [[https://orgmode.org/manual/Exporting.html][org-export]].
+Each published Org file has a unique basename. The build exports every document
+as standalone HTML with mvi's bundled pure-Lua Org renderer, and generates the
+homepage article list from the files below =posts/=. No Emacs, weblorg or Jinja
+templates are required.
 
-It used to be a heavily customized org-publish setup, but weblorg puts all together in a simpler setup and add support for Jinja like templates.
+Build locally with:
 
-For details about the original implementation see [[file:posts/2019-09-03-migrating-from-jekyll-to-org/index.org][the introductory post]] and the [[https://github.com/dmacvicar/site.org/blob/75e54006a7384cfe8504ab8c6b215ab081d3d8ec/publish.el][\faGithub original source]].
+#+begin_src sh
+make
+#+end_src
+
+The generated site is written to =public/=. Old URLs fall through to
+=404.html= and redirect to the homepage.
+
+Build and preview it locally at =http://127.0.0.1:8000=:
+
+#+begin_src sh
+make preview
+make preview PORT=8080  # optional custom port
+#+end_src
+
+The homepage preview uses a stable grayscale image from Lorem Picsum. A release
+downloads a new 900×1200 WebP image, stores it in =public/assets/home/=, and
+publishes that file with the site. Visitors never load it from Picsum directly.
+
+** Images
+
+Put images in an =images/= directory next to the Org document:
+
+#+begin_example
+posts/2026-08-26-example/
+├── 2026-08-26-example.org
+└── images/
+    └── screenshot.png
+#+end_example
+
+Reference them with a relative Org link:
+
+#+begin_src org
+[[file:images/screenshot.png]]
+#+end_src
+
+The build copies them to =public/assets/2026-08-26-example/= and rewrites the
+generated HTML automatically. Each page has its own asset directory, so image
+filenames may be reused safely across posts.
+
+Publish the generated site to the =gh-pages= branch after reviewing it:
+
+#+begin_src sh
+make release
+#+end_src
+
+The release runs in a disposable repository, creates a commit containing only
+=public/=, and pushes that commit to =origin/gh-pages=. It does not switch or
+commit the source branch.
 
 * License
 
 The code used for generating the site is licensed under the [[file:LICENSE][MIT]] license.
 
-The content of the site, Copyright (©) 2014-2025 {{{author}}}.
+The content of the site, Copyright (©) 2014-2026 {{{author}}}.

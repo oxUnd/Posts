@@ -2,7 +2,12 @@
 #+OPTIONS: toc:nil title:nil
 #+SLUG: index-----
 
-* \faCode Projects/Code
+* Projects/Code
   :PROPERTIES:
   :HTML_CONTAINER_CLASS: post-list
   :END:
+
+- 比较喜欢的项目
+  - [[https://github.com/torvalds/linux][Linux]] — Linux 内核源码
+  - [[https://github.com/nginx/nginx][nginx]] — Web 服务器与反向代理
+  - [[https://github.com/ruby/ruby][Ruby]] — Ruby 语言实现

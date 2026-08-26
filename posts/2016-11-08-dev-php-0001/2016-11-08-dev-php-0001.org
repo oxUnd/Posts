@@ -1,4 +1,4 @@
-#+TITLE: "弱类型下的参数类型检查"
+#+TITLE: 弱类型下的参数类型检查
 #+DATE: 2016-11-08 10:02:04 +0800
 #+CATEGORIES: dev/php
 #+AUTHOR: 

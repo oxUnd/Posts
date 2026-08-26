@@ -1,4 +1,4 @@
-#+TITLE: "Awesome App: Day One "
+#+TITLE: Awesome App: Day One
 #+DATE: 2013-11-27 12:41:32
 #+CATEGORIES: jekyll app
 #+AUTHOR: 

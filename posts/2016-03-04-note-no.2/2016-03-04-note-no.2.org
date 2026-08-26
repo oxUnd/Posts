@@ -1,4 +1,4 @@
-#+TITLE: "买了一台黑莓手机"
+#+TITLE: 买了一台黑莓手机
 #+DATE: 2016-03-04 14:28:43 +0800
 #+CATEGORIES: my
 #+AUTHOR: 

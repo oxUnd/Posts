@@ -1,4 +1,4 @@
-#+TITLE: "在 macOS 上使用 wine 9.0"
+#+TITLE: 在 macOS 上使用 wine 9.0
 #+DATE: 2024-05-07 08:26:30 +0800
 #+CATEGORIES: 2024/05
 #+AUTHOR: 

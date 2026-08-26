@@ -1,4 +1,4 @@
-#+TITLE: "Emacs使用以及简单优化"
+#+TITLE: Emacs使用以及简单优化
 #+DATE: 2022-09-17 22:26:30 +0800
 #+CATEGORIES: 2022/09
 #+AUTHOR: 

@@ -1,4 +1,4 @@
-#+TITLE: "yog，简单易用的node框架"
+#+TITLE: yog，简单易用的node框架
 #+DATE: 2014-07-30 14:27:53
 #+CATEGORIES: web-dev
 #+AUTHOR: 

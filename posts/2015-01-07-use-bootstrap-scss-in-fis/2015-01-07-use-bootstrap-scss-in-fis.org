@@ -1,4 +1,4 @@
-#+TITLE: "在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用"
+#+TITLE: 在fis中使用bootstrap-sass，熟悉fis-parser-sass的使用
 #+DATE: 2015-01-07 10:43:00
 #+CATEGORIES: fisbook 
 #+AUTHOR: 

@@ -1,4 +1,4 @@
-#+TITLE: "Markdown Helper，一次 Mac App 开发之旅"
+#+TITLE: Markdown Helper，一次 Mac App 开发之旅
 #+DATE: 2015-09-22 15:59:39
 #+CATEGORIES: my
 #+AUTHOR: 

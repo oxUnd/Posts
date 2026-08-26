@@ -1,4 +1,4 @@
-#+TITLE: "fis-plus上线篇之搞定smarty环境"
+#+TITLE: fis-plus上线篇之搞定smarty环境
 #+DATE: 2014-12-06 10:48:36
 #+CATEGORIES: fisbook
 #+AUTHOR: 

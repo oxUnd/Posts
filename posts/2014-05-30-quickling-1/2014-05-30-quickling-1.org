@@ -1,4 +1,4 @@
-#+TITLE: "网页加载优化方案：bigpipe，bigrender，lazyrender"
+#+TITLE: 网页加载优化方案：bigpipe，bigrender，lazyrender
 #+DATE: 2014-05-30 17:26:02
 #+CATEGORIES: web-dev
 #+AUTHOR: 
