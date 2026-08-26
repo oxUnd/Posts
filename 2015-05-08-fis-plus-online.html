@@ -479,7 +479,10 @@ main:has(> .home-feature) > .content {
 </li>
 </ul>
 <p>不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；</p>
-<p>#+begin<u>example . ├── controller ├── model └── view #+end</u>example</p>
+<pre>  .
+  ├── controller
+  ├── model
+  └── view</pre>
 <ul>
 <li>controller 是一些入口文件，控制器，来协调 model 和 view
 </li>
@@ -492,10 +495,25 @@ main:has(> .home-feature) > .content {
 </li>
 </ul>
 <p>假设我访问的 url 是 <code>http://my-host/index/show</code>，一般都会路由到 <code>show</code> 函数的执行上</p>
-<p>#+begin<u>src php &lt;?php /1index.php class Index extends Controller { public function show() { /23/ &lt;2&gt; } } #+end</u>src</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">  &lt;?php
+  //controller/index.php
+  class Index extends Controller {
+      public function show() {
+          // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+          $this-&gt;assign(&#39;data&#39;, $data); // &lt;1&gt;
+          $this-&gt;display(&#39;show.php&#39;); // &lt;2&gt;
+      } 
+  }</code></pre></div>
 <p>如以上代码，我们不去关心数据是如何来的，反正这个一般都是由后端工程师搞定，我们只需要关注 &lt;1&gt; 、 &lt;2&gt; 两个步骤。<code>assign</code> 一般意思就是给模板塞数据，<code>display</code> 一般就是去渲染这个模板，在上面逻辑里面渲染的是 <code>view/index/show.php</code> 这个模板。</p>
 <p><code>show.php</code> 是一个普通的 php 模板，我们可以假定它的内容如下</p>
-<p>#+begin<u>src php &lt;html&gt; &lt;head&gt; &lt;title&gt;&lt;?1$data[&#39;message&#39;]?&gt;&lt;2body&gt; &lt;/html&gt; #+end</u>src</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">  &lt;html&gt;
+      &lt;head&gt;
+          &lt;title&gt;&lt;?=$data[&#39;title&#39;]?&gt;&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+          &lt;p&gt;&lt;?=$data[&#39;message&#39;]?&gt;&lt;/p&gt;
+      &lt;/body&gt;
+  &lt;/html&gt;</code></pre></div>
 <p>只是显示 <code>$data</code> 塞过来的数据。</p>
 <p>通过上面的逻辑，一个完整的 php 模板的渲染过程已经说完了。</p>
 <ul>
@@ -503,16 +521,52 @@ main:has(> .home-feature) > .content {
 </li>
 </ul>
 <p>跟上面一样，后端目录依然是如下这个形式</p>
-<p>#+begin<u>example . ├── controller ├── model └── view #+end</u>example</p>
+<pre>  .
+  ├── controller
+  ├── model
+  └── view</pre>
 <p>可能为了放置 Smarty 的类库，需要添加一个新目录叫 <code>lib</code>，下载 <a href="http://www.smarty.net">Smarty</a> 放到 <code>lib/smarty</code> 目录下；</p>
-<p>#+begin<u>example . ├── controller ├── lib ├── model └── view #+end</u>example</p>
+<pre>  .
+  ├── controller
+  ├── lib
+  ├── model
+  └── view</pre>
 <p>这时候依然访问 url <code>http://my-host/index/show</code>， controller 需要引入 smarty 去做渲染；</p>
-<p>#+begin<u>src php &lt;?php /1index.php require(dirname(dirname(</u><u>FILE</u><u>)) . &#39;2smarty3/引入 smarty class Index extends Controller { private $</u>smarty = null;</p>
-<p>/<em>假象 init 方法 public function init() { $this-&gt;_smarty = new Smarty(); </em><em> 模板目录设置，非 `</em>` 或者 `.` 开头的文件到这个目录下查找 $this-&gt;<u>smarty-&gt;setTemplateDir(dirname(</u><u>DIR</u>_) . &#39;<em>view</em>template&#39;); /<em> 设置插件目录，一般 fisp 会提供很多 smarty 的插件 $this-&gt;_smarty-&gt;setPluginsDir(array( dirname(__DIR__) . &#39;</em>view<em>plugin&#39; )); </em><em> config_dir 设置 $this-&gt;_smarty-&gt;setConfigDir(dirname(__DIR__) . &#39;</em>view/config&#39;); }</p>
-<p>public function show() { /<em> 获取 $data 的逻辑，一般是调用 model 下某逻辑 $this-&gt;_smarty-&gt;assign(&#39;data&#39;, $data); </em><em> &lt;1&gt; $this-&gt;_smarty-&gt;display(&#39;index</em>show.tpl&#39;); // &lt;2&gt; } } #+end_src</p>
+<div class="code-block"><div class="code-label">php</div><pre><code class="language-php">  &lt;?php
+  //controller/index.php
+  require(dirname(dirname(__FILE__)) . &#39;/lib/smarty/Smarty.class.php&#39;); //引入 smarty
+  class Index extends Controller {
+      private $_smarty = null;
+
+      //假象 init 方法
+      public function init() {
+          $this-&gt;_smarty = new Smarty();
+          // 模板目录设置，非 `/` 或者 `.` 开头的文件到这个目录下查找
+          $this-&gt;_smarty-&gt;setTemplateDir(dirname(__DIR__) . &#39;/view/template&#39;);
+          // 设置插件目录，一般 fisp 会提供很多 smarty 的插件
+          $this-&gt;_smarty-&gt;setPluginsDir(array(
+              dirname(__DIR__) . &#39;/view/plugin&#39;
+          ));
+          // config_dir 设置
+          $this-&gt;_smarty-&gt;setConfigDir(dirname(__DIR__) . &#39;/view/config&#39;);
+      }
+
+      public function show() {
+          // 获取 $data 的逻辑，一般是调用 model 下某逻辑
+          $this-&gt;_smarty-&gt;assign(&#39;data&#39;, $data); // &lt;1&gt;
+          $this-&gt;_smarty-&gt;display(&#39;index/show.tpl&#39;); // &lt;2&gt;
+      } 
+  }</code></pre></div>
 <p>同样的方式，给模板塞数据 <code>$this-&gt;_smarty-&gt;assign</code> 以及去渲染模板 <code>$this-&gt;_smarty-&gt;display</code> 。那么这时候模板就应该是 smarty 的模板了；</p>
 <p><code>index/show.tpl</code></p>
-<p>#+begin<u>src smarty &lt;html&gt; &lt;head&gt; &lt;title&gt;&lt;%$data.title%&gt;&lt;1head&gt; &lt;body&gt; &lt;p&gt;&lt;%$data.message%&gt;&lt;2body&gt; &lt;/html&gt; #+end</u>src</p>
+<div class="code-block"><div class="code-label">smarty</div><pre><code class="language-smarty">  &lt;html&gt;
+      &lt;head&gt;
+          &lt;title&gt;&lt;%$data.title%&gt;&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+          &lt;p&gt;&lt;%$data.message%&gt;&lt;/p&gt;
+      &lt;/body&gt;
+  &lt;/html&gt;</code></pre></div>
 <p>有了这个对照，是否清晰了一些，Smarty 就是干渲染模板这个事情的，其实就是 View 模板这块的事情。</p>
 <h4 id="section-4">后端如何去渲染 fisp 的项目？</h4>
 <p>如上面的对照，其实整个对 Smarty 在项目中的引入，<strong>不限于什么什么框架</strong>，虽然有些框架也会提供一些自己的模板语言，但是你要用 fisp 那么就应该忽视它们，直接换用 Smarty。</p>
