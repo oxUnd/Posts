@@ -143,6 +143,7 @@ li:has(> .checkbox) { list-style: none; }
 .checkbox { display: inline-grid; place-items: center; width: 1.08em; height: 1.08em; margin: 0 .42em 0 0; border: 1px solid var(--faint); border-radius: 4px; background: var(--surface); color: white; font: 800 .72em/1 var(--sans); vertical-align: -.1em; }
 .checkbox.checked, .checkbox.partial { border-color: var(--accent); background: var(--accent); }
 .content code { padding: .13em .38em; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); color: var(--accent-strong); font: .88em/1.5 var(--mono); }
+.content :not(pre) > code { display: inline-block; max-width: 100%; overflow-wrap: anywhere; white-space: pre-wrap; vertical-align: baseline; }
 .code-block { position: relative; min-width: 0; max-width: 100%; margin: 1.5rem 0 1.8rem; }
 .code-label { position: absolute; z-index: 1; top: 10px; right: 13px; color: #a99ba1; font: 650 .64rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .content pre { max-width: 100%; margin: 0; overflow: auto; padding: 1.35rem 1.4rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--code); color: var(--code-text); box-shadow: var(--shadow); font: .86rem/1.7 var(--mono); tab-size: 2; }
