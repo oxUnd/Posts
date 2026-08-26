@@ -35,7 +35,7 @@ bootstrap提供了less、sass等异构语言（变种语言）的版本，如今
 :END:
 不出意外的话，下来下来的bootstrap-sass解压后目录下有一大坨的东西，如这样
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ tree -L 2
 .
 ├── CHANGELOG.md
@@ -78,7 +78,7 @@ $ tree -L 2
     ├── support
     ├── test_helper.rb
     └── test_helper_rails.rb
-#+end_src
+#+END_SRC
 
 看到很多东西，特别是=.json=结尾的，都是提供给包管理用的，现在提供库的这些开发者也是蛮拼的，不过在他们的行列里面以后也会有=fis的包管理配置文件=的，😄i
 
@@ -86,14 +86,14 @@ $ tree -L 2
 
 不用的东西那么多，果断copy出有用的东西（=assets=目录下的内容）。
 
-#+begin_src sh
+#+BEGIN_SRC sh
 ➜  bootstrap  tree -L 1
 .
 ├── fonts
 ├── images
 ├── javascripts
 └── stylesheets
-#+end_src
+#+END_SRC
 
 =sass=文件都在=stylesheets=下面；
 
@@ -103,20 +103,20 @@ $ tree -L 2
 :END:
 创建一个文件夹，作为fis的项目目录，并新建=fis-conf.js=
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ mkdir fis-ui
 $ touch fis-conf.js
-#+end_src
+#+END_SRC
 
-#+begin_quote
+#+BEGIN_QUOTE
 windows用户可右键创建
-#+end_quote
+#+END_QUOTE
 
 然后把准备好的源码=bootstrap=目录放到=fis-ui/static/=下面；
 
 配置配置文件
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 // file: fis-conf.js
 fis.config.set('project.exclude', '**/_*.scss'); // [1]
 fis.config.set('modules.parser.scss', 'sass'); //启用fis-parser-sass插件当处理文件后缀是`.scss`。
@@ -126,7 +126,7 @@ fis.config.set('roadmap.ext.scss', 'css'); //`.scss`的文件最后编译产出�
 fis.config.set('settings.parser.sass', {
     'include_paths': [__dirname, path.join(__dirname, 'static', 'bootstrap', 'stylesheets')] //[2]
 });
-#+end_src
+#+END_SRC
 
 /解释：/
 
@@ -140,26 +140,26 @@ fis.config.set('settings.parser.sass', {
 :END:
 假设页面的样式文件是=/static/index.scss=，那么使用就很简单了；
 
-#+begin_src css
+#+BEGIN_SRC css
 @import '_bootstrap.scss'; /*从某一个include_path找到文件*/
-#+end_src
+#+END_SRC
 
 然后在页面引入这个index.scss即可；
 
-#+begin_src html
+#+BEGIN_SRC html
 <link href="/static/index.scss" rel="stylesheet" type="text/css">
-#+end_src
+#+END_SRC
 
 当然在=index.scss=里面可以使用任意的=bootstrap=定义的=var=、=mixin=、=...=了。
 
 fis编译查看
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ fis release
 or
 $ fis release -wL
 $ fis server start
-#+end_src
+#+END_SRC
 
 --------------
 

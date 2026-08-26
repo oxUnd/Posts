@@ -24,14 +24,14 @@
 :END:
 用过=express=的人都知道，中间件维护起来确实挺麻烦；需要以这样
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 app.use(static());
 app.use(router());
-#+end_src
+#+END_SRC
 
 硬编码的方式挂载中间件；这样假设某一天需要添加中间件时，还得考虑要加载哪两个的中间；所以yog利用配置文件配置进去。
 
-#+begin_src json
+#+BEGIN_SRC json
 {
     "middleware": {
         "urlencoded": {
@@ -47,7 +47,7 @@ app.use(router());
         }
     }
 }
-#+end_src
+#+END_SRC
 
 上面就是一个例子，中间件=urlencoded=以这样一个方式配置到框架中；
 
@@ -57,22 +57,22 @@ app.use(router());
 :END:
 说到路由，假设用=express=的方式解决的话是如下这个样子的；
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 app.get('/xxx', requestHandle);
-#+end_src
+#+END_SRC
 
 如果按照这种方式，所有的路由可能需要写到某一个文件里面；就比如=django=就是配置在一个文件里面的，这样的好处是所有的路由情况都可以一目了然；
 但项目大了以后放到同一个地方确实会不方便，一般会选择使用一些规则来命中某一个Action，比如根据URI的信息来做匹配执行代码，这种方法很多框架都使用；
 
 而=yog=里面结合了两种方式，先用规则的方式命中某一个=controller=，然后在=controller=中书写关于这个=controller=的路由规则，比如：
 
-#+begin_quote
+#+BEGIN_QUOTE
 http://127.0.0.1/user/get
-#+end_quote
+#+END_QUOTE
 
 /=user=/ 命中 =controllers/user.js=
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 //user.js
 
 module.exports = function (router) {
@@ -80,19 +80,19 @@ module.exports = function (router) {
         //balabala...
     });
 };
-#+end_src
+#+END_SRC
 
 在项目启动的时候，会扫描=controllers=目录下的文件，全部挂载到运行环境中；
 
 通过对=中间件=的处理以及=router=的处理；入口文件就相当简单了；
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 var app = require('express')();
 var yog = require('yog');
 
 app.use(yog());
 app.listen(4000);
-#+end_src
+#+END_SRC
 
 *** bigpipe支持
 :PROPERTIES:
@@ -127,7 +127,7 @@ MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=vi
 :END:
 这节说一下目录规范，其实这些都在[[http://oak.baidu.com/docs/yogurt][文档]]中有详细的说明；
 
-#+begin_src sh
+#+BEGIN_SRC sh
 ➜  yog-app git:(master) ✗ tree -L 1
 .
 ├── config
@@ -136,7 +136,7 @@ MVC封装比较简洁，=controller=兼职管理=router=的职务，并渲染=vi
 ├── views  # view
 ├── public    # 静态资源文件夹
 └── server.js # 入口文件
-#+end_src
+#+END_SRC
 
 *** 开发模式
 :PROPERTIES:

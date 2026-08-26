@@ -22,7 +22,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
 突然打开 =vim= 发现以前常用的，快捷键都快生疏了。后面可能在 =emacs=
 模式下尝试用 vim 的快捷键，但首要任务先得把经典按键学习熟练，用好。
 
-#+begin_example
+#+BEGIN_EXAMPLE
 ,#+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (if (file-exist-p (file-name-with-extension file ".elc"))
@@ -33,7 +33,7 @@ bytecode。整体效率有提升，但没有做打点统计时间的优化程度
   ;; example
   (load-b "path/to/.el/file")
 ,#+END_SRC
-#+end_example
+#+END_EXAMPLE
 
 加载插件文件时
 
@@ -46,15 +46,15 @@ EmacsWiki 给了一个明确的方法。在保存 =.el=
 文件时进行编译，这样能满足大部分的诉求。但当改坏了怎么办，或者由于不当操作导致无法重新编译怎么办？应该有很好的办法，但我现在没有时间做更多的研究，暂时就用最粗暴的方式。删除除了
 =elpa= 文件夹下其他所有 =.elc= 文件。
 
-#+begin_example
+#+BEGIN_EXAMPLE
 ,#+BEGIN_SRC bash
   find ./a ./b ./c -name '*.elc' | xargs rm
 ,#+END_SRC
-#+end_example
+#+END_EXAMPLE
 
 为了后续方便，使用 =Makefile=
 
-#+begin_example
+#+BEGIN_EXAMPLE
 ,#+BEGIN_SRC makefile
   .PHONY: clean
       clean:
@@ -63,7 +63,7 @@ EmacsWiki 给了一个明确的方法。在保存 =.el=
       all:
           echo "Nothing...."
 ,#+END_SRC
-#+end_example
+#+END_EXAMPLE
 
 在出现错误时 =make clean= 即可。
 
@@ -75,11 +75,11 @@ EmacsWiki 给了一个明确的方法。在保存 =.el=
 突然看了一下，=load-b=
 写得有点啰嗦，长时间没有写代码就会这样，写得开始“挫”了。
 
-#+begin_example
+#+BEGIN_EXAMPLE
 ,#+BEGIN_SRC emacs-lisp
   (defun load-b (file)
     (unless (file-exist-p (file-name-with-extension file ".elc"))
       (byte-compile-file (file-name-with-extension file ".el")))
     (load file))
 ,#+END_SRC
-#+end_example
+#+END_EXAMPLE

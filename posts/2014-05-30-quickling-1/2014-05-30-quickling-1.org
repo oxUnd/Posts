@@ -34,7 +34,7 @@ bigpipe对服务器要求比较高，需要支持chunk输出。其实就是在�
 
 /node.js示例/
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 var asyncMap = require('slide').asyncMap;
 var app = require('express')();
 
@@ -63,7 +63,7 @@ app.get('/', function (req, res) {
 });
 
 app.listen(3000);
-#+end_src
+#+END_SRC
 
 上面就是一个并行化的例子，当然了如果不是api调用，查询数据库也是同样的道理。
 
@@ -71,18 +71,18 @@ app.listen(3000);
 
 解决上面问题的大致思路是，先给浏览器吐一个结构。
 
-#+begin_src html
+#+BEGIN_SRC html
 <html>
     ...
     <div id="first"></div>
     <div id="second"></div>
     ...
 </html>
-#+end_src
+#+END_SRC
 
 然后在html结束后，输出一些js代码来渲染内容上去；比如
 
-#+begin_src html
+#+BEGIN_SRC html
 <html>
     ...
     <div id="first"></div>
@@ -91,7 +91,7 @@ app.listen(3000);
 </html>
 <script>render('first', function() {/*first内容*/});</script> <!-- 第一次chunk -->
 <script>render('second', function() {/*second内容*/});</script> <!-- 第二次chunk -->
-#+end_src
+#+END_SRC
 
 这样就完美搞定页面渲染的问题，并且提升了不少性能，一个部分一个部分渲染的嘛~
 
@@ -103,14 +103,14 @@ app.listen(3000);
 
 lazyrender就是这个思路。大概做法就是，当页面渲染的时候，把首屏先传输给浏览器进行展示，其他屏或者不重要的东西给页面打一段js。大概是这个样子的；
 
-#+begin_src html
+#+BEGIN_SRC html
 <html>
     ...
     <div>首屏代码</div>
     <script>lazyrender('second');</script>
     ...
 </html>
-#+end_src
+#+END_SRC
 
 当首屏展现完成后，可以触发次屏的加载。使用quickling的方式加载次屏的html，css，js等然后进行渲染。
 

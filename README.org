@@ -1,6 +1,6 @@
-#+title: My homepage with org-mode
-#+author: OxUnd
-#+date: <2025-09-17 Wed>
+#+TITLE: My homepage with org-mode
+#+AUTHOR: OxUnd
+#+DATE: <2025-09-17 Wed>
 #+SLUG: README
 
 * Introduction
@@ -15,19 +15,19 @@ templates are required.
 
 Build locally with:
 
-#+begin_src sh
+#+BEGIN_SRC sh
 make
-#+end_src
+#+END_SRC
 
 The generated site is written to =public/=. Old URLs fall through to
 =404.html= and redirect to the homepage.
 
 Build and preview it locally at =http://127.0.0.1:8000=:
 
-#+begin_src sh
+#+BEGIN_SRC sh
 make preview
 make preview PORT=8080  # optional custom port
-#+end_src
+#+END_SRC
 
 The homepage preview uses a stable grayscale image from Lorem Picsum. A release
 downloads a new 900×1200 WebP image, stores it in =public/assets/home/=, and
@@ -37,18 +37,18 @@ publishes that file with the site. Visitors never load it from Picsum directly.
 
 Put images in an =images/= directory next to the Org document:
 
-#+begin_example
+#+BEGIN_EXAMPLE
 posts/2026-08-26-example/
 ├── 2026-08-26-example.org
 └── images/
     └── screenshot.png
-#+end_example
+#+END_EXAMPLE
 
 Reference them with a relative Org link:
 
-#+begin_src org
+#+BEGIN_SRC org
 [[file:images/screenshot.png]]
-#+end_src
+#+END_SRC
 
 The build copies them to =public/assets/2026-08-26-example/= and rewrites the
 generated HTML automatically. Each page has its own asset directory, so image
@@ -56,9 +56,9 @@ filenames may be reused safely across posts.
 
 Publish the generated site to the =gh-pages= branch after reviewing it:
 
-#+begin_src sh
+#+BEGIN_SRC sh
 make release
-#+end_src
+#+END_SRC
 
 The release runs in a disposable repository, creates a commit containing only
 =public/=, and pushes that commit to =origin/gh-pages=. It does not switch or

@@ -21,7 +21,7 @@ ok，首先我们从使用Smarty说起。Smarty有个响亮的名字叫模板引
 
 先到Smarty官网上去下载一份smarty，大概下载下来是这个样子的；
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ tree -L 1
 .
 ├── Smarty.class.php
@@ -29,11 +29,11 @@ $ tree -L 1
 ├── debug.tpl
 ├── plugins
 └── sysplugins
-#+end_src
+#+END_SRC
 
 我们暂时只需要关心=Smarty.class.php=，这个文件里面定义了=class Smarty=，来一个简短的例子。
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 //file: index.php
 
@@ -48,24 +48,24 @@ $smarty->right_delimiter = "%>";//[6]
 $smarty->display('a.tpl');//[7]
 
 ?>
-#+end_src
+#+END_SRC
 
 解释这段代码之前呢，我们先贴上本地的目录；
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ tree -L 1
 .
 ├── index.php
 ├── smarty
 └── template
-#+end_src
+#+END_SRC
 
 [4]
 设置了一个模板目录，这个非常重要，因为=$smarty->display=（渲染）的模板都是从这个目录开始找的；比如如上面的=a.tpl=就是渲染的是=template/a.tpl=。当然这块需要注意的是假设你=display=的是一个绝对路径，设置的=template_dir=就不起效咯。。。
 
 写完了一个简单的渲染的例子，我们再介绍一下Smarty的插件。Smarty的插件的方方面面可以在Smarty官网看到详细的介绍，而我这块只关心插件目录。
 
-#+begin_src php
+#+BEGIN_SRC php
 //file: index.php
 <?php
 
@@ -81,27 +81,27 @@ $smarty->setPluginsDir(ROOT .'/plugin');//[7]
 $smarty->display('a.tpl');//[8]
 
 ?>
-#+end_src
+#+END_SRC
 
 [7]这行设置了一个插件目录，意思是说，如果这个目录下有有效的Smarty插件，就会加载起来，然后在模板里面就可以直接使用，Smarty有很多类型的插件，我们这块使用=function=插件来举例子。
 
 我们迅速搞一个=function=插件，就叫=function.xdate.php=吧。在模板里面这么调用。
 
-#+begin_src smarty
+#+BEGIN_SRC smarty
 <%*file: template/a.tpl*%>
 <%xdate%>
-#+end_src
+#+END_SRC
 
 这个插件的作用是打出时间；代码如下
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 //file: plugin/function.xdate.php
 function smarty_function_xdate($params, $template) {
     return date('Y-m-d H:i:s');
 }
 ?>
-#+end_src
+#+END_SRC
 
 当渲染=a.tpl=时，会调用插件=xdate=得到一个当前的时间。。。
 
@@ -118,7 +118,7 @@ fisp里面定制了一些插件，所以需要把这些插件上线的时候放�
 
 其次来看看fisp的产出目录是怎么样的;
 
-#+begin_src sh
+#+BEGIN_SRC sh
 $ fisp install pc-demo #下载一个demo
 $ cd pc-demo/common
 $ fisp release -d output
@@ -129,7 +129,7 @@ $ tree -L 1
 ├── plugin
 ├── static
 └── template
-#+end_src
+#+END_SRC
 
 看明白了吗，意思是plugin下的资源放到=plugins_dir=；template下的内容放到=template_dir=。
 
@@ -158,27 +158,27 @@ OK，标准上线目录已经说完了，我们现在进入正题；关于*想�
 - server
   本地server的一些相关配置，比如执行=fis server clean=的时候保留哪些文件等
 
-#+begin_quote
+#+BEGIN_QUOTE
 为了实现上面移动目录的那个目标，我们只关心=roadmap=的配置情况。
-#+end_quote
+#+END_QUOTE
 
 一般，fisp这样的解决方案，里面已经配置了一个牛逼哄哄的配置，特别是fisp经过多年对度厂前端项目的积累，所以是万众挑一的。我们可以很方便的查看这些配置的信息。
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 // file: fis-conf.js
 console.log(fis.config.get('roadmap'));
-#+end_src
+#+END_SRC
 
 可以哗啦打出一大串的配置信息；负责文件产出、url更改的配置项是=roadmap.path=
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 // file: fis-conf.js
 console.log(fis.config.get('roadmap.path'));
-#+end_src
+#+END_SRC
 
 不出意外的打出了
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 [ { reg: '/fis_translate.tpl',
     release: '${templates}/${namespace}/widget/fis_translate.tpl' },
   { reg: /\/lang\/([^\/]+)\.po/i,
@@ -208,13 +208,13 @@ console.log(fis.config.get('roadmap.path'));
   { reg: '${namespace}-map.json',
     release: '/config/${namespace}-map.json' },
   { reg: /^.+$/, release: '${statics}/${namespace}$&' } ]
-#+end_src
+#+END_SRC
 
 这样一个结果；
 
 其实就一个数组，里面是一个个的对象；*在FIS处理的时候是从上到下进行匹配的*，假设某一个文件被上面的匹配到了，那么就没有下面规则什么事情了。
 
-#+begin_src javascript
+#+BEGIN_SRC javascript
 var path = [
     {
         reg: /.*\.js$/,
@@ -225,7 +225,7 @@ var path = [
         release: '/static/css/$&'
     }
 ];
-#+end_src
+#+END_SRC
 
 其中对象的
 
@@ -234,9 +234,9 @@ var path = [
 
 当然每个对象中都会由很多其他的一些属性，我们可以把这段配置理解为，给某些文件添加一些属性，这个属性包括FIS已经占用的，可以在[[https://github.com/fis-dev/fis/wiki/%E9%85%8D%E7%BD%AEAPI#roadmappath][roadmap.path]]这个地方看到，还有一部分可以为了某些插件实现起来方便定义一些私有属性。
 
-#+begin_quote
+#+BEGIN_QUOTE
 当设置了某些属性，这些属性会伴随这个文件在整个编译期内。
-#+end_quote
+#+END_QUOTE
 
 OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的奇妙使用方式。
 
@@ -246,7 +246,7 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
 
 - 方法一，arr.unshift
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   //file: fis-conf.js
   var path = fis.config.get('roadmap.path');
 
@@ -254,11 +254,11 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
       reg: /\/widget\/some\/.*\.tpl/$,
       release: '/template/$&'
   });
-  #+end_src
+#+END_SRC
 
 - 方法二，arr.concat
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   var path = fis.config.get('roadmap.path');
 
   var userPath = [{
@@ -268,7 +268,7 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
 
   userPath = userPath.concat(path); //userPath在默认path前
   fis.config.set('roadmap.path', userPath);
-  #+end_src
+#+END_SRC
 
 - 方法三，自己想
 
@@ -278,45 +278,45 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
 
 - release 不写
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   {
       reg: '**.js'
   }
-  #+end_src
+#+END_SRC
 
   假设不写release，则产出路径就是源码路径；比如我们有个静态资源叫=/static/a.js=，使用的时候是这么使用的=<script src="/static/a.js"></script>=，则产出的时候产出目录以及URL都不会被修改（相对路径引用除外）。
 
 - release 写了
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   {
       reg: /\/static\/(.*\.js)/,
       release: '/static/js/$1'
   }
-  #+end_src
+#+END_SRC
 
   那按照上面的例子，产出后=/static/a.js=产出到=output/static/js/a.js=，而使用的地方会从=<script src="/static/a.js"></script>=变为=<script src="/static/js/a.js"></script>=。
 
 - release 写了，但是不想改URI [*注意*]
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   {
       reg: /\/static\/(.*\.js)/,
       url: '$&',
       release: '/www/static/$1'
   }
-  #+end_src
+#+END_SRC
 
   我设置产出到了=www=目录下，但是我不想修改引入时的URI，还想保持原来的使用方法，该如何办呢，咦，恰巧上面给了一个例子，可以设置=url=来特定化引用的url。
 
 - release false
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   {
       reg: '**.js',
       release: false
   }
-  #+end_src
+#+END_SRC
 
   所有的js不产出鸟。。。
 
@@ -328,34 +328,34 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
 
 - 源码
 
-  #+begin_example
+#+BEGIN_EXAMPLE
   src
   .
   ├── index.html
   └── static
       └── a.js
-  #+end_example
+#+END_EXAMPLE
 
 - roadmap.path
 
-  #+begin_src javascript
+#+BEGIN_SRC javascript
   fis.config.set('roadmap.path', [{
       reg: /\/static\/(.*\.js)/,
       url: '$&',
       release: '/www/static/$1'
   }]);
-  #+end_src
+#+END_SRC
 
 - 产出
 
-  #+begin_example
+#+BEGIN_EXAMPLE
   output
   .
   ├── index.html
   └── www
       └── static
           └── a.js
-  #+end_example
+#+END_EXAMPLE
 
 - index.html
 
@@ -365,9 +365,9 @@ OK，先不关心那些其他的属性了。我们来看看=reg=、=release=的�
 
   当然是相同的，因为虽然有了不同的release但是url保持不变（当然你也可以设置其他的一些URL，可以用url属性）。
 
-  #+begin_quote
+#+BEGIN_QUOTE
   注意，假设编译后的url是=/static/a.js=这个样子，那么你就得把www这个目录作为静态资源请求的根目录。或者是做个路由，把=/static=开头的URL全都定位到=www=目录下，才能请求到想要的结果。
-  #+end_quote
+#+END_QUOTE
 
 ok，其实上面这个例子已经把静态文件换个产出路径的方方面面说完了，你学会了吗？
 
@@ -381,40 +381,40 @@ ok，其实上面这个例子已经把静态文件换个产出路径的方方面
 
 - extends
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%extends file="<filepath>"%>
-  #+end_src
+#+END_SRC
 
 - include
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%include file="<filepath>"%>
-  #+end_src
+#+END_SRC
 
 - load_config
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%load_config file="<filepath>"%>
-  #+end_src
+#+END_SRC
 
 - require
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%require name="<id>"%>
-  #+end_src
+#+END_SRC
 
 - widget
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%widget name="<id>"%>
-  #+end_src
+#+END_SRC
 
 - html
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <%html framework="<id>"%>
   <%/html%>
-  #+end_src
+#+END_SRC
 
 其中require、widget、html是fisp独有的定制的一些函数（其实就是插件）。它们位fisp服务，并支撑fisp的正常运行（怎么做到的，可以看源码）。
 
@@ -422,15 +422,15 @@ ok，其实上面这个例子已经把静态文件换个产出路径的方方面
 
 SO，假设你要这么用；
 
-#+begin_src smarty
+#+BEGIN_SRC smarty
 <%include file="widget/a/a.tpl"%>
-#+end_src
+#+END_SRC
 
 那么渲染的文件是=SMARTY_TEMPLATE_DIR/widget/a/a.tol=，假设你写错了，写成了。
 
-#+begin_src smarty
+#+BEGIN_SRC smarty
 <%include file="/widget/a/a.tpl"%>
-#+end_src
+#+END_SRC
 
 这种情况下，会去系统根目录下查找=/widget/a/a.tpl=，咦，一般都会挂掉。
 
@@ -450,9 +450,9 @@ SO，假设你要这么用；
 
 所以，修改产出路径的时候，千万要注意修改的目录跟引用的路径是否一致，是否匹配。
 
-#+begin_quote
+#+BEGIN_QUOTE
 =<id>=引用路径在=map.json=里面=<id>=对应的uri，而=<filepath>=呢，直接就是相对或者绝对路径。上线代码时一定一定要保持引用路径能找到磁盘上的文件，不然不报错才怪。
-#+end_quote
+#+END_QUOTE
 
 嗯，我想我应该画个图来表征这个关系，但暂时先不画了，等看不懂文字的时候再画。不过我想我已经几近大白话说的，应该不会出现对不上号的情况。
 

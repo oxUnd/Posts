@@ -5,9 +5,9 @@
 
 * 2015-09-22-create-mac-app
 
-#+begin_quote
+#+BEGIN_QUOTE
 使用 XCode 7 开发，使用操作系统 OSX 10.11
-#+end_quote
+#+END_QUOTE
 
 最近由于经常写文档，想找个顺手的工具，但很多 Markdown
 工具都没有处理图片的问题。大概有这么三类
@@ -75,49 +75,49 @@ PHP 自己写了个 router
 [[https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ApplicationKit/Classes/NSOpenPanel_Class/][NSOpenPanel]]
 实现这个操作
 
-#+begin_src objc
+#+BEGIN_SRC objc
 NSOpenPanel *panel = [NSOpenPanel openPanel];
 [panel setCanChooseFiles: YES]; //是否能选择文件
 [panel setCanCreateDirectories: NO]; // 是否创建文件夹
 [panel setCanChooseDirectories: NO]; // 是否能选择文件夹
 [panel setAllowedFileTypes:@[@"jpg", @"jpeg", @"png", @"gif"]]; // 能访问的文件后缀
-#+end_src
+#+END_SRC
 
 初始化好了对象，就执行以下接口打开文件浏览窗口进行选择文件。
 
-#+begin_src objc
+#+BEGIN_SRC objc
 [panel beginSheetModalForWindow: [[self view] window] completionHandler: ^(NSInteger result) {
         if (result == NSFileHandlingPanelOKButton) {
                 onComplete([panel URLs][0]);
         }
 }]; 
-#+end_src
+#+END_SRC
 
 这个接口算是异步接口，当成功后会调用给定的回调函数 =onComplete=。
 当然你也可以调用同步接口；
 
-#+begin_src objc
+#+BEGIN_SRC objc
 NSInteger result = [panel runModal];
 if (result == NSFileHandlingPanelOKButton) {
     return [panel URLs][0];
 }
-#+end_src
+#+END_SRC
 
 当然建议使用异步接口，不然会卡顿一下。上面代码中有这样的语句
 
-#+begin_src objc
+#+BEGIN_SRC objc
 [panel URLs][0];
-#+end_src
+#+END_SRC
 
 这个应该是高版本才开始支持的，对于 =NSArray= 使用这种方式访问，也算是
 Objc 的一种进步，当然后续可能全都使用 swift 了，不过还是建议学习一下
 Objc，可以使用积攒已久的开源财富。
 
-#+begin_src objc
+#+BEGIN_SRC objc
 ^() {
   //balabala
 }
-#+end_src
+#+END_SRC
 
 [[https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/Blocks/Articles/bxGettingStarted.html][blocks]]
 在 C 语言里可以使用函数指针来实现传参一个函数，这是 Objc
@@ -133,11 +133,11 @@ Objc，可以使用积攒已久的开源财富。
 打开一个 HTTP
 请求，并发送数据，数据完成后执行回调（当然得用异步，不然拖死主进程）。
 
-#+begin_src objc
+#+BEGIN_SRC objc
 NSURLSession *session = [NSURLSession sharedSession];
 NSURLSessionDataTask *reqTask = [session dataTaskWithRequest:req completionHandler:onReady];
 [reqTask resume];
-#+end_src
+#+END_SRC
 
 接口 =dataTaskWithRequest= 接口接受一个 Request
 对象，以及一个网络请求成功后的回调 =completionHandler=。
@@ -148,19 +148,19 @@ NSURLSessionDataTask *reqTask = [session dataTaskWithRequest:req completionHandl
 
 调用的回调函数 =onReady= 函数结构是
 
-#+begin_src objc
+#+BEGIN_SRC objc
 void (^onReady) (NSData *data, NSURLResponse *res, NSError *err) {}
-#+end_src
+#+END_SRC
 
 很自然，第一个参数是访问服务端得到的数据，第二个是 Response
 对象，第三个是错误；当我们想拿到服务器返回的状态码时需要实例化
 =NSHTTPURLResponse=，可能看 API 文档的时候会无从下手，其实作为 C
 语言高级版本，数据类型是可以通过强转来实现的变更的，因为最终都是一块连续的内存。
 
-#+begin_src objc
+#+BEGIN_SRC objc
 NSHTTPURLResponse *response = (NSHTTPURLResponse *) res;
 long statusCode = [response statusCode]; // 获取到服务器返回状态码
-#+end_src
+#+END_SRC
 
 *** 新建另一个窗口
 :PROPERTIES:
@@ -182,12 +182,12 @@ https://github.com/shpakovski/MASPreferences 实现得特别赞，直接拿来�
 [[https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/][NSUserDefaults]]
 实现。
 
-#+begin_src objc
+#+BEGIN_SRC objc
 NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
 [userDefaults setObject: @"xxx" forKey: @"username"];
 NSString *username = [userDefaults stringForKey: @"username"];
 // xxx
-#+end_src
+#+END_SRC
 
 还有其他若干类型接口，可逐一参考文档。
 
@@ -204,9 +204,9 @@ https://iconverticons.com/online 。
 
 举例；
 
-#+begin_example
+#+BEGIN_EXAMPLE
 appicon.icns
-#+end_example
+#+END_EXAMPLE
 
 [[http://store.orrafy.com/get/uuid=81c2b68ffe8b1d6f7f7cf8aafdfbe9be]]
 

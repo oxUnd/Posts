@@ -18,15 +18,15 @@ wine。
 
 安装软件以及运行软件的方式比较简单，简单说一下，就不赘述了。
 
-#+begin_src sh
+#+BEGIN_SRC sh
 wine ./app.exe
-#+end_src
+#+END_SRC
 
 也可以执行以下命令获取更多帮助
 
-#+begin_src sh
+#+BEGIN_SRC sh
 winehelp
-#+end_src
+#+END_SRC
 
 但我安装完成后有几个问题比较明显，这也是我要写下来的原因。 -
 4k显示器或者 Macbook
@@ -43,7 +43,7 @@ Copilot），基本都能找到答案。主要是修改注册表。但其中稍�
 
 fonts.reg
 
-#+begin_example
+#+BEGIN_EXAMPLE
 Windows Registry Editor Version 5.00
 
 [HKEY_CURRENT_USER\Control Panel\Desktop]
@@ -51,23 +51,23 @@ Windows Registry Editor Version 5.00
 "FontSmoothingType"=dword:00000002
 "FontSmoothingGamma"=dword:00000578
 "FontSmoothingOrientation"=dword:00000001
-#+end_example
+#+END_EXAMPLE
 
 执行
 
-#+begin_src sh
+#+BEGIN_SRC sh
 wine regedit ./fonts.reg
-#+end_src
+#+END_SRC
 
 - Mac 和 Wine 中都安装常用的 Windows
   字体（主要是宋体、楷体、微软雅黑等等），方法比较简单不赘述。
 
 - 设置以下注册表变量使能够支持 Retina 显示效果
 
-#+begin_example
+#+BEGIN_EXAMPLE
 [HKEY_CURRENT_USER\Software\Wine\Mac Driver]
 "RetinaMode" = "Y"
-#+end_example
+#+END_EXAMPLE
 
 注意，可能你的注册表中 =HKEY_CURRENT_USER= 下没有 =Mac Driver=，请运行
 =wine regedit= 启动注册表编辑器右键添加。
@@ -82,11 +82,11 @@ xxx.app
 目录下，来达成。感觉不是特别好。最终我直接选择使用命令行指令的方式。写一个脚本来快速启动某个应用。以
 =Source Insight= 举例。
 
-#+begin_src sh
+#+BEGIN_SRC sh
 # filename = si
 # wine64 "$HOME/.wine/drive_c/Program Files (x86)/Source Insight 4.0/sourceinsight4.exe" 2>/dev/null &
 wine "$HOME/.wine/drive_c/Program Files (x86)/Source Insight 4.0/sourceinsight4.exe" 2>/dev/null &
-#+end_src
+#+END_SRC
 
 启动的时候只需要终端 =si= 即可。
 

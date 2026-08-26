@@ -24,7 +24,7 @@ hacklang，不缀述了。本文围绕第二点，可能看到这儿你会觉得
 
 昨天看到的项目的校验是这么写的
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 
 function foo($a, $b) {
@@ -32,11 +32,11 @@ function foo($a, $b) {
     ->test(1, 'string')
     ->test(2, 'number');
 }
-#+end_src
+#+END_SRC
 
 而通常我们写是这么写的
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 
 function foo($a, $b) {
@@ -44,7 +44,7 @@ function foo($a, $b) {
         throw new ArgumentInvalidException('xxx');
     }
 }
-#+end_src
+#+END_SRC
 
 摔桌子......
 
@@ -62,7 +62,7 @@ function foo($a, $b) {
 
 可以看到，就如第一段代码描述的，感觉只有设定规则，并没有去获取函数参数值。这块就让我百思不得姐了；
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 
 
@@ -71,11 +71,11 @@ function foo() {
 }
 
 foo(1, 2, 'test');
-#+end_src
+#+END_SRC
 
 其输出
 
-#+begin_example
+#+BEGIN_EXAMPLE
 array(1) {
   [0]=>
   array(4) {
@@ -96,7 +96,7 @@ array(1) {
     }
   }
 }
-#+end_example
+#+END_EXAMPLE
 
 居然用了 =debug_backtrace=
 函数，虽然这样能拿到参数，但我想性能损耗也是比较大的。
@@ -108,7 +108,7 @@ PHP 5.2 的水平上。
 
 如果协助以编译工具，或者稍微写代码的时候允许繁琐一点，就能比较完美的实现函数参数类型校验了。
 
-#+begin_src php
+#+BEGIN_SRC php
 <?php
 
 function foo($a, $b) {
@@ -116,7 +116,7 @@ function foo($a, $b) {
         ->test(1, 'string')
         ->test(2, 'number');
 }
-#+end_src
+#+END_SRC
 
 文法、性能上都有所考虑了。
 

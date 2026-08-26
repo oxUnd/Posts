@@ -40,12 +40,12 @@ fisp 就选用了 Smarty 作为模板语言。
 
   不管是什么后端框架，一般都是 MVC 的，都会提供如下三个目录；
 
-  #+begin_example
+#+BEGIN_EXAMPLE
   .
   ├── controller
   ├── model
   └── view
-  #+end_example
+#+END_EXAMPLE
 
   - controller 是一些入口文件，控制器，来协调 model 和 view
     去完成一次页面的请求
@@ -55,7 +55,7 @@ fisp 就选用了 Smarty 作为模板语言。
   假设我访问的 url 是 =http://my-host/index/show=，一般都会路由到 =show=
   函数的执行上
 
-  #+begin_src php
+#+BEGIN_SRC php
   <?php
   //controller/index.php
   class Index extends Controller {
@@ -65,7 +65,7 @@ fisp 就选用了 Smarty 作为模板语言。
           $this->display('show.php'); // <2>
       } 
   }
-  #+end_src
+#+END_SRC
 
   如以上代码，我们不去关心数据是如何来的，反正这个一般都是由后端工程师搞定，我们只需要关注
   <1> 、 <2> 两个步骤。=assign= 一般意思就是给模板塞数据，=display=
@@ -74,7 +74,7 @@ fisp 就选用了 Smarty 作为模板语言。
 
   =show.php= 是一个普通的 php 模板，我们可以假定它的内容如下
 
-  #+begin_src php
+#+BEGIN_SRC php
   <html>
       <head>
           <title><?=$data['title']?></title>
@@ -83,7 +83,7 @@ fisp 就选用了 Smarty 作为模板语言。
           <p><?=$data['message']?></p>
       </body>
   </html>
-  #+end_src
+#+END_SRC
 
   只是显示 =$data= 塞过来的数据。
 
@@ -93,28 +93,28 @@ fisp 就选用了 Smarty 作为模板语言。
 
   跟上面一样，后端目录依然是如下这个形式
 
-  #+begin_example
+#+BEGIN_EXAMPLE
   .
   ├── controller
   ├── model
   └── view
-  #+end_example
+#+END_EXAMPLE
 
   可能为了放置 Smarty 的类库，需要添加一个新目录叫 =lib=，下载
   [[http://www.smarty.net][Smarty]] 放到 =lib/smarty= 目录下；
 
-  #+begin_example
+#+BEGIN_EXAMPLE
   .
   ├── controller
   ├── lib
   ├── model
   └── view
-  #+end_example
+#+END_EXAMPLE
 
   这时候依然访问 url =http://my-host/index/show=， controller 需要引入
   smarty 去做渲染；
 
-  #+begin_src php
+#+BEGIN_SRC php
   <?php
   //controller/index.php
   require(dirname(dirname(__FILE__)) . '/lib/smarty/Smarty.class.php'); //引入 smarty
@@ -140,14 +140,14 @@ fisp 就选用了 Smarty 作为模板语言。
           $this->_smarty->display('index/show.tpl'); // <2>
       } 
   }
-  #+end_src
+#+END_SRC
 
   同样的方式，给模板塞数据 =$this->_smarty->assign= 以及去渲染模板
   =$this->_smarty->display= 。那么这时候模板就应该是 smarty 的模板了；
 
   =index/show.tpl=
 
-  #+begin_src smarty
+#+BEGIN_SRC smarty
   <html>
       <head>
           <title><%$data.title%></title>
@@ -156,7 +156,7 @@ fisp 就选用了 Smarty 作为模板语言。
           <p><%$data.message%></p>
       </body>
   </html>
-  #+end_src
+#+END_SRC
 
 有了这个对照，是否清晰了一些，Smarty 就是干渲染模板这个事情的，其实就是
 View 模板这块的事情。
