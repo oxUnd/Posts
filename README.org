@@ -9,9 +9,15 @@ This is the source for my website. It is written in [[https://orgmode.org][Org m
 and exported by **mvi**.
 
 Each published Org file has a unique basename. The build exports every document
-as standalone HTML with mvi's bundled pure-Lua Org renderer, and generates the
+as standalone HTML with mvi's bundled Vim9 Org renderer, and generates the
 homepage article list from the files below =posts/=. No Emacs, weblorg or Jinja
 templates are required.
+
+Install the current [[https://github.com/oxUnd/mvi][mvi]] with its Vim 9 runtime before building.
+The build runs in batch mode without loading your personal configuration or
+plugins. =mvi-export.vim= adds the shared navigation and =theme/site.css= to
+the generated pages; the retired =--lua= interface is no longer used.
+Run =make test= to check the renderer integration and a complete offline build.
 
 Build locally with:
 

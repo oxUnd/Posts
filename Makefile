@@ -1,4 +1,4 @@
-.PHONY: all site preview release clean
+.PHONY: all site preview release test clean
 
 PORT ?= 8000
 
@@ -14,6 +14,9 @@ preview: site
 release:
 	SITE_FEATURE_SEED=random ./build.sh
 	./release.sh
+
+test:
+	python3 -m unittest discover -s tests -v
 
 clean:
 	rm -rf public

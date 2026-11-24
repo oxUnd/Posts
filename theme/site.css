@@ -1,49 +1,3 @@
-local mvi = require("mvi")
-
-local plugin = mvi.plugin {
-    api = 1,
-    name = "posts-export",
-    version = "1.0.0",
-    permissions = {
-        "buffer.read",
-        "filesystem.write",
-        "editor.quit",
-    },
-}
-
-local output = os.getenv("MVI_ORG_OUTPUT")
-if not output or output == "" then
-    error("MVI_ORG_OUTPUT is required")
-end
-
-local org_mode = require("org_mode")
-local html = org_mode.render_html(plugin.editor:current_buffer())
-
--- This site intentionally has one visual identity. Override both the initial
--- and fallback theme so mvi's document-level setting cannot vary by page.
-html = html:gsub('data%-theme="[^"]+"', 'data-theme="mono"', 1)
-html = html:gsub('data%-default%-theme="[^"]+"', 'data-default-theme="mono"', 1)
-
--- Org sources keep assets in a sibling images/ directory. Published pages are
--- flat, so namespace those links by page to prevent equal image names in two
--- articles from overwriting each other.
-local asset_base = os.getenv("MVI_ASSET_BASE")
-if asset_base and asset_base ~= "" then
-    for _, attribute in ipairs({ "src", "href" }) do
-        html = html:gsub(attribute .. '="images/', function()
-            return attribute .. '="' .. asset_base
-        end)
-        html = html:gsub(attribute .. '="./images/', function()
-            return attribute .. '="' .. asset_base
-        end)
-    end
-end
-
--- mvi deliberately exports self-contained documents instead of applying a
--- site template. Add shared site chrome here so every generated page has the
--- same identity and navigation without duplicating markup in Org sources.
-local layout_style = [[
-<style data-site-layout>
 .site-header-wrap {
     width: min(1180px, calc(100% - 56px));
     margin: 0 auto -8px;
@@ -51,6 +5,16 @@ local layout_style = [[
 }
 .document-controls {
     display: none !important;
+}
+main > .document-header {
+    margin-bottom: 2rem;
+}
+:root .document-header h1 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.25;
+    letter-spacing: -.03em;
+    text-transform: none;
+    overflow-wrap: anywhere;
 }
 .site-header {
     display: flex;
@@ -218,63 +182,3 @@ main:has(> .home-feature) > .content {
         display: none;
     }
 }
-</style>]]
-
-html = html:gsub("</head>", function()
-    return layout_style .. "\n</head>"
-end, 1)
-
-local is_home = output:match("/index%.html$") ~= nil
-local home_state = is_home and ' aria-current="page"' or ""
-local site_header = [[
-<div class="site-header-wrap">
-<header class="site-header">
-<a class="site-brand" href="/" rel="home" aria-label="OxUnd. 首页">
-<span class="site-brand-mark" aria-hidden="true">O/</span>
-<span class="site-brand-copy">
-<span class="site-brand-name">OxUnd.</span>
-<span class="site-brand-note">Code · Systems · Life</span>
-</span>
-</a>
-<nav class="site-links" aria-label="站点导航">
-<a class="site-link" href="/" rel="home"]]
-    .. home_state
-    .. [[>首页</a>
-<a class="site-link" href="https://github.com/oxund">GitHub <span class="site-external" aria-hidden="true">↗</span></a>
-</nav>
-</header>
-</div>]]
-
-html = html:gsub("<body>", function()
-    return "<body>\n" .. site_header
-end, 1)
-
-local home_feature = os.getenv("MVI_HOME_FEATURE")
-if is_home and home_feature and home_feature ~= "" then
-    local feature_markup = [[
-<figure class="home-feature">
-<div class="home-feature-frame">
-<img src="]] .. home_feature .. [[" alt="本次发布随机选取的黑白风景照片">
-</div>
-<figcaption>Random frame for this release · <a href="https://picsum.photos/">Picsum</a></figcaption>
-</figure>]]
-    html = html:gsub("(<main[^>]*>)", function(opening)
-        return opening .. "\n" .. feature_markup
-    end, 1)
-end
-
-local fixed_theme_script = [[
-<script data-site-theme>
-document.documentElement.dataset.theme = "mono";
-try { localStorage.removeItem("mvi-document-theme"); } catch (_) {}
-</script>]]
-html = html:gsub("</body>", function()
-    return fixed_theme_script .. "\n</body>"
-end, 1)
-
-local ok, err = plugin.fs:write(output, html)
-if not ok then
-    error("unable to write " .. output .. ": " .. tostring(err and err.message or err))
-end
-
-plugin.editor:quit()

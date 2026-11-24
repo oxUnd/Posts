@@ -8,6 +8,15 @@ if ! command -v mvi >/dev/null 2>&1; then
     exit 1
 fi
 
+mvi_version=$(mvi --version)
+case "$mvi_version" in
+    *"VIM - Vi IMproved"*) ;;
+    *)
+        echo "build: mvi with the Vim 9 runtime is required; update mvi" >&2
+        exit 1
+        ;;
+esac
+
 build_tmp=$(mktemp -d "${TMPDIR:-/tmp}/posts-build.XXXXXX")
 trap 'rm -rf "$build_tmp"' EXIT HUP INT TERM
 
@@ -41,8 +50,14 @@ export_org() {
     page=$(basename "$output_file" .html)
     mkdir -p "$(dirname "$output_file")"
     if ! MVI_ORG_OUTPUT=$output_file MVI_ASSET_BASE="assets/$page/" \
-        mvi --lua ./mvi-export.lua "$source_file" \
+        mvi -N -u NONE -i NONE -n --noplugin -es \
+            -S ./mvi-export.vim -- "$source_file" \
         </dev/null >"$build_tmp/mvi.log" 2>&1; then
+        cat "$build_tmp/mvi.log" >&2
+        return 1
+    fi
+    if [ ! -s "$output_file" ]; then
+        echo "build: mvi did not export $source_file to $output_file" >&2
         cat "$build_tmp/mvi.log" >&2
         return 1
     fi
@@ -107,5 +122,5 @@ This page has moved. [[file:/][Go to the homepage]].
 EOF
 export_org "$build_tmp/404.org" public/404.html
 
-mvi_version=$(mvi --version | awk '/^mvi [0-9]/{ print $1, $2; exit }')
-echo "Built $(find public -type f | wc -l | tr -d ' ') files with $mvi_version"
+mvi_version=$(printf '%s\n' "$mvi_version" | sed -n '1p')
+echo "Built $(find public -type f | wc -l | tr -d ' ') files with mvi ($mvi_version)"
