@@ -1,0 +1,79 @@
+[
+  {
+    "midi": 93,
+    "file": "assets/samples/dizi/sutd/93.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/A6/A6_with_membrane.wav",
+    "originalSha256": "1ffb176027c287e2a5d48247e2459b66995e982e19e1ca07b408c215d0f59a75",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 94,
+    "file": "assets/samples/dizi/sutd/94.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/A#6/A#6_with_membrane.wav",
+    "originalSha256": "8d7ffb49d11118912161e601ceda029b27595f88438ec6eb24f15df559863d02",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 95,
+    "file": "assets/samples/dizi/sutd/95.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/B6/standard/B6_with_membrane.wav",
+    "originalSha256": "bdc7cc931d3ece96817ba52fcba7f8780b459f6758196a81d7a95757038c70d9",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 96,
+    "file": "assets/samples/dizi/sutd/96.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/C7/standard/C7_with_membrane.wav",
+    "originalSha256": "06cf498e3e2fa0b90e45c4b1732bea8609edbb97427009b79ceeeb6f09419343",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 97,
+    "file": "assets/samples/dizi/sutd/97.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/C#7/alt_2/C#7(alt2)_with_membrane.wav",
+    "originalSha256": "042a235f695100f3c41e2e1727cb7391b9cbb1360601cab1b030d5a9f90da3f1",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 98,
+    "file": "assets/samples/dizi/sutd/98.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/D7/standard/D7_with_membrane.wav",
+    "originalSha256": "531c231cc69db3d3d7598549609149e1545c913578b89bb6d89e6bb444623ae1",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  },
+  {
+    "midi": 100,
+    "file": "assets/samples/dizi/sutd/100.mp3",
+    "source": "SUTD",
+    "member": "dizi-repository/E7/standard/E7_with_membrane.wav",
+    "originalSha256": "64bcef01769bdf69c410abe85e584cee726809714d1c33c582bfbb9745f4188a",
+    "trimStart": 1.2,
+    "trimDuration": 3.6,
+    "license": "CC-BY-4.0",
+    "doi": "10.5281/zenodo.6333932"
+  }
+]
