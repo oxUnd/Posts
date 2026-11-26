@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f0e6">
+  <meta name="description" content="竹韵是一间安静、可交互的笛子研习室：九节入门课、六孔指法实验室、听音测验与真实笛音示范。">
+  <title>竹韵 · 笛子研习室</title>
+  <link rel="icon" href="assets/favicon.svg?v=38efed280a" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=9bd2a4cc51">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8.5 5.6v12.8L19 12z" fill="currentColor" stroke="none"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14M13 6.5l5.5 5.5L13 17.5"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 5.5 15.5 12 9 18.5"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.6 4.4 4.4L19 6.9"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5v5h3.4L13 19V5L7.4 9.5H4Z"/><path d="M16.2 8.6a5 5 0 0 1 0 6.8M18.8 6a8.5 8.5 0 0 1 0 12"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5v5h3.4L13 19V5L7.4 9.5H4Z"/><path d="m16.5 9.5 5 5m0-5-5 5"/></symbol>
+      <symbol id="i-learn" viewBox="0 0 24 24"><path d="M12 6.5C10 4.8 6.8 4.4 4.5 5.2v12.4c2.3-.8 5.5-.4 7.5 1.3 2-1.7 5.2-2.1 7.5-1.3V5.2C17.2 4.4 14 4.8 12 6.5Z"/><path d="M12 6.5v12.4"/></symbol>
+      <symbol id="i-fingers" viewBox="0 0 24 24"><path d="M8 3.5v17M12 3.5v17M16 3.5v17M8 7.5h8M8 12h8M8 16.5h8"/></symbol>
+      <symbol id="i-quiz" viewBox="0 0 24 24"><path d="M7.5 9.5V6.8a4.5 4.5 0 0 1 9 0v2.7"/><path d="M7.5 9.5a2 2 0 0 0-2 2v1.2a2 2 0 0 0 2 2h.8v4.1a1.7 1.7 0 0 0 3.4 0v-4.1h.6a2 2 0 0 0 2-2v-1.2a2 2 0 0 0-2-2Z"/><path d="M17 10.5h1.5a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H17"/></symbol>
+      <symbol id="i-note" viewBox="0 0 24 24"><path d="M9 17.2V6.8l9-1.8v10"/><ellipse cx="6.4" cy="17.4" rx="2.7" ry="2.4"/><ellipse cx="15.4" cy="15.4" rx="2.7" ry="2.4"/></symbol>
+      <symbol id="i-scale" viewBox="0 0 24 24"><path d="M4 15.5c2.6 0 3.4-7 6-7s3.4 7 6 7 3.4-7 4-7"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8v.2"/></symbol>
+      <symbol id="i-bamboo" viewBox="0 0 24 24"><path d="M12 3v18M12 7.5h4.5M12 12H7.5M12 16.5h5"/><path d="M12 5.2c1.7-1.4 3.7-1.7 5.4-1.2-.5 1.8-2 3.1-4 3.1M12 13.8c-1.7 1.4-3.7 1.7-5.4 1.2.5-1.8 2-3.1 4-3.1"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#learn" data-nav="learn" aria-label="竹韵 · 笛子研习室首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <rect x="1" y="1" width="30" height="30" rx="9" fill="currentColor"/>
+            <path d="M16 6.5v19" stroke="#f6f1e6" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M16 11.2h5M16 16H11M16 20.8h6" stroke="#f6f1e6" stroke-width="1.3" stroke-linecap="round" opacity=".85"/>
+            <path d="M16 9.2c1.8-1.6 4-1.8 5.7-1.2-.6 1.9-2.2 3.2-4.2 3.2" fill="#f6f1e6" opacity=".9"/>
+            <circle cx="16" cy="24.6" r="1.4" fill="#f6f1e6"/>
+          </svg>
+        </span>
+        <span class="brand-text"><strong>竹韵</strong><span>DIZI STUDIO</span></span>
+      </a>
+      <div class="topbar-meta">
+        <span class="today-chip" id="todayChip"><span class="today-dot" aria-hidden="true"></span><span id="todayText">今日未练习</span></span>
+        <button class="icon-btn" id="soundToggle" type="button" aria-pressed="true" aria-label="关闭示范声音" title="示范声音">
+          <svg class="icon" id="soundIcon"><use href="#i-sound"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- 学习 -->
+    <section class="view is-active" id="view-learn" data-panel="learn" aria-labelledby="learnTitle">
+      <div class="view-head">
+        <p class="eyebrow"><span class="eyebrow-dot"></span>今日研习</p>
+        <h1 id="learnTitle">让竹子，<em>会呼吸。</em></h1>
+        <p class="lead">九节小课，从认识音孔到完整吹下一首曲子。每一节都配了可试听的笛音，26 首曲谱全部收录。</p>
+      </div>
+
+      <article class="hero" id="heroCard">
+        <div class="hero-art" aria-hidden="true">
+          <img class="hero-photo" src="assets/hero.jpg?v=daf15cf8a2" alt="" width="2496" height="1664" decoding="async">
+        </div>
+        <div class="hero-content">
+          <p class="eyebrow" id="heroEyebrow">入门 · 第 1 课</p>
+          <h2 id="heroTitle">吹响第一声</h2>
+          <p id="heroDesc">口型、气流与第一个稳定的长音。十分钟，听见自己的第一口气。</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="heroCta" type="button" data-open-lesson="1">开始第一课
+              <svg class="icon"><use href="#i-arrow"/></svg>
+            </button>
+            <button class="btn btn-quiet" id="heroSecondary" type="button" data-open-lesson="1">课程详情</button>
+          </div>
+          <div class="hero-meta"><span>9 节课</span><i></i><span>约 80 分钟</span><i></i><span>零基础</span></div>
+        </div>
+      </article>
+
+      <div class="dash">
+        <section class="card daily" aria-labelledby="dailyTitle">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">今日练习</p>
+              <h2 id="dailyTitle">三段小练习</h2>
+            </div>
+            <div class="ring" id="dailyRing" style="--p:0" role="img" aria-label="今日练习完成度 0%">
+              <span id="dailyRingText">0%</span>
+            </div>
+          </div>
+          <div class="daily-list" id="dailyList"></div>
+          <p class="micro">每天 15 分钟，比一次吹两小时更有效。</p>
+        </section>
+        <aside class="card quote" aria-label="今日一句">
+          <span class="seal" aria-hidden="true">竹</span>
+          <blockquote>气沉丹田，<br>声从竹出。</blockquote>
+          <p>先求稳，再求亮；先求松，再求响。</p>
+          <div class="quote-line"></div>
+          <span class="quote-src">竹韵 · 练习札记</span>
+        </aside>
+      </div>
+
+      <section class="course" aria-labelledby="courseTitle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">学习路径</p>
+            <h2 id="courseTitle">从第一口气，到第一支曲</h2>
+          </div>
+          <div class="course-progress">
+            <span id="courseProgressText">0 / 9 已完成</span>
+            <div class="mini-bar"><i id="courseProgressBar"></i></div>
+          </div>
+        </div>
+        <div id="courseList"></div>
+        <p class="footnote">进度保存在本机浏览器，不会上传。</p>
+      </section>
+
+      <section class="scores" aria-labelledby="scoresTitle">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">曲谱库 · 26 首</p>
+            <h2 id="scoresTitle">把练过的，吹成曲子</h2>
+          </div>
+          <div class="score-filters" id="scoreFilters" role="group" aria-label="按难度筛选曲谱">
+            <button type="button" class="is-active" data-score-filter="all" aria-pressed="true">全部</button>
+            <button type="button" data-score-filter="beginner" aria-pressed="false">入门</button>
+            <button type="button" data-score-filter="advanced" aria-pressed="false">进阶</button>
+            <button type="button" data-score-filter="challenge" aria-pressed="false">挑战</button>
+          </div>
+        </div>
+        <div class="score-grid" id="scoreGrid"></div>
+        <p class="footnote">谱面取自《竹笛曲谱合集》，26 首按页收录。示范已逐小节校对主干音；部分原图为教学节选，缺失结尾会单独标明。装饰音请对照原谱练习。</p>
+        <p class="footnote"><a href="assets/samples/dizi/SOURCES.txt?v=3fa2fa81e8" target="_blank" rel="noopener">竹笛音源鸣谢、实音依据与校音说明</a> · Hypnotriod（CC0）及 Ng、Tan、Ng、Chen / SUTD（CC BY 4.0）</p>
+      </section>
+    </section>
+
+    <!-- 指法 -->
+    <section class="view" id="view-fingering" data-panel="fingering" aria-labelledby="fingeringTitle" hidden>
+      <div class="view-head view-head--tight">
+        <p class="eyebrow"><span class="eyebrow-dot"></span>指法实验室</p>
+        <div class="title-row">
+          <h1 id="fingeringTitle">听见每一个<em>指法</em></h1>
+          <button class="text-btn" id="fingeringDetailBtn" type="button">
+            <svg class="icon"><use href="#i-info"/></svg>指法详情
+          </button>
+        </div>
+        <p class="lead">切换调性与指法体系，点按音级，观察六个音孔的开合。每一次选择都可以试听。</p>
+      </div>
+
+      <div class="card fingering-toolbar">
+        <div class="segmented" id="notationToggle" role="group" aria-label="记谱方式">
+          <button type="button" data-notation="number" aria-pressed="true">简谱</button>
+          <button type="button" data-notation="name" aria-pressed="false">音名</button>
+        </div>
+        <div class="system-pills" id="systemPills" role="group" aria-label="指法体系"></div>
+      </div>
+
+      <div class="fingering-grid">
+        <section class="card instrument-card" aria-label="笛子指法图">
+          <div class="instrument-top">
+            <div>
+              <p class="eyebrow" id="fingeringSystemEyebrow">筒音作 5 · 最常用</p>
+              <h2 id="instrumentTitle">D 调曲笛</h2>
+            </div>
+            <span class="badge" id="blowBadge">平吹</span>
+          </div>
+
+          <div class="dizi-stage" id="diziStage" role="img" aria-label="六孔笛指法图"></div>
+          <div class="legend" aria-label="图例">
+            <span><i class="legend-hole is-closed"></i>按闭</span>
+            <span><i class="legend-hole is-open"></i>开放</span>
+            <span><i class="legend-hole is-half"></i>半孔</span>
+            <span class="legend-note">孔序：第六孔在上，第一孔在下</span>
+          </div>
+          <div class="play-row">
+            <button class="btn btn-primary" id="playNoteBtn" type="button">
+              <svg class="icon"><use href="#i-play"/></svg><span>试听此音</span>
+            </button>
+            <button class="btn btn-soft" id="playScaleBtn" type="button">
+              <svg class="icon"><use href="#i-scale"/></svg>音阶示范
+            </button>
+          </div>
+        </section>
+
+        <aside class="card control-card">
+          <div class="now" id="nowNote"></div>
+          <div class="note-groups" id="noteGroups"></div>
+          <div class="key-block">
+            <div class="block-head">
+              <h3>笛子调性</h3>
+              <span>决定实际音高</span>
+            </div>
+            <div class="key-grid" id="keyGrid"></div>
+          </div>
+          <div class="tip-card" id="fingeringTip"></div>
+        </aside>
+      </div>
+
+      <section class="card elec" aria-labelledby="elecTitle">
+        <div class="elec-head">
+          <div>
+            <p class="eyebrow">电子笛 · 可操作</p>
+            <h2 id="elecTitle">点孔、吹气，听自己的指法</h2>
+          </div>
+          <button class="elec-octave" id="elecOctave" type="button">低音区</button>
+        </div>
+        <div class="elec-stage" id="elecStage">
+          <div class="elec-tube" id="elecTube" role="group" aria-label="六个音孔">
+            <span class="elec-blow" aria-hidden="true"></span>
+            <span class="elec-membrane" aria-hidden="true"></span>
+          </div>
+          <div class="elec-readout">
+            <strong id="elecNote">低音 5</strong>
+            <span id="elecPitch">A3 · 220.0 Hz</span>
+            <span id="elecHint">点按音孔，或按 1–6；空格吹气</span>
+          </div>
+        </div>
+        <div class="elec-actions">
+          <button class="btn btn-primary" id="elecBlow" type="button">吹气 <kbd>Space</kbd></button>
+          <button class="btn btn-quiet" id="elecScale" type="button">音阶演示</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- 测验 -->
+    <section class="view" id="view-quiz" data-panel="quiz" aria-labelledby="quizTitle" hidden>
+      <div id="quizIntro">
+        <div class="view-head">
+          <p class="eyebrow"><span class="eyebrow-dot"></span>小试牛刀</p>
+          <h1 id="quizTitle">听一听，<em>认一认。</em></h1>
+          <p class="lead">八道小题，检视指法与耳力。答错也没关系，每题都有讲解。</p>
+        </div>
+
+        <div class="quiz-layout">
+          <div class="card quiz-panel">
+            <div class="config-row">
+              <div class="config-label">模式</div>
+              <div class="segmented" id="quizMode" role="group" aria-label="测验模式">
+                <button type="button" data-mode="mix" aria-pressed="true">混合</button>
+                <button type="button" data-mode="visual" aria-pressed="false">看指法</button>
+                <button type="button" data-mode="ear" aria-pressed="false">听音</button>
+              </div>
+            </div>
+            <div class="config-row">
+              <div class="config-label">难度</div>
+              <div class="segmented" id="quizLevel" role="group" aria-label="难度">
+                <button type="button" data-level="basic" aria-pressed="true">基础</button>
+                <button type="button" data-level="advanced" aria-pressed="false">进阶</button>
+              </div>
+            </div>
+            <div class="config-block">
+              <div class="config-label">范围</div>
+              <div class="topic-grid" id="topicGrid"></div>
+            </div>
+            <div class="start-row">
+              <p><strong id="quizCount">8</strong> 道题 · 约 4 分钟</p>
+              <button class="btn btn-primary" id="startQuizBtn" type="button">开始测验
+                <svg class="icon"><use href="#i-arrow"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <aside class="card best-card">
+            <p class="eyebrow">本机记录</p>
+            <div class="best-score"><strong id="bestScore">—</strong><span>/ 8</span></div>
+            <p id="bestMeta">还没有测验记录</p>
+            <div class="best-list" id="bestList"></div>
+            <p class="micro">记录只保存在本机，不上传。</p>
+          </aside>
+        </div>
+      </div>
+
+      <div id="quizPlay" hidden></div>
+      <div id="quizResult" hidden></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="主导航">
+    <button type="button" data-nav="learn" class="is-active" aria-current="page">
+      <svg class="icon"><use href="#i-learn"/></svg><span>学习</span>
+    </button>
+    <button type="button" data-nav="fingering">
+      <svg class="icon"><use href="#i-fingers"/></svg><span>指法</span>
+    </button>
+    <button type="button" data-nav="quiz">
+      <svg class="icon"><use href="#i-quiz"/></svg><span>测验</span>
+    </button>
+  </nav>
+
+  <div class="sheet-root" id="sheetRoot" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/scores/calibrations.js?v=6bafa76233"></script>
+  <script src="app.js?v=38ff87a6e1"></script>
+</body>
+</html>

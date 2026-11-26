@@ -113,6 +113,12 @@ find . -type f -name '*.org' \
 
 cp CNAME LICENSE public/
 
+# Static sub-apps shipped alongside the generated site.
+if [ -d dizi ]; then
+    mkdir -p public/dizi
+    cp -R dizi/. public/dizi/
+fi
+
 cat >"$build_tmp/404.org" <<'EOF'
 #+TITLE: Page moved
 #+OPTIONS: toc:nil

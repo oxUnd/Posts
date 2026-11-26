@@ -1,0 +1,31 @@
+竹笛音源与实音依据
+
+1. Hypnotriod — Flute Dizi C all notes + pitched semitones
+https://freesound.org/people/Hypnotriod/packs/21613/
+许可：CC0 1.0，https://creativecommons.org/publicdomain/zero/1.0/
+使用其 25 个 MP3 预览音文件。文件数字编号 MIDI 67–91 对应实测 G4–G6；
+文件后缀的八度命名比科学音高记法高一组，播放器以实测频率为准。
+
+2. Hsien Han Ng, Yi Xian Tan, Teck Seng Ng, Chen Jer-Ming (2022)
+Dízi Fingering Dataset: Acoustic Impedance and Audio Spectra, with Sound Files
+DOI：https://doi.org/10.5281/zenodo.6333932
+Singapore University of Technology and Design / Asian Music Technology
+许可：Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+采用带笛膜的 A6、A#6、B6、C7、C#7（alt 2）、D7、E7 实录片段。
+处理：截取自原文件 1.2 秒开始、最长 3.6 秒的片段，转换为单声道 44.1 kHz、
+192 kbps MP3；播放器进行电平统一、持续音接缝处理及 A4=440 Hz 基频校准。
+原始压缩包成员名、原文件 SHA-256、截取位置见 sutd/provenance.json。
+
+3. 竹笛实音八度与音域依据
+Charlie Lui / Sound of Dragon Ensemble, The Various Dizi Available in Sound of Dragon Ensemble
+https://www.soundofdragon.com/wp-content/uploads/2015/10/Charlie-dizi-range.pdf
+本项目采用常规 C、D 曲笛及 F、G 笛的实音：C 曲笛全按 G4，中音 1 为 C5；
+D 曲笛全按 A4，中音 1 为 D5；F 笛全按 C5；G 梆笛全按 D5。
+这与记谱音及大 G、大 C 等低音笛须明确区分。
+
+校音方法与限制
+以窗口化基频分析测得录音稳态中位数，按目标频率/实测频率微调播放速度。
+源录音的自然气息与音高起伏仍会保留，校音中位数不能代表每一瞬间零误差。
+常用曲笛低音直接使用对应音高的采样；播放器拒绝跨越超过一个半音的采样移调。
+本音区内缺少的 G#6、D#7 用相邻半音录音微调，界面显示对应状态。

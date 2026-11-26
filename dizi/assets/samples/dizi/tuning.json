@@ -1,0 +1,318 @@
+{
+  "referenceA4": 440,
+  "coveredRange": [
+    67,
+    100
+  ],
+  "maximumNeighborSemitones": 1,
+  "method": "windowed fundamental FFT median",
+  "sources": [
+    {
+      "name": "Hypnotriod",
+      "url": "https://freesound.org/people/Hypnotriod/packs/21613/",
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "SUTD",
+      "url": "https://doi.org/10.5281/zenodo.6333932",
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "samples": [
+    {
+      "midi": 67,
+      "file": "assets/samples/dizi/g5.mp3",
+      "source": "Hypnotriod",
+      "hz": 393.0776,
+      "offset": 0,
+      "gain": 0.3841,
+      "sha256": "1023e2f84f7b1a11152bb6ccb27f351c8208ec5e8f58b6fed5ac14c5904e85a1"
+    },
+    {
+      "midi": 68,
+      "file": "assets/samples/dizi/gs5.mp3",
+      "source": "Hypnotriod",
+      "hz": 416.658,
+      "offset": 0,
+      "gain": 0.382,
+      "sha256": "5f7feb6e18046141fc167ca4c322f6d39e07f4ce98e7f830777e0480a034ec62"
+    },
+    {
+      "midi": 69,
+      "file": "assets/samples/dizi/a5.mp3",
+      "source": "Hypnotriod",
+      "hz": 441.1734,
+      "offset": 0,
+      "gain": 0.4064,
+      "sha256": "8aa7dfe1572eacd6d4cb8039b83bd2c83ec4009f3e80e8bac4aa4ee7447dff4f"
+    },
+    {
+      "midi": 70,
+      "file": "assets/samples/dizi/as5.mp3",
+      "source": "Hypnotriod",
+      "hz": 467.2644,
+      "offset": 0,
+      "gain": 0.4103,
+      "sha256": "b56f8578bbc4c20808d74b62d8e7b3a9f60e4cb825fafdd4e3a4472bc6423157"
+    },
+    {
+      "midi": 71,
+      "file": "assets/samples/dizi/b5.mp3",
+      "source": "Hypnotriod",
+      "hz": 494.2294,
+      "offset": 0,
+      "gain": 0.4072,
+      "sha256": "1ad18645fce12d4bdf56835878b37238569abc61478e6f53a7dd0f18669f9ad5"
+    },
+    {
+      "midi": 72,
+      "file": "assets/samples/dizi/c6.mp3",
+      "source": "Hypnotriod",
+      "hz": 523.6855,
+      "offset": 0,
+      "gain": 0.4428,
+      "sha256": "48c974319601651cbe87adc98b10b6d524a00e841dd2999db483042baf8e5b49"
+    },
+    {
+      "midi": 73,
+      "file": "assets/samples/dizi/cs6.mp3",
+      "source": "Hypnotriod",
+      "hz": 554.86,
+      "offset": 0,
+      "gain": 0.4376,
+      "sha256": "c62d2b4997e5febe6835959a8ff15e9d7efc4184e7022037f89c6de329df2592"
+    },
+    {
+      "midi": 74,
+      "file": "assets/samples/dizi/d6.mp3",
+      "source": "Hypnotriod",
+      "hz": 588.6546,
+      "offset": 0,
+      "gain": 0.3775,
+      "sha256": "41426b9de510f050f93c2e606c3ffcecbeb6ee12ba9290d626b434526c59704f"
+    },
+    {
+      "midi": 75,
+      "file": "assets/samples/dizi/ds6.mp3",
+      "source": "Hypnotriod",
+      "hz": 623.5375,
+      "offset": 0,
+      "gain": 0.379,
+      "sha256": "db36c66078a0099719df2428ae81458b0286463a015c6a8a56dcfcbb16f787af"
+    },
+    {
+      "midi": 76,
+      "file": "assets/samples/dizi/e6.mp3",
+      "source": "Hypnotriod",
+      "hz": 663.8817,
+      "offset": 0,
+      "gain": 0.4298,
+      "sha256": "830d3613a698cf4e906394b41c4242785866551bf926537fe9103a78447eeca4"
+    },
+    {
+      "midi": 77,
+      "file": "assets/samples/dizi/f6.mp3",
+      "source": "Hypnotriod",
+      "hz": 703.4723,
+      "offset": 0,
+      "gain": 0.4225,
+      "sha256": "e47db3f2f3fe7fb9adee2b257e47909593b0357cb803735747999fcf49da0cb3"
+    },
+    {
+      "midi": 78,
+      "file": "assets/samples/dizi/fs6.mp3",
+      "source": "Hypnotriod",
+      "hz": 742.8385,
+      "offset": 0,
+      "gain": 0.3824,
+      "sha256": "f3f0135430571ffd0ee0875dc62e35390ebe2b4b8173a6e4e5c807df57154de4"
+    },
+    {
+      "midi": 79,
+      "file": "assets/samples/dizi/g6.mp3",
+      "source": "Hypnotriod",
+      "hz": 785.6452,
+      "offset": 0,
+      "gain": 0.4211,
+      "sha256": "0e1fd9444c855267aa59374d06f537c93948a8a50124f8b2face03395aadd03c"
+    },
+    {
+      "midi": 80,
+      "file": "assets/samples/dizi/gs6.mp3",
+      "source": "Hypnotriod",
+      "hz": 832.3687,
+      "offset": 0,
+      "gain": 0.4222,
+      "sha256": "5d93a98071597d7c99b68208a6aae10882abbc7abd5d6ca391174987a4c9c767"
+    },
+    {
+      "midi": 81,
+      "file": "assets/samples/dizi/a6.mp3",
+      "source": "Hypnotriod",
+      "hz": 882.4264,
+      "offset": 0,
+      "gain": 0.3431,
+      "sha256": "e840dcedc30adb5c61cd3f0ebe8a51ea1f98e3479948a3f1eb965c9281fdf5c0"
+    },
+    {
+      "midi": 82,
+      "file": "assets/samples/dizi/as6.mp3",
+      "source": "Hypnotriod",
+      "hz": 934.9475,
+      "offset": 0,
+      "gain": 0.3433,
+      "sha256": "09793d2e17719a3e361e5b59a89d140cc492519294209679d07e7278a15695b1"
+    },
+    {
+      "midi": 83,
+      "file": "assets/samples/dizi/b6.mp3",
+      "source": "Hypnotriod",
+      "hz": 990.9976,
+      "offset": 0,
+      "gain": 0.3,
+      "sha256": "9c95a136ffddc52f9f463a712875ea2d69d6c628f41bc4ef43a6cff05595da20"
+    },
+    {
+      "midi": 84,
+      "file": "assets/samples/dizi/c7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1053.788,
+      "offset": 0.005,
+      "gain": 0.3123,
+      "sha256": "5f30d1fa4b43aa0857e46494d83b7f10f5908c6aa76b9ea14f22dc362f10a1f4"
+    },
+    {
+      "midi": 85,
+      "file": "assets/samples/dizi/cs7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1116.5022,
+      "offset": 0,
+      "gain": 0.3122,
+      "sha256": "f4c71a45a6f2498695e0d35cff156b0c4b5d6ecb549b8f1256d923e6acdbbebf"
+    },
+    {
+      "midi": 86,
+      "file": "assets/samples/dizi/d7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1178.1556,
+      "offset": 0,
+      "gain": 0.3151,
+      "sha256": "9bbd9e738a5174076dfaded1cbd64eb0c345e15771cf4b6912e839ed369e231c"
+    },
+    {
+      "midi": 87,
+      "file": "assets/samples/dizi/ds7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1248.1213,
+      "offset": 0,
+      "gain": 0.316,
+      "sha256": "ac7235eca54f12412eeb0851b0854b847e321dbd8466b9c41783d43eaa23334c"
+    },
+    {
+      "midi": 88,
+      "file": "assets/samples/dizi/e7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1334.9657,
+      "offset": 0.005,
+      "gain": 0.3,
+      "sha256": "8922c46d96bf47e36b4fe24a4646899743f7522305228bd1b5b26dcea32ea608"
+    },
+    {
+      "midi": 89,
+      "file": "assets/samples/dizi/f7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1414.2395,
+      "offset": 0.005,
+      "gain": 0.3,
+      "sha256": "44de63aff7565c468ad239286c02f29ab7829fe8dbc7df648a415f0223d64c32"
+    },
+    {
+      "midi": 90,
+      "file": "assets/samples/dizi/fs7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1480.4847,
+      "offset": 0.005,
+      "gain": 0.3462,
+      "sha256": "8ee7677073c3ee82b4e59f79c25b11c56811051003a8a16ef3d3260e248c10eb"
+    },
+    {
+      "midi": 91,
+      "file": "assets/samples/dizi/g7.mp3",
+      "source": "Hypnotriod",
+      "hz": 1577.236,
+      "offset": 0.035,
+      "gain": 0.3197,
+      "sha256": "9e7c26e9d0d16a59bb07d5aad79d259800a95b19b96e83767194333b9dc3499f"
+    },
+    {
+      "midi": 93,
+      "file": "assets/samples/dizi/sutd/93.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/A6/A6_with_membrane.wav",
+      "hz": 1783.8387,
+      "offset": 0,
+      "gain": 1.6734,
+      "sha256": "d2dbf1d23b1966b8f8da8aee35bd34987c30af646530282001f6f370205b218a"
+    },
+    {
+      "midi": 94,
+      "file": "assets/samples/dizi/sutd/94.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/A#6/A#6_with_membrane.wav",
+      "hz": 1898.7419,
+      "offset": 0,
+      "gain": 1.7062,
+      "sha256": "e09a561d27d6b50fae30d17a8876e195f932ec17aa279df0aca1ace5daa844d4"
+    },
+    {
+      "midi": 95,
+      "file": "assets/samples/dizi/sutd/95.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/B6/standard/B6_with_membrane.wav",
+      "hz": 1984.2125,
+      "offset": 0,
+      "gain": 1.8194,
+      "sha256": "66aca590aa9369449b4f38f24f5f3a7306009ad8012322065a8b9261777ba589"
+    },
+    {
+      "midi": 96,
+      "file": "assets/samples/dizi/sutd/96.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/C7/standard/C7_with_membrane.wav",
+      "hz": 2104.0267,
+      "offset": 0,
+      "gain": 3.0,
+      "sha256": "9fd832d9a8c4bea1d3e1328a1f33330be111441c55bf9ae2fb99a8003a5ce416"
+    },
+    {
+      "midi": 97,
+      "file": "assets/samples/dizi/sutd/97.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/C#7/alt_2/C#7(alt2)_with_membrane.wav",
+      "hz": 2235.9566,
+      "offset": 0,
+      "gain": 0.9086,
+      "sha256": "8d371a5209239231f88a4f35c9c70e957b620b830e1ca1a532b5ebe509506080"
+    },
+    {
+      "midi": 98,
+      "file": "assets/samples/dizi/sutd/98.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/D7/standard/D7_with_membrane.wav",
+      "hz": 2388.9712,
+      "offset": 0,
+      "gain": 0.7582,
+      "sha256": "09f203245080331219a8051c343e88f3bead7d4d111ed62846b41e490cbb6797"
+    },
+    {
+      "midi": 100,
+      "file": "assets/samples/dizi/sutd/100.mp3",
+      "source": "SUTD",
+      "member": "dizi-repository/E7/standard/E7_with_membrane.wav",
+      "hz": 2663.7818,
+      "offset": 0,
+      "gain": 0.6579,
+      "sha256": "f32f28d9c1b5ec1eaf5c366daf9f13fb3c17a3f6209b6e01d419f27263be0b75"
+    }
+  ]
+}
