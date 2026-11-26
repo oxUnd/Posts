@@ -747,24 +747,63 @@ function loadDiziSamples() {
   return diziSamplePromise;
 }
 
-function ensureAudio() {
-  if (!audioCtx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
-    audioCtx = new AC();
-    const comp = audioCtx.createDynamicsCompressor();
-    comp.threshold.value = -12;
-    comp.knee.value = 12;
-    comp.ratio.value = 2;
-    comp.attack.value = 0.01;
-    comp.release.value = 0.15;
-    masterGain = audioCtx.createGain();
-    masterGain.gain.value = 0.6;
-    masterGain.connect(comp);
-    comp.connect(audioCtx.destination);
-  }
-  if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+function applyAudioSession() {
+  // iOS Safari 默认把 Web Audio 归到 ambient 会话，硬件静音开关会把它静音。
+  // 声明 playback 后与媒体播放一致（Safari 16.4+ / iOS 17+）。
+  if (!('audioSession' in navigator)) return;
+  try { navigator.audioSession.type = 'playback'; } catch { /* 旧实现可能拒绝该值 */ }
+}
+
+function createAudioGraph() {
+  if (audioCtx) return audioCtx;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return null;
+  audioCtx = new AC();
+  const comp = audioCtx.createDynamicsCompressor();
+  comp.threshold.value = -12;
+  comp.knee.value = 12;
+  comp.ratio.value = 2;
+  comp.attack.value = 0.01;
+  comp.release.value = 0.15;
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.6;
+  masterGain.connect(comp);
+  comp.connect(audioCtx.destination);
   return audioCtx;
+}
+
+function ensureAudio() {
+  applyAudioSession();
+  const ctx = createAudioGraph();
+  if (!ctx) return null;
+  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  return ctx;
+}
+
+// iOS 要求音频在同一个用户手势里解锁；提前建好上下文并播一个空缓冲，
+// 避免首次点按后因采样异步加载而错过手势。桌面端不需要，避免多建上下文。
+const needsAudioUnlock = /iP(hone|ad|od)/.test(navigator.userAgent)
+  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let audioUnlocked = false;
+
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  const ctx = createAudioGraph();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  try {
+    const source = ctx.createBufferSource();
+    source.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+    source.connect(ctx.destination);
+    source.start(0);
+  } catch { /* 解锁失败时仍由首次播放重试 */ }
+}
+
+if (needsAudioUnlock) {
+  ['pointerdown', 'touchend', 'keydown'].forEach(type => {
+    document.addEventListener(type, unlockAudio, { capture: true, once: true, passive: true });
+  });
 }
 
 // 接缝末端渐变到循环起点之前的波形，避免长音循环出现爆音。
