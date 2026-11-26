@@ -1499,6 +1499,16 @@ const elec = {
   note: null
 };
 
+// 六个音孔在真实笛身底图中的位置（百分比），与 assets/dizi-tube.jpg 对齐。
+const ELEC_HOLES = [
+  { hole: 6, x: 50.0, y: 28.86 },
+  { hole: 5, x: 55.44, y: 28.86 },
+  { hole: 4, x: 60.6, y: 28.86 },
+  { hole: 3, x: 71.1, y: 28.86 },
+  { hole: 2, x: 76.67, y: 28.86 },
+  { hole: 1, x: 82.05, y: 28.86 }
+];
+
 let elecFlashTimer = null;
 
 function elecPattern() {
@@ -1540,9 +1550,16 @@ function updateElecUI() {
 function renderElecDizi() {
   const tube = $('#elecTube');
   if (!tube) return;
-  tube.innerHTML = `<span class="elec-blow" aria-hidden="true"></span>
-    <span class="elec-membrane" aria-hidden="true"></span>
-    ${[6, 5, 4, 3, 2, 1].map(hole => `<button class="elec-hole" type="button" data-hole="${hole}" aria-pressed="true" aria-label="第${HOLE_CN[hole]}孔，按闭"><span>${hole}</span></button>`).join('')}`;
+  tube.innerHTML = `<span class="elec-end elec-end--left" aria-hidden="true"></span>
+    <span class="elec-end elec-end--right" aria-hidden="true"></span>
+    <div class="elec-mouth" aria-hidden="true">
+      <span class="elec-blow"></span>
+      <span class="elec-membrane"></span>
+    </div>
+    <div class="elec-holes">
+      ${ELEC_HOLES.map(({ hole, x, y }) => `<button class="elec-hole" type="button" data-hole="${hole}" aria-pressed="true" aria-label="第${HOLE_CN[hole]}孔，按闭" style="--x:${x}%;--y:${y}%"><span>${hole}</span></button>`).join('')}
+      ${ELEC_HOLES.map(({ hole, x }) => `<span class="elec-hole-num" style="--x:${x}%" aria-hidden="true">${hole}</span>`).join('')}
+    </div>`;
   syncElecToNote(currentNote());
   updateElecUI();
 }
