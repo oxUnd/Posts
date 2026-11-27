@@ -5,8 +5,8 @@
 window.SCORE_CALIBRATIONS = {
   5: {
     beatsPerBar: 4, tempo: 90, system: 5,
-    note: '示范采用香港中乐团教材中的常见旋律，第 4 小节为 3 5 5 —；原图教学简化版在此处写成 3 3 3 —。',
-    references: [{ title: '香港中乐团 · 笛中级教程，第 58 页', url: 'https://ynyqxg.hkco.org/uploads/docs/5dddda47a735c1.pdf' }],
+    note: '示范参照香港中乐团《笙·中级教程》第 58 页的同名旋律，第 4 小节为 3 5 5 —；原图教学简化版在此处写成 3 3 3 —。此处仅作旋律参照，不作为竹笛指法依据。',
+    references: [{ title: '香港中乐团 · 笙中级教程，第 58 页（旋律参照）', url: 'https://ynyqxg.hkco.org/uploads/docs/5dddda47a735c1.pdf#page=58' }],
     corrections: [{ bars: [4], reason: '由原图教学简化版 3 3 3 改为教材常见旋律 3 5 5；版本区别已在界面注明。' }],
     bars: ['3 2 1 2', '3 3 3:2', '2 2 2:2', '3 5 5:2',
       '3 2 1 2', '3 3 3:2', '2 2 3 2', '1:4']
