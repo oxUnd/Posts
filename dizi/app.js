@@ -26,17 +26,17 @@ const HOLE_FINGERS = {
 const HOLE_CN = ['零', '一', '二', '三', '四', '五', '六'];
 const BLOW = {
   平吹: '气流缓而集中，音色松透。',
-  急吹: '气流加速、口风收紧，得到高八度。',
-  超吹: '气息更急，音准更要靠耳朵校正。'
+  急吹: '配合口风与吹奏角度，提高气流速度，选择较高的共振音。',
+  超吹: '配合相应指法控制气速、口风与角度，不要只靠猛吹；音准需听辨校正。'
 };
 
 const KEYS = {
   // 这里存实音中音 1：常规曲笛/梆笛的记谱八度与实际发声须分开。
   // Charlie Lui / Sound of Dragon 音域表：C 曲笛筒音 G4，D 曲笛筒音 A4。
-  D: { name: 'D 调', type: '曲笛', midi: 74, desc: '孔距适中、音色温润，是入门首选。' },
+  D: { name: 'D 调', type: '曲笛', midi: 74, desc: '常见曲笛，孔距较大，成人入门常用；选笛也要看手型与教材。' },
   C: { name: 'C 调', type: '曲笛', midi: 72, desc: '管身更长、音色宽厚，需要更稳的气。' },
-  G: { name: 'G 调', type: '梆笛', midi: 79, desc: '笛身短、音色亮，需要更急的气流。' },
-  F: { name: 'F 调', type: '曲笛', midi: 77, desc: '音色柔和中庸，适合抒情乐句。' }
+  G: { name: 'G 调', type: '梆笛', midi: 79, desc: '笛身较短、孔距较小、音色明亮；入门也可按手型和教材选择。' },
+  F: { name: 'F 调', type: '梆笛', midi: 77, desc: '常见梆笛，比常规 C、D 调曲笛短，音色较明亮。' }
 };
 
 const SYSTEMS = {
@@ -45,36 +45,37 @@ const SYSTEMS = {
     short: '作 5',
     tag: '最常用',
     tonic: 0,
-    desc: '全按六孔为低音 5，是大多数入门曲的指法。',
+    desc: '全按六孔平吹为低音 5，是常见入门指法。',
     tip: '先记开孔次序，再让手指记住距离。'
   },
   2: {
     name: '筒音作 2',
     short: '作 2',
-    tag: 'G 调常用',
+    tag: '转调常用',
     tonic: 5,
-    desc: '全按为低音 2；低音 4 与中音 1 会用到半孔或组合指法。',
+    desc: '全按平吹为低音 2；低音 4 与中音 1 会用到半孔或组合指法。',
     tip: '低音 4 的半孔位置，是这套指法的第一道门槛。'
   },
   1: {
     name: '筒音作 1',
     short: '作 1',
-    tag: '唱名统一',
+    tag: '转调指法',
     tonic: 7,
-    desc: '全按为低音 1，音阶与唱名一一对应。',
+    desc: '全按平吹为低音 1；六孔全开为低音 7，不能套用作 5 的唱名。',
     tip: '把 1 当作音阶的起点，唱谱会更容易。'
   }
 };
 
 const SYSTEM_ORDER = [5, 2, 1];
 
-function makeNote(degree, reg, holes, blow, tip = '') {
+function makeNote(degree, reg, holes, blow, tip = '', alternatives = []) {
   return {
     degree,
     reg,
     holes,
     blow,
     tip,
+    alternatives,
     label: REG_LABEL[reg] + degree
   };
 }
@@ -86,35 +87,35 @@ const FINGERINGS = {
     makeNote(7, 'low', '000011', '平吹'),
     makeNote(1, 'mid', '000111', '平吹', '开第一至三孔，右手三指全开。'),
     makeNote(2, 'mid', '001111', '平吹'),
-    makeNote(3, 'mid', '011111', '平吹'),
-    makeNote(4, 'mid', '211111', '平吹', '第六孔半按，其余全开。手指向孔边平移，不要抬起来。'),
-    makeNote(5, 'mid', '000000', '急吹', '与低音 5 同指法，靠气速升高八度。'),
+    makeNote(3, 'mid', '011111', '平吹', '', ['010000']),
+    makeNote(4, 'mid', '211111', '平吹', '第六孔部分遮盖，其余全开；开孔比例以音准为准，不一定正好一半。常用叉指也可按第四、五孔，其余全开。', ['100111', '100100']),
+    makeNote(5, 'mid', '000000', '急吹', '与低音 5 同指法，靠气速升高八度。也可开第六孔、其余按闭。', ['100000']),
     makeNote(6, 'mid', '000001', '急吹'),
     makeNote(7, 'mid', '000011', '急吹'),
     makeNote(1, 'high', '000111', '急吹', '高音 1 与中音 1 同指法，气速更快、口风更细。'),
     makeNote(2, 'high', '001111', '急吹'),
-    makeNote(3, 'high', '011111', '急吹'),
-    makeNote(4, 'high', '211111', '超吹', '半孔加超吹，音准偏紧；初学阶段可以先跳过。'),
-    makeNote(5, 'high', '100000', '超吹', '只开第六孔，其余按闭。高音 5 的常用指法。'),
-    makeNote(6, 'high', '001001', '超吹', '交叉指法，气息要稳，音准靠耳朵校。')
+    makeNote(3, 'high', '011111', '急吹', '', ['010000']),
+    makeNote(4, 'high', '101000', '超吹', '本页采用开第四、六孔，其余按闭的常用叉指。也有第六孔半孔、其余全开的按法；须配合口风校准，不要直接照搬中音 4 的气息。', ['211111', '221111']),
+    makeNote(5, 'high', '100000', '超吹', '只开第六孔，其余按闭。也有全按超吹的按法，需控制对应泛音。', ['000000']),
+    makeNote(6, 'high', '001001', '超吹', '交叉指法，气息要稳，音准靠耳朵校。', ['001101'])
   ],
   2: [
     makeNote(2, 'low', '000000', '平吹', '六孔全按，筒音唱作低音 2。'),
     makeNote(3, 'low', '000001', '平吹'),
-    makeNote(4, 'low', '000021', '平吹', '第一孔开、第二孔半按。求干净，不求快。'),
+    makeNote(4, 'low', '000021', '平吹', '第一孔全开、第二孔部分遮盖，第三至六孔按闭。开孔比例要听音调整，不一定正好一半。'),
     makeNote(5, 'low', '000111', '平吹'),
     makeNote(6, 'low', '001111', '平吹'),
-    makeNote(7, 'low', '011111', '平吹'),
-    makeNote(1, 'mid', '211111', '平吹', '第六孔半按，其余全开。它与低音 2 相隔大七度。'),
-    makeNote(2, 'mid', '000000', '急吹', '与低音 2 同指法，急吹升高八度。'),
+    makeNote(7, 'low', '011111', '平吹', '', ['010000']),
+    makeNote(1, 'mid', '211111', '平吹', '第六孔部分遮盖，其余全开；以音准确定开孔面积。常用叉指也可按第四、五孔，其余全开。它与低音 2 相隔小七度。', ['100111', '100100']),
+    makeNote(2, 'mid', '000000', '急吹', '与低音 2 同指法，急吹升高八度。', ['100000']),
     makeNote(3, 'mid', '000001', '急吹'),
     makeNote(4, 'mid', '000021', '急吹', '保持半孔位置，气流加速。'),
     makeNote(5, 'mid', '000111', '急吹'),
     makeNote(6, 'mid', '001111', '急吹'),
-    makeNote(7, 'mid', '011111', '急吹'),
-    makeNote(1, 'high', '211111', '超吹', '半孔加超吹，音色要收紧。'),
-    makeNote(2, 'high', '100000', '超吹', '只开第六孔，超吹。'),
-    makeNote(3, 'high', '001001', '超吹', '交叉指法，常用于快速经过。')
+    makeNote(7, 'mid', '011111', '急吹', '', ['010000']),
+    makeNote(1, 'high', '101000', '超吹', '开第四、六孔，其余按闭；与作 5 的高音 4 对应同一组孔位。另有半孔按法，需按实际笛子的音准调整。', ['211111', '221111']),
+    makeNote(2, 'high', '100000', '超吹', '只开第六孔，超吹。', ['000000']),
+    makeNote(3, 'high', '001001', '超吹', '交叉指法，常用于快速经过。', ['001101'])
   ],
   1: [
     makeNote(1, 'low', '000000', '平吹', '六孔全按，筒音即低音 1。'),
@@ -122,19 +123,28 @@ const FINGERINGS = {
     makeNote(3, 'low', '000011', '平吹'),
     makeNote(4, 'low', '000111', '平吹'),
     makeNote(5, 'low', '001111', '平吹'),
-    makeNote(6, 'low', '011111', '平吹'),
-    makeNote(7, 'low', '111111', '平吹', '六孔全开，这就是七级音。'),
-    makeNote(1, 'mid', '000000', '急吹', '与低音 1 同指法，急吹升高八度。'),
+    makeNote(6, 'low', '011111', '平吹', '', ['010000']),
+    makeNote(7, 'low', '111111', '平吹', '六孔全开，平吹为低音 7；同一孔位在筒音作 5 中唱作中音 #4。'),
+    makeNote(1, 'mid', '000000', '急吹', '与低音 1 同指法，急吹升高八度。', ['100000']),
     makeNote(2, 'mid', '000001', '急吹'),
     makeNote(3, 'mid', '000011', '急吹'),
     makeNote(4, 'mid', '000111', '急吹'),
     makeNote(5, 'mid', '001111', '急吹'),
-    makeNote(6, 'mid', '011111', '急吹'),
+    makeNote(6, 'mid', '011111', '急吹', '', ['010000']),
     makeNote(7, 'mid', '111111', '急吹'),
-    makeNote(1, 'high', '100000', '超吹', '开第六孔作超吹，高音 1 的常用指法。'),
-    makeNote(2, 'high', '001001', '超吹', '交叉指法，气息集中，音色才不散。')
+    makeNote(1, 'high', '100000', '超吹', '开第六孔作超吹，高音 1 的常用指法。', ['000000']),
+    makeNote(2, 'high', '001001', '超吹', '交叉指法，气息集中，音色才不散。', ['001101'])
   ]
 };
+
+// 只保存资料链接，不在首屏下载 PDF 或外部指法图。
+const LEARNING_SOURCES = [
+  { title: 'Ng 等 · 六孔竹笛标准与替代指法，表 1（ICA 2022）', url: 'https://www.researchgate.net/profile/Da-Yang-Tan-2/publication/366165776_Presenting_a_Compendium_of_Dizi_Impedance_Spectra/links/6396cee2e42faa7e75b77ec3/Presenting-a-Compendium-of-Dizi-Impedance-Spectra.pdf' },
+  { title: 'Luan 等 · 半孔、笛膜与曲笛／梆笛（JASA 2025）', url: 'https://caml.music.mcgill.ca/lib/exe/fetch.php?media=publications%3Aluan_dizi_jasa_2025.pdf' },
+  { title: 'Charlie Lui · 各调竹笛实音音域表', url: 'https://www.soundofdragon.com/wp-content/uploads/2015/10/Charlie-dizi-range.pdf' },
+  { title: '香港音乐事务处 · 笛子选购与保养', url: 'https://www.lcsd.gov.hk/tc/mo/faq/instrumentbuyingandmaintenance.html' },
+  { title: '中国文化大学论文 · 第 51 页装饰音说明（非六孔指法表）', url: 'https://irlib.pccu.edu.tw/retrieve/48905/gsweb6683.pdf#page=51' }
+];
 
 const STAGES = [
   { numeral: '壹', name: '初识与发声', note: '认识它，再让它响' },
@@ -155,14 +165,15 @@ const LESSONS = [
     goals: ['认清吹孔、膜孔与六个音孔', '左手在上、右手在下地持笛', '用全按指法吹响低音 5'],
     steps: [
       { t: '从管身认起', b: '吹孔是发声的入口，膜孔贴笛膜，六个音孔改变音高；靠近笛尾的出音孔不参与按孔。音孔从笛尾向吹孔数：第一孔到第六孔。' },
-      { t: '选一支入门笛', b: 'D 调曲笛孔距适中、音色温润，最适合入门；G 调梆笛更短更亮，需要更急的气，不必一上来就挑战它。' },
-      { t: '把笛子端稳', b: '左手在上，负责第四、五、六孔；右手在下，负责第一、二、三孔。指腹按孔，手腕放平，笛身与身体约 45 度，肩颈放松。' },
-      { t: '吹出第一声', b: '嘴角向两边微收，下唇盖住吹孔约四分之一，气流集中吹向吹孔的对侧边缘。六孔全按，先缓吹低音 5，只求稳，不求响。' }
+      { t: '选一支入门笛', b: '成人常用 D 调曲笛入门；手较小或按教材学习时也可选 F、G 调梆笛。先确认能自然盖严六孔，再按老师与教材选调，不把某一种调当成唯一入门选择。' },
+      { t: '把笛子端稳', b: '本页采用左手靠近吹孔的常见持法：左手负责第四、五、六孔，右手负责第一、二、三孔。指腹盖严，手腕自然、肩颈放松，笛身角度以舒适且气流对准吹孔为准。' },
+      { t: '吹出第一声', b: '双唇自然合拢，形成集中的小气口；下唇轻靠吹孔边缘，气流吹向对侧边缘。下唇遮孔量和角度需微调，不能固定成一个比例。六孔全按，以筒音作 5 缓吹低音 5，先求稳，不求响。' }
     ],
     tips: ['用指腹按孔，不要用指尖戳。', '肩膀不要随吸气抬起。', '头晕就停下休息，吹笛也要循序渐进。'],
     practice: {
       title: '低音 5 · 起音',
       hint: '每个音 4 拍，吹响即可；先找到最省力的角度。',
+      beats: [4, 4, 4],
       notes: ['低音5', '低音5', '低音5']
     }
   },
@@ -179,11 +190,11 @@ const LESSONS = [
     steps: [
       { t: '清洁膜孔', b: '先用软布擦净膜孔边缘的旧胶与油污，手也要擦干。膜孔干净，膜才贴得牢。' },
       { t: '涂一层薄胶', b: '用阿胶、白芨或专用笛膜胶，沿膜孔边缘涂薄薄一圈。胶太厚会让膜失去弹性。' },
-      { t: '裁膜与贴膜', b: '取一小块苇膜，顺着纤维纹理裁成比膜孔略大的方形。先贴一侧，再由中间向两边轻轻抚平。' },
+      { t: '裁膜与贴膜', b: '取一块能覆盖膜孔及周边的苇膜，辨认原生纤维纹，轻拉出细密、较均匀的人工皱纹。将膜粘牢在孔周边，保留中央细皱，不要把膜完全抹平、绷紧。' },
       { t: '试吹与微调', b: '吹一个低音 5。膜音发沙，就轻轻拉紧一点；声音发闷，就稍微放松。以能随气息振动、又有弹性为准。' },
       { t: '吹后保养', b: '吹完用软布擦干管内水汽，竖放在通风处晾干。不要暴晒，也不要把笛子长期放在潮湿的盒子里。' }
     ],
-    tips: ['吹奏前不要用手摸笛膜。', '膜纹要与笛身方向一致。', '出门前多带两片膜，现场贴比事后补救容易。'],
+    tips: ['膜面避免沾水和手汗，胶只涂在膜孔周边。', '原生纤维纹与人工皱纹不同；贴好后中央应保留细密皱纹。', '出门前多带两片膜，贴好后先试吹并调整松紧。'],
     practice: {
       title: '听膜音',
       hint: '贴好后吹低音 5，听膜是否在气息里自然振动。',
@@ -197,11 +208,11 @@ const LESSONS = [
     full: '长音与呼吸：把声音吹长、吹稳',
     duration: 9,
     level: '入门',
-    summary: '每天五分钟长音，是笛子最重要的地基。学会腹式吸气与均匀送气。',
+    summary: '用舒适的长音练习稳定发声，学习自然吸气与均匀送气。',
     intro: '长音是笛子的地基。每天五分钟，比一次吹两小时更有效；先让声音稳住，技巧才有地方落脚。',
-    goals: ['用腹式呼吸吸气', '把低音 5 吹满 8 拍', '保持音头、音身、音尾一样稳'],
+    goals: ['自然吸气，不耸肩、不憋气', '逐渐把低音 5 延长到 8 拍', '保持音头、音身、音尾稳定'],
     steps: [
-      { t: '先吸气，不抬肩', b: '吸气时腹部向外扩张，胸口与肩膀保持放松。可以躺着练，容易感受到腹部起伏。' },
+      { t: '先吸气，不抬肩', b: '吸气时感受下部肋骨和腹部自然扩张，肩颈放松，不要刻意挺胸、耸肩或把胸口锁死。呼气时均匀送气，也不必把腹部一直向外顶。' },
       { t: '轻吐起音', b: '用很轻的“tu”带出音头，不要用喉咙挤气。音头干净，后面的音才容易稳。' },
       { t: '把气送匀', b: '吹奏时保持气压均匀，不要一开始猛、后面虚。节拍器设 60，每个音 8 拍。' },
       { t: '按 5 6 7 1 练', b: '从低音 5 开始，依次吹 5、6、7、中音 1，每个音 8 拍。音与音之间换气，不要憋气。' },
@@ -210,7 +221,8 @@ const LESSONS = [
     tips: ['气不够时缩短拍数，不要硬撑。', '音尾掉下去，多半是气压松了。', '每天从长音开始，别急着吹曲子。'],
     practice: {
       title: '四音长音',
-      hint: '各 8 拍，循环 4 次；节拍器 60。',
+      hint: '各 8 拍，节拍器 60；示范播放一遍，练习时可循环 4 次。',
+      beats: [8, 8, 8, 8],
       notes: ['低音5', '低音6', '低音7', '中音1']
     }
   },
@@ -221,7 +233,7 @@ const LESSONS = [
     full: '筒音作 5：第一套完整指法',
     duration: 11,
     level: '入门',
-    summary: '全按为 5，依次开孔得到 6 7 1 2 3；六孔全开是 #4，4 要半孔。',
+    summary: '全按平吹为低音 5，依次开孔得到 6 7 1 2 3；六孔全开是 #4，4 用半孔或叉指。',
     intro: '全按为 5，是大多数入门曲的指法系统。先记开孔次序，再记手指；理解关系，比死背孔位更牢。',
     goals: ['说出筒音与开孔顺序', '连续吹出低音 5 到中音 3', '知道 4 为什么要半孔'],
     steps: [
@@ -235,6 +247,7 @@ const LESSONS = [
     practice: {
       title: '筒音作 5 · 音阶',
       hint: '慢速，每个音 2 拍；听每个音是否干净。',
+      beats: [2, 2, 2, 2, 2, 2, 2, 2],
       notes: ['低音5', '低音6', '低音7', '中音1', '中音2', '中音3', '中音2', '中音1']
     }
   },
@@ -247,7 +260,7 @@ const LESSONS = [
     level: '入门',
     summary: '保留指、低抬指、跟节拍。练习不是重复，而是让动作越来越省。',
     intro: '音阶练习不是背手指，而是让手指之间学会“提前到达”。动作越小，速度才越稳。',
-    goals: ['用一个八度上下行连奏', '掌握保留指与低抬指', '在 60 到 80 的速度里保持清晰'],
+    goals: ['把低音 5 至中音 3 的上下行连稳', '掌握保留指与低抬指', '在 60 到 80 的速度里保持清晰'],
     steps: [
       { t: '保留指', b: '能不动的手指就不要动。相邻音之间，少抬一根手指，连接会更顺。' },
       { t: '低抬指', b: '手指离孔不要太高，落孔要果断。高抬指会让节奏变慢，也容易敲出杂音。' },
@@ -258,7 +271,8 @@ const LESSONS = [
     tips: ['手掌不要上下起伏。', '右手拇指托稳笛身，别让笛子晃。', '宁可慢而干净，不要快而含糊。'],
     practice: {
       title: '上下行音阶',
-      hint: '上下行各 4 遍，节拍 60；注意 7 → 1 的半音。',
+      hint: '示范每音 2 拍、节拍 60；练习可反复 4 遍，注意 7 → 1 的半音。',
+      beats: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
       notes: ['低音5', '低音6', '低音7', '中音1', '中音2', '中音3', '中音2', '中音1', '低音7', '低音6', '低音5']
     }
   },
@@ -271,18 +285,19 @@ const LESSONS = [
     level: '进阶',
     summary: '4 是筒音作 5 里最特别的音。学会半孔，就打开了半音阶的大门。',
     intro: '4 是筒音作 5 里最特别的一个音。它不在“顺开六孔”的自然音列里，需要半孔或组合指法。',
-    goals: ['用半孔吹出干净的中音 4', '理解半孔降低半音的原理', '在 3 4 5 之间切换不滑音'],
+    goals: ['用半孔吹出干净的中音 4', '理解开孔面积会影响音高', '在 3 4 5 之间切换不滑音'],
     steps: [
-      { t: '先找到半孔位置', b: '第六孔只开一半，其余五孔全开。指腹贴着孔边向旁边移，不要抬起来再落下。' },
-      { t: '气流稍缓', b: '半孔比全开更“紧”，气息要稍缓、更集中。先吹长音，确认音高稳定。' },
+      { t: '先找到半孔位置', b: '第六孔部分遮盖，其余五孔全开。指腹贴着孔边移动，边听边调整开孔面积；“半孔”是部分开孔的统称，不要求几何上正好开一半。' },
+      { t: '听音校准', b: '先以稳定气流吹长音，再用听觉或调音器校准中音 4。开孔面积、口风和角度都影响音高，不能只照着图上的一半面积照搬。' },
       { t: '比较 3 4 5', b: '从中音 3 到 4 再到 5，听半音与全音的距离。不要用滑音代替换指。' },
       { t: '单独练下行', b: '4 下行到 3 比上行更难。把 4 3 4 3 抽出来慢练，确保落指干净。' },
-      { t: '认识替代指法', b: '中音 4 也可以用组合指法（如开第六孔、按闭第四五孔等）。初学先固定一种，别频繁换。' }
+      { t: '认识替代指法', b: '中音 4 的常用叉指是按闭第四、五孔，开放第一、二、三、六孔。高音 4 本页采用开放第四、六孔、其余按闭的叉指；高音另有半孔等按法，气息与中音不同。' }
     ],
     tips: ['半孔靠触感与听力，不靠眼睛。', '按半孔时手指不要抬起。', '宁可慢，先把音准吹对。'],
     practice: {
       title: '3 4 5 的回环',
       hint: '中音 4 用第六孔半按；每个音 4 拍。',
+      beats: [4, 4, 4, 4, 4],
       notes: ['中音3', '中音4', '中音5', '中音4', '中音3']
     }
   },
@@ -294,20 +309,20 @@ const LESSONS = [
     duration: 12,
     level: '进阶',
     summary: '装饰音是旋律的标点。轻、快、不抢拍，比“加很多音”更重要。',
-    intro: '装饰音让旋律有语气。先把它当“标点”，不要当“炫技”；轻、快、不抢拍，是共同的底线。',
+    intro: '装饰音让旋律有语气。先把主音与节奏吹稳，再按谱面和乐曲风格添加装饰；不同流派的具体处理会有差异。',
     goals: ['分辨四种常用装饰音', '在中音 1 上练出均匀颤音', '把装饰音放进一个短乐句'],
     steps: [
-      { t: '颤音（tr）', b: '主音与上方二度快速交替，手指轻打、手腕放松。先慢速均匀，再逐渐加密。' },
-      { t: '叠音', b: '快速按一下上方音孔再回到主音，像给音头加一个很小的“帽”。动作要轻，不要占拍子。' },
-      { t: '打音', b: '在本音孔上快速“打”一下，制造短促的装饰。手指落下即起，不要按住。' },
+      { t: '颤音（tr）', b: '主音与上方相邻音快速、均匀交替，常见为二度颤音。手指和手腕放松；这是指颤音，不要与气震音混为一谈。' },
+      { t: '叠音', b: '常见处理是迅速带入主音上方的短装饰音，再落回主音，例如在 6 前短促带入 7。不能笼统理解成“按一下上方音孔”；具体音程和时值要结合谱面与流派。' },
+      { t: '打音', b: '用短促的闭孔动作带出主音下方的装饰音，再立即回到主音，例如 6 的打音可表现为很短的 5 接 6。按哪一孔取决于主音和指法，不是一律敲“本音孔”。' },
       { t: '滑音', b: '手指抹孔配合气息滑动，让两个音连起来。滑音要唱得出来，才知道滑多远。' },
-      { t: '放进乐句', b: '在中音 1 的长音上先加一个颤音，再加一个叠音。每次只加一种，听清楚再加下一种。' }
+      { t: '放进乐句', b: '先在中音 1 的长音上练 1、2 交替，再单独练上方装饰音落回 1。每次只练一种；下方音超出本套指法音域时，不要硬套打音。' }
     ],
     tips: ['装饰音要轻，不能盖过主音。', '手指放松，动作才会快。', '先唱后吹，装饰的位置才自然。'],
     practice: {
-      title: '1 上的装饰',
-      hint: '先吹平直长音，再加颤音；最后回到平直。',
-      notes: ['中音1', '中音2', '中音1', '中音3', '中音2', '中音1']
+      title: '指颤音的音高走向',
+      hint: '慢速听清 1、2 交替；这段不模拟快速颤音的实际速度与音色。',
+      notes: ['中音1', '中音2', '中音1', '中音2', '中音1', '中音2', '中音1']
     }
   },
   {
@@ -318,13 +333,13 @@ const LESSONS = [
     duration: 12,
     level: '入门',
     summary: '把音阶变成旋律。慢一点，把每个音吹干净，比吹快更重要。',
-    intro: '第一支完整的曲子。慢一点，把每个音吹干净，比吹快更重要；4 的半孔要提前准备。',
+    intro: '本课先练《小星星》的前两句，谱面附完整旋律。慢一点，把每个音吹干净；4 的半孔要提前准备。',
     goals: ['唱准《小星星》的简谱', '完整吹奏前两句', '在乐句之间自然换气'],
     steps: [
       { t: '先唱谱', b: '1 1 5 5 | 6 6 5 – | 4 4 3 3 | 2 2 1 –。先唱准，再上手；唱不准的地方，吹也吹不稳。' },
       { t: '分句练', b: '两小节一句，先练第一句，再练第二句。每句结束时换气，不要在一句中间断。' },
       { t: '盯住 4', b: '第二句的 4 用第六孔半按，提前把手指移到半孔位置，不要临时找。' },
-      { t: '跟 60 拍完整吹', b: '用节拍器 60，每个音一拍。先不管强弱，只求音准、节奏、换气三件事。' },
+      { t: '跟 60 拍吹', b: '节拍器设 60，普通音符一拍，后接一条延长线的音共两拍。先练前两句，熟练后再接完整旋律，注意音准、节奏与换气。' },
       { t: '录音再听', b: '录一遍，听 4 是否偏低、5 是否太尖、换气是否切断旋律。下一次只改一个问题。' }
     ],
     tips: ['先唱后吹，旋律才会走在手指前面。', '4 不要滑过去，半孔要站稳。', '换气记号要提前想，不要等没气了才找。'],
@@ -339,6 +354,7 @@ const LESSONS = [
     practice: {
       title: '前两句 · 跟着吹',
       hint: '先练前两句，熟练后再接完整版；4 用半孔。',
+      beats: [1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2],
       notes: ['中音1', '中音1', '中音5', '中音5', '中音6', '中音6', '中音5', '中音4', '中音4', '中音3', '中音3', '中音2', '中音2', '中音1']
     }
   },
@@ -386,15 +402,15 @@ const SCORES = [
   { page: 19, title: '相思遥', original: '♭A 调', suggest: 'E/F/G 调 · 作5', level: 'advanced', tip: '' },
   { page: 20, title: '生生世世爱', original: 'E 调', suggest: 'E/F 调 · 作5', level: 'advanced', tip: '颤音运用频繁，建议先学颤音。' },
   { page: 21, title: '清明雨上', original: '♭D 调', suggest: 'D/E/F 调 · 作5', level: 'advanced', tip: '高八度记谱，低八度演奏。' },
-  { page: 22, title: '无羁 I', original: 'G 调', suggest: 'D 调 · 作2', level: 'challenge', tip: '作5指法低音吹不了，需用 D 调作2。' },
-  { page: 23, title: '无羁 II', original: 'G 调', suggest: 'D 调 · 作2', level: 'challenge', tip: '用 D 调作2 最合适，其他指法不好听。' },
+  { page: 22, title: '无羁 I', original: 'G 调', suggest: 'D 调 · 作2', level: 'challenge', tip: '谱中有低于作5筒音的低音；保留原调时可用 D 调笛作2。' },
+  { page: 23, title: '无羁 II', original: 'G 调', suggest: 'D 调 · 作2', level: 'challenge', tip: '本页用作2指法覆盖谱中低音；保留原调时可选 D 调笛。' },
   { page: 24, title: '雨下一整晚（间奏）', original: '♭B 调', suggest: 'C/D/E 调 · 作5', level: 'advanced', tip: '' },
   { page: 25, title: '烟花易冷', original: 'C 调', suggest: '任意调 · 作5', level: 'advanced', tip: '高八度记谱，低八度演奏。' },
   { page: 26, title: '上春山', original: 'E→F 调', suggest: '任意调 · 作5', level: 'advanced', tip: '开头连续的 5 建议用轻吐或叠音。' },
   { page: 27, title: '美丽的神话', original: 'A 调', suggest: '任意调 · 作5', level: 'advanced', tip: '开头连续的 5 建议用轻吐或叠音。' },
   { page: 28, title: '痴情冢', original: 'F 调', suggest: '需作2 · 新手暂缓', level: 'challenge', tip: '6 前加 5 的倚音，3 前加 2 的倚音。' },
-  { page: 29, title: '霜雪千年', original: 'F 调', suggest: '任意调 · 作5', level: 'advanced', tip: '需要气滑音，才有戏腔的味道。' },
-  { page: 30, title: '红颜旧', original: 'A 调', suggest: '需作2 · 新手暂缓', level: 'challenge', tip: '必须作2才好听，新手可先放一放。' }
+  { page: 29, title: '霜雪千年', original: 'F 调', suggest: '任意调 · 作5', level: 'advanced', tip: '可用气滑音润色；先按原谱吹稳主干音。' },
+  { page: 30, title: '红颜旧', original: 'A 调', suggest: '需作2 · 新手暂缓', level: 'challenge', tip: '本页校对数据采用作2以覆盖低音，可先熟悉作2音阶与半孔。' }
 ];
 
 const SCORE_LEVELS = { beginner: '入门', advanced: '进阶', challenge: '挑战' };
@@ -405,21 +421,22 @@ const DAILY_TASKS = [
     title: '长音',
     sub: '低音 5 · 8 拍 × 4',
     minutes: 5,
-    notes: ['低音5', '低音5', '低音6', '低音6']
+    beats: [8, 8, 8, 8],
+    notes: ['低音5', '低音5', '低音5', '低音5']
   },
   {
     id: 'scale',
     title: '音阶',
     sub: '筒音作 5 · 上下行',
     minutes: 5,
-    notes: ['低音5', '低音6', '低音7', '中音1', '中音2', '中音3', '中音2', '中音1']
+    notes: ['低音5', '低音6', '低音7', '中音1', '中音2', '中音3', '中音2', '中音1', '低音7', '低音6', '低音5']
   },
   {
     id: 'ear',
     title: '听音',
-    sub: '分辨低、中、高音区',
+    sub: '同音级的低、中、高音区',
     minutes: 5,
-    notes: ['低音5', '中音1', '中音5']
+    notes: ['低音5', '中音5', '高音5']
   }
 ];
 
@@ -436,9 +453,9 @@ const THEORY = [
   {
     level: 'basic',
     q: '“筒音”指的是什么？',
-    options: ['六孔全按发出的音', '整支笛子最响的音', '高音区的音', '笛膜振动的声音'],
-    answer: '六孔全按发出的音',
-    explain: '筒音是六个音孔全部按闭时吹出的音，也是每一种指法体系的起点。'
+    options: ['六孔全按平吹的最低基本音', '整支笛子最响的音', '高音区的音', '笛膜振动的声音'],
+    answer: '六孔全按平吹的最低基本音',
+    explain: '筒音指六个音孔全按、平吹的最低基本音；相同孔位超吹产生的其他泛音不能都叫最低筒音。'
   },
   {
     level: 'basic',
@@ -456,14 +473,14 @@ const THEORY = [
   },
   {
     level: 'basic',
-    q: '筒音作 5 时，全按六孔对应哪个音？',
+    q: '筒音作 5 时，全按六孔平吹对应哪个音？',
     options: ['低音 5', '低音 2', '中音 1', '低音 6'],
     answer: '低音 5',
     explain: '“筒音作 5”就是把这个全按音唱作低音 5，其余音按音阶关系顺推。'
   },
   {
     level: 'basic',
-    q: '筒音作 2 时，全按六孔对应哪个音？',
+    q: '筒音作 2 时，全按六孔平吹对应哪个音？',
     options: ['低音 2', '低音 5', '中音 1', '低音 7'],
     answer: '低音 2',
     explain: '筒音作 2 时，筒音唱作低音 2；低音 4 与中音 1 会用到半孔或组合指法。'
@@ -484,10 +501,10 @@ const THEORY = [
   },
   {
     level: 'basic',
-    q: '吹长音时，肩膀应该怎样？',
-    options: ['放松不动，腹部扩张', '随气息上下抬起', '用力夹紧', '尽量前倾'],
-    answer: '放松不动，腹部扩张',
-    explain: '用腹式呼吸，吸气时腹部扩张，肩膀与胸口保持放松。'
+    q: '吸气与吹长音时，肩膀应该怎样？',
+    options: ['自然放松，不耸肩', '随气息上下抬起', '用力夹紧', '尽量前倾'],
+    answer: '自然放松，不耸肩',
+    explain: '吸气时下部肋骨与腹部自然扩张，肩颈放松；呼气均匀送气，不需要把腹部一直向外顶。'
   },
   {
     level: 'basic',
@@ -526,10 +543,10 @@ const THEORY = [
   },
   {
     level: 'advanced',
-    q: '半孔指法的主要作用是？',
-    options: ['把音降低半音', '把音升高八度', '让音色更亮', '替代笛膜'],
-    answer: '把音降低半音',
-    explain: '将发音孔按闭一部分会降低音高，半孔常用于取得音阶中的半音。'
+    q: '半孔指法通过什么方式调节音高？',
+    options: ['改变音孔的有效开放面积', '把任何音固定升高八度', '只改变音量而不变音高', '替代笛膜发声'],
+    answer: '改变音孔的有效开放面积',
+    explain: '从全开逐渐遮盖音孔，音高通常下降；从全闭逐渐开放则通常升高。具体音程和所需面积要听音校准，不是“一半孔固定降半音”。'
   },
   {
     level: 'advanced',
@@ -940,7 +957,7 @@ function stopSequence() {
   $$('.practice-chip.is-playing').forEach(el => el.classList.remove('is-playing'));
 }
 
-async function playSequence(midis, { gap = 0.72, duration = 0.62, onStep = null } = {}) {
+async function playSequence(midis, { gap = 0.72, duration = 0.62, beats = null, tempo = 60, onStep = null } = {}) {
   stopSequence();
   if (state.muted) {
     showToast('示范声音已关闭');
@@ -950,13 +967,17 @@ async function playSequence(midis, { gap = 0.72, duration = 0.62, onStep = null 
   ensureAudio();
   if (!await loadDiziSamples(midis)) { showToast('笛音加载失败，请重试'); return; }
   if (token !== sequence.token || state.muted) return;
+  let elapsed = 0;
   midis.forEach((midi, i) => {
+    const step = beats ? beats[i] * 60 / tempo : gap;
+    const length = beats ? step * 0.95 : duration;
     const timer = window.setTimeout(() => {
       if (token !== sequence.token) return;
-      playMidi(midi, { duration });
+      playMidi(midi, { duration: length });
       if (onStep) onStep(i);
-    }, i * gap * 1000 + 20);
+    }, elapsed * 1000 + 20);
     sequence.timers.push(timer);
+    elapsed += step;
   });
 }
 
@@ -1580,7 +1601,7 @@ function toggleTask(id) {
 function playTask(id) {
   const task = DAILY_TASKS.find(item => item.id === id);
   if (!task) return;
-  playLabels(task.notes, { gap: 0.7, duration: 0.6 });
+  playLabels(task.notes, { system: 5, key: 'D', gap: 0.7, duration: 0.6, beats: task.beats, tempo: 60 });
 }
 
 /* =========================================================
@@ -1621,8 +1642,8 @@ function elecPattern() {
 
 function elecCurrentNote() {
   const pattern = elecPattern();
-  const matches = FINGERINGS[5].filter(note => note.holes === pattern);
-  return matches.find(note => note.reg === elec.reg) || matches[0] || null;
+  return FINGERINGS[5].find(note => note.reg === elec.reg
+    && (note.holes === pattern || note.alternatives.includes(pattern))) || null;
 }
 
 function updateElecUI() {
@@ -1642,11 +1663,11 @@ function updateElecUI() {
     const midi = midiOf(note, 5, state.key);
     $('#elecNote').textContent = note.label;
     $('#elecPitch').textContent = `${nameForMidi(midi)} · ${frequencyForMidi(midi).toFixed(1)} Hz`;
-    $('#elecHint').textContent = '点按音孔，或按 1–6；空格吹气';
+    $('#elecHint').textContent = '筒音作 5 · 点孔或按 1–6；空格吹气';
   } else {
     $('#elecNote').textContent = '未收录指法';
     $('#elecPitch').textContent = elecPattern().split('').map(code => (code === '0' ? '●' : '○')).join(' ');
-    $('#elecHint').textContent = '这组孔位不在指法表里，换一个组合试试';
+    $('#elecHint').textContent = '当前音区未收录这组孔位，可换孔位或音区；电子笛使用筒音作 5';
   }
   $('#elecOctave').textContent = { low: '低音区', mid: '中音区', high: '高音区' }[elec.reg];
 }
@@ -1974,16 +1995,17 @@ function openLesson(id, { returnFocus = null } = {}) {
     </div>
     ${scoreBlock}
     <div class="practice-box">
-      <div class="practice-head"><h3>${practice.title}</h3><span>点击音符试听</span></div>
+      <div class="practice-head"><h3>${practice.title}</h3><span>D 调笛 · 筒音作 5 · 60 拍/分</span></div>
       <p class="practice-hint">${practice.hint}</p>
       <div class="practice-chips">${practiceChips}</div>
       <div class="practice-actions">
-        <button class="btn btn-soft" type="button" data-play-practice>
+        <button class="btn btn-soft" type="button" data-play-practice="${lesson.id}">
           <svg class="icon"><use href="#i-play"/></svg>播放整段示范
         </button>
         <button class="btn btn-quiet" type="button" data-open-fingering data-fingering-note="${practice.notes[0]}">去指法页看孔位</button>
       </div>
     </div>
+    ${learningSourcesHTML()}
     <div class="sheet-actions">
       <button class="btn btn-primary btn-complete ${done ? 'is-done' : ''}" type="button" data-complete-lesson="${lesson.id}">
         ${done ? '已完成 · 点击撤销' : '标记完成'}
@@ -2020,19 +2042,27 @@ function toggleLessonComplete(id) {
 function playSheetPractice() {
   const chips = $$('#sheetRoot [data-practice-note]');
   if (!chips.length) return;
+  const lessonId = Number($('#sheetRoot [data-play-practice]')?.dataset.playPractice);
+  const practice = LESSONS.find(lesson => lesson.id === lessonId)?.practice;
   const labels = chips.map(chip => chip.dataset.practiceNote);
   const midis = labels
     .map(label => getNote(label, 5))
     .filter(Boolean)
     .map(note => midiOf(note, 5, 'D'));
   playSequence(midis, {
-    gap: 0.68,
-    duration: 0.55,
+    tempo: 60,
+    beats: practice?.beats || midis.map(() => 1),
     onStep: index => {
       chips.forEach(chip => chip.classList.remove('is-playing'));
       if (chips[index]) chips[index].classList.add('is-playing');
     }
   });
+}
+
+function learningSourcesHTML() {
+  return `<details class="score-calibration"><summary>基础知识与指法核对来源 · 2026-11-27</summary>
+    <ul>${LEARNING_SOURCES.map(source => `<li><a href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(source.title)}</a></li>`).join('')}</ul>
+    <p>本页针对常规六孔竹笛，图示采用常用按法，不是全部替代指法。半孔面积、叉指与高音音准仍要按实际笛子及老师的示范调整。</p></details>`;
 }
 
 function openFingeringInfo() {
@@ -2046,17 +2076,17 @@ function openFingeringInfo() {
         <svg class="icon"><use href="#i-close"/></svg>
       </button>
     </div>
-    <p class="sheet-intro">六个音孔加一个筒音，构成竹笛最基本的七声音列。理解“筒音作几”，比死记孔位更重要。</p>
+    <p class="sheet-intro">先分清笛子本调、筒音作几与实际音高。同一孔位还能靠不同气息发出不同音区，不能只看按孔数量认音。</p>
     <div class="info-section">
       <h3>筒音是什么</h3>
-      <p>六个音孔全部按闭时吹出的音，叫做筒音。它是整支笛子的最低音，也是指法体系的起点。同一个筒音，可以唱作 5、2 或 1，于是有了不同的“筒音作几”。</p>
+      <p>六个音孔全按、平吹时的最低基本音，叫做筒音。同一支笛子的筒音实音不因唱名改变；把它唱作低音 5、2 或 1，就得到不同的“筒音作几”指法体系。</p>
     </div>
     <div class="info-section">
       <h3>三种体系怎么选</h3>
       <ul>
         <li><strong>筒音作 5</strong>：最常用。全按为低音 5，入门曲、练习曲大多可用。</li>
-        <li><strong>筒音作 2</strong>：全按为低音 2，常见于 G 调乐曲；低音 4 与中音 1 需要半孔或组合指法。</li>
-        <li><strong>筒音作 1</strong>：全按为低音 1，音阶与唱名一一对应，唱谱最直观。</li>
+        <li><strong>筒音作 2</strong>：全按平吹为低音 2；低音 4 与中音 1 常用半孔或叉指。曲调取决于笛子本调，例如 D 调笛作 2 吹 G 调，C 调笛作 2 吹 F 调。</li>
+        <li><strong>筒音作 1</strong>：全按平吹为低音 1，六孔全开为低音 7。例如 D 调笛作 1 吹 A 调，C 调笛作 1 吹 G 调。</li>
       </ul>
     </div>
     <div class="info-section">
@@ -2065,12 +2095,17 @@ function openFingeringInfo() {
     </div>
     <div class="info-section">
       <h3>半孔怎么做</h3>
-      <p>指腹贴着孔边向旁边平移，露出大约一半的孔，不要把手指抬起来再落下。半孔会降低半音，是补齐半音阶的关键；位置靠触感与听力，不靠眼睛。</p>
+      <p>指腹贴着孔边移动，逐渐改变开孔面积。半孔表示部分开孔，不是必须露出恰好一半；从全开遮孔与从全闭开孔，音高变化方向不同。以听觉或调音器校准，不能认为“按一半就固定降半音”。</p>
+    </div>
+    <div class="info-section">
+      <h3>相同孔位与替代指法</h3>
+      <p>例如作 5 时六孔全按，平吹为低音 5，换用相应口风与气速可发中音 5。作 5 的高音 4 本页采用开第四、六孔、其余按闭的叉指，也有半孔等按法。高音不能只靠猛吹，同一张图也不能代替音准练习。</p>
     </div>
     <div class="tip-card">
       <div class="tip-title"><svg class="icon"><use href="#i-info"/></svg>练习顺序</div>
       <p>先用筒音作 5 把 5 6 7 1 2 3 吹稳，再学 4 的半孔，最后再换其他指法体系。一次只改一个变量。</p>
     </div>
+    ${learningSourcesHTML()}
     <div class="sheet-actions">
       <button class="btn btn-primary" type="button" data-close-sheet>知道了</button>
     </div>`;
@@ -2165,7 +2200,7 @@ function toggleTopic(id) {
 
 function makeFingeringQuestion(config) {
   const system = pick(SYSTEM_ORDER);
-  const key = pick(['D', 'G', 'C']);
+  const key = pick(['D', 'G', 'C', 'F']);
   const pool = config.level === 'basic'
     ? FINGERINGS[system].filter(note => note.reg !== 'high')
     : FINGERINGS[system];
@@ -2176,8 +2211,8 @@ function makeFingeringQuestion(config) {
   return {
     topic: 'fingering',
     tag: '指法识音',
-    prompt: `在 ${KEYS[key].name}笛、${SYSTEMS[system].name} 中，这个指法吹出哪个音？`,
-    visual: { type: 'strip', holes: note.holes },
+    prompt: `在 ${KEYS[key].name}笛、${SYSTEMS[system].name} 中，以${note.blow}吹奏图示孔位，对应本页哪一个音？`,
+    visual: { type: 'strip', holes: note.holes, blow: note.blow },
     options,
     correct: note.label,
     explain: `${note.label} · ${pitch}。${noteTip(note)}${BLOW[note.blow]}`,
@@ -2187,7 +2222,7 @@ function makeFingeringQuestion(config) {
 
 function makePitchQuestion(config) {
   const system = pick(SYSTEM_ORDER);
-  const key = pick(['D', 'G', 'C']);
+  const key = pick(['D', 'G', 'C', 'F']);
   const pool = config.level === 'basic'
     ? FINGERINGS[system].filter(note => note.reg !== 'high')
     : FINGERINGS[system];
@@ -2210,7 +2245,7 @@ function makePitchQuestion(config) {
 
 function makeEarQuestion(config) {
   const system = pick(SYSTEM_ORDER);
-  const key = pick(['D', 'G', 'C']);
+  const key = pick(['D', 'G', 'C', 'F']);
   const pool = (config.level === 'basic'
     ? FINGERINGS[system].filter(note => note.reg !== 'high')
     : FINGERINGS[system])
@@ -2230,7 +2265,7 @@ function makeEarQuestion(config) {
     topic: 'ear',
     tag: '听音辨音',
     prompt: `在 ${KEYS[key].name}笛、${SYSTEMS[system].name} 中，听一听这是哪个音？`,
-    visual: { type: 'listen', midi },
+    visual: { type: 'listen', midi, tonic: tonicMidi(system, key) },
     options,
     correct: note.label,
     explain: `${note.label} · ${nameForMidi(midi)}。${noteTip(note)}`,
@@ -2296,7 +2331,7 @@ function stripHTML(holes) {
 function questionVisualHTML(question) {
   if (!question.visual) return '';
   if (question.visual.type === 'strip') {
-    return `<div class="q-visual">${stripHTML(question.visual.holes)}<p class="strip-caption">孔序：第六孔 → 第一孔</p></div>`;
+    return `<div class="q-visual">${stripHTML(question.visual.holes)}<p class="strip-caption">孔序：第六孔 → 第一孔 · 吹法：${question.visual.blow}</p></div>`;
   }
   if (question.visual.type === 'token') {
     return `<div class="q-visual"><div class="q-note-token"><strong>${degreeHTML(question.visual.label)}</strong><span>${question.visual.label}</span></div></div>`;
@@ -2306,7 +2341,8 @@ function questionVisualHTML(question) {
       <button class="listen-btn" type="button" data-listen-midi="${question.visual.midi}">
         <span class="play-disc"><svg class="icon"><use href="#i-play"/></svg></span>播放声音
       </button>
-      <p class="micro">可重复播放，先听音区，再听音级</p>
+      <button class="btn btn-soft" type="button" data-listen-midi="${question.visual.tonic}">听本调 1 · 建立参照</button>
+      <p class="micro">可先听本调 1，再重播题目；结合音区辨认相对音级。</p>
     </div></div>`;
   }
   return '';
