@@ -1449,9 +1449,12 @@ button:focus-visible, a:focus-visible, [tabindex]:focus-visible {
 .score-play[disabled] { opacity: .45; cursor: not-allowed; }
 .score-player.is-blowing .score-mini-hole.is-open { transform: scale(1.12); }
 @media (max-width: 560px) {
-  .score-player { flex-wrap: wrap; }
-  .score-player-info { order: 3; width: 100%; }
-  .score-play { margin-left: auto; }
+  .score-player { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .score-player-info { grid-column: 1 / -1; grid-row: 2; }
+  .score-player-info strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* 为准备、加载、逐音说明和结束状态保留三行；长说明在内部滚动，不推移谱面。 */
+  .score-player-info span { display: block; height: 4.5em; overflow-y: auto; overflow-wrap: anywhere; }
+  .score-play { margin-left: 0; }
 }
 
 @media (max-width: 900px) {
