@@ -64,9 +64,11 @@
       </div>
 
       <article class="hero" id="heroCard">
-        <div class="hero-art" aria-hidden="true">
-          <img class="hero-photo" src="assets/hero.jpg?v=daf15cf8a2" alt="" width="2496" height="1664" decoding="async">
-        </div>
+        <picture class="hero-art" aria-hidden="true">
+          <source type="image/webp" media="(max-width: 680px)" srcset="assets/hero-mobile.webp?v=8a083b2b55">
+          <source type="image/webp" srcset="assets/hero.webp?v=7c75b5b867">
+          <img class="hero-photo" src="assets/hero.jpg?v=daf15cf8a2" alt="" width="2496" height="1664" decoding="async" fetchpriority="high">
+        </picture>
         <div class="hero-content">
           <p class="eyebrow" id="heroEyebrow">入门 · 第 1 课</p>
           <h2 id="heroTitle">吹响第一声</h2>
@@ -294,7 +296,6 @@
   <div class="sheet-root" id="sheetRoot" hidden></div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="assets/scores/calibrations.js?v=6bafa76233"></script>
-  <script src="app.js?v=38ff87a6e1"></script>
+  <script id="appScript" src="app.js?v=d144622b28" data-score-src="assets/scores/calibrations.js?v=6bafa76233" defer></script>
 </body>
 </html>

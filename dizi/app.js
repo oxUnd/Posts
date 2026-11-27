@@ -722,29 +722,54 @@ const DIZI_SAMPLE_MANIFEST = [
 ];
 
 let diziSamples = null;
-let diziSamplePromise = null;
+let diziDecodeCtx = null;
+const diziSampleRequests = new Map();
+const diziSampleQueue = [];
+let activeDiziSampleLoads = 0;
 
-function loadDiziSamples() {
-  if (diziSamples) return Promise.resolve(diziSamples);
-  if (diziSamplePromise) return diziSamplePromise;
-  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
-  if (!Offline) return Promise.resolve(null);
-  const decodeCtx = new Offline(1, 1, 44100);
-  diziSamplePromise = Promise.all(DIZI_SAMPLE_MANIFEST.map(async item => {
-    const response = await fetch(item.file);
+function loadedDiziSample(midi) {
+  // 先从完整清单选本音，不能因为邻音已经缓存就误用邻音。
+  const { sample } = diziPlayback(midi, DIZI_SAMPLE_MANIFEST);
+  return diziSamples?.find(item => item.midi === sample.midi) || null;
+}
+
+async function loadDiziSample(item) {
+  if (activeDiziSampleLoads >= 4) await new Promise(resolve => diziSampleQueue.push(resolve));
+  else activeDiziSampleLoads += 1;
+  try {
+    const response = await fetch(`${item.file}?v=${item.sha256.slice(0, 10)}`);
     if (!response.ok) throw new Error(`sample ${item.file}`);
-    const buffer = await decodeCtx.decodeAudioData(await response.arrayBuffer());
-    return { ...item, buffer, ...prepareDiziLoop(buffer, item.hz) };
-  })).then(list => {
-    diziSamples = list.sort((a, b) => a.midi - b.midi);
-    return diziSamples;
-  }).catch(error => {
+    const buffer = await diziDecodeCtx.decodeAudioData(await response.arrayBuffer());
+    const sample = { ...item, buffer, ...prepareDiziLoop(buffer, item.hz) };
+    if (!diziSamples) diziSamples = [];
+    diziSamples.push(sample);
+    return sample;
+  } finally {
+    const next = diziSampleQueue.shift();
+    if (next) next();
+    else activeDiziSampleLoads -= 1;
+  }
+}
+
+async function loadDiziSamples(midis) {
+  const Offline = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (!Offline) return null;
+  try {
+    const items = [...new Set(midis.map(midi => diziPlayback(midi, DIZI_SAMPLE_MANIFEST).sample))];
+    if (!diziDecodeCtx) diziDecodeCtx = new Offline(1, 1, 44100);
+    return await Promise.all(items.map(item => {
+      const cached = loadedDiziSample(item.midi);
+      if (cached) return cached;
+      if (!diziSampleRequests.has(item.midi)) {
+        const request = loadDiziSample(item).finally(() => diziSampleRequests.delete(item.midi));
+        diziSampleRequests.set(item.midi, request);
+      }
+      return diziSampleRequests.get(item.midi);
+    }));
+  } catch (error) {
     console.warn('Dizi samples failed to load', error);
-    diziSamples = null;
-    diziSamplePromise = null;
     return null;
-  });
-  return diziSamplePromise;
+  }
 }
 
 function applyAudioSession() {
@@ -833,9 +858,12 @@ function diziPlayback(midi, samples = diziSamples) {
 }
 
 function playDiziSample(ctx, midi, { duration = 1.5, velocity = 0.5, attack = 0.03, legato = false } = {}) {
-  if (!diziSamples?.length) return null;
   let playback;
-  try { playback = diziPlayback(midi); } catch {
+  try {
+    const sample = loadedDiziSample(midi);
+    if (!sample) return null;
+    playback = diziPlayback(midi, [sample]);
+  } catch {
     showToast('这个音尚无合格的竹笛采样，已暂停发声');
     return null;
   }
@@ -880,14 +908,20 @@ function playMidi(midi, options = {}) {
   }
   const ctx = ensureAudio();
   if (!ctx) return null;
-  if (diziSamples) return playDiziSample(ctx, midi, options);
+  try {
+    if (loadedDiziSample(midi)) return playDiziSample(ctx, midi, options);
+  } catch {
+    showToast('这个音尚无合格的竹笛采样，已暂停发声');
+    return null;
+  }
   // 单音可等待录音加载；整段演奏在计时前统一等候，不会先响合成音。
   const token = sequence.token;
   let cancelled = false;
   let stopVoice = null;
   const cancel = () => { cancelled = true; stopVoice?.(); pendingDiziVoices.delete(cancel); };
   pendingDiziVoices.add(cancel);
-  loadDiziSamples().then(samples => {
+  showToast('正在加载笛音…');
+  loadDiziSamples([midi]).then(samples => {
     pendingDiziVoices.delete(cancel);
     if (cancelled || token !== sequence.token || state.muted) return;
     if (!samples) { showToast('笛音加载失败，请重试'); return; }
@@ -914,7 +948,7 @@ async function playSequence(midis, { gap = 0.72, duration = 0.62, onStep = null 
   }
   const token = sequence.token;
   ensureAudio();
-  if (!diziSamples && !await loadDiziSamples()) { showToast('笛音加载失败，请重试'); return; }
+  if (!await loadDiziSamples(midis)) { showToast('笛音加载失败，请重试'); return; }
   if (token !== sequence.token || state.muted) return;
   midis.forEach((midi, i) => {
     const timer = window.setTimeout(() => {
@@ -1114,12 +1148,63 @@ function updateHero() {
 
 let scoreFilter = 'all';
 let scoreKeyMode = 'original';
+let scoreDataPromise = null;
+let scoreThumbnailObserver = null;
+
+function loadScoreData() {
+  if (window.SCORE_CALIBRATIONS && window.ScoreNotation) return Promise.resolve();
+  if (scoreDataPromise) return scoreDataPromise;
+  scoreDataPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = $('#appScript').dataset.scoreSrc;
+    script.onload = () => {
+      script.remove();
+      if (window.SCORE_CALIBRATIONS && window.ScoreNotation) resolve();
+      else reject(new Error('曲谱数据不完整'));
+    };
+    script.onerror = () => {
+      script.remove();
+      reject(new Error('曲谱数据加载失败'));
+    };
+    document.head.append(script);
+  }).catch(error => {
+    scoreDataPromise = null;
+    throw error;
+  });
+  return scoreDataPromise;
+}
+
+function observeScoreThumbnails() {
+  scoreThumbnailObserver?.disconnect();
+  const load = img => {
+    if (!img.dataset.src) return;
+    const source = img.previousElementSibling;
+    source.srcset = source.dataset.srcset;
+    img.src = img.dataset.src;
+    delete img.dataset.src;
+  };
+  const images = $$('#scoreGrid img[data-src]');
+  if (!('IntersectionObserver' in window)) {
+    images.forEach(load);
+    return;
+  }
+  if (!scoreThumbnailObserver) {
+    scoreThumbnailObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        load(entry.target);
+        scoreThumbnailObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: '200px' });
+  }
+  images.forEach(img => scoreThumbnailObserver.observe(img));
+}
 
 function scoreCardHTML(score, index) {
   const page = String(score.page).padStart(2, '0');
   const tip = score.tip || '原谱收录 · 点击查看完整谱面';
   return `<button class="score-card" type="button" data-score-index="${index}" aria-label="打开曲谱：${score.title}">
-    <span class="score-thumb"><img src="assets/scores/thumbs/p-${page}.jpg" alt="" width="720" height="405" loading="lazy" decoding="async"></span>
+    <picture class="score-thumb"><source type="image/webp" data-srcset="assets/scores/thumbs/p-${page}.webp"><img data-src="assets/scores/thumbs/p-${page}.jpg" alt="" width="720" height="405" loading="lazy" decoding="async"></picture>
     <span class="score-body">
       <span class="score-title">${score.title}</span>
       <span class="score-meta">
@@ -1141,6 +1226,7 @@ function renderScores() {
   grid.innerHTML = items.length
     ? items.map(({ score, index }) => scoreCardHTML(score, index)).join('')
     : '<p class="score-empty">这个难度暂时没有曲目。</p>';
+  observeScoreThumbnails();
   $$('#scoreFilters [data-score-filter]').forEach(button => {
     const active = button.dataset.scoreFilter === scoreFilter;
     button.classList.toggle('is-active', active);
@@ -1255,12 +1341,28 @@ function scoreSheetHTML(index) {
 function openScore(index, { returnFocus = null } = {}) {
   if (!SCORES[index]) return;
   stopScorePlayback();
-  openSheet(scoreSheetHTML(index), { returnFocus, variant: 'sheet--score' });
+  const ready = window.SCORE_CALIBRATIONS && window.ScoreNotation;
+  const placeholder = `<div class="sheet-head"><h2 id="sheetTitle">${SCORES[index].title}</h2>
+    <button class="sheet-close" type="button" data-close-sheet aria-label="关闭曲谱"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <p role="status" data-score-loading>正在加载曲谱…</p>`;
+  openSheet(ready ? scoreSheetHTML(index) : placeholder, { returnFocus, variant: 'sheet--score' });
   const sheet = $('.sheet', $('#sheetRoot'));
   if (sheet) sheet.dataset.scoreIndex = String(index);
+  if (ready) return;
+  loadScoreData().then(() => {
+    // 关闭或换到其他抽屉后，迟到的数据不能重新打开曲谱。
+    if ($('.sheet', $('#sheetRoot')) !== sheet) return;
+    const focusedClose = document.activeElement === $('.sheet-close', sheet);
+    sheet.innerHTML = scoreSheetHTML(index);
+    if (focusedClose) $('.sheet-close', sheet)?.focus({ preventScroll: true });
+  }).catch(() => {
+    if ($('.sheet', $('#sheetRoot')) !== sheet) return;
+    $('[data-score-loading]', sheet).innerHTML = `曲谱加载失败，请重试。 <button class="btn btn-soft" type="button" data-score-retry="${index}">重新加载</button>`;
+  });
 }
 
 function stepScore(delta) {
+  if (!window.SCORE_CALIBRATIONS || !window.ScoreNotation) return;
   const sheet = $('.sheet--score', $('#sheetRoot'));
   if (!sheet) return;
   stopScorePlayback();
@@ -1329,6 +1431,7 @@ function stopScorePlayback() {
 }
 
 async function toggleScorePlayback() {
+  if (!window.SCORE_CALIBRATIONS || !window.ScoreNotation) return;
   if (scorePlay.playing) {
     stopScorePlayback();
     return;
@@ -1360,9 +1463,11 @@ async function toggleScorePlayback() {
     button.classList.add('is-playing');
   }
   ensureAudio();
-  if (!diziSamples) {
+  const tuning = scoreTuning(score, calibration);
+  const requiredMidis = events.filter(event => !event.rest).map(event => scoreEventMidi(event, tuning));
+  if (requiredMidis.some(midi => !loadedDiziSample(midi))) {
     if (status) status.textContent = '正在加载竹笛录音…';
-    const loaded = await loadDiziSamples();
+    const loaded = await loadDiziSamples(requiredMidis);
     if (token !== scorePlay.token || !scorePlay.playing) return;
     if (!loaded || state.muted) {
       stopScorePlayback();
@@ -1372,7 +1477,6 @@ async function toggleScorePlayback() {
   }
   const totalNotes = events.filter(event => !event.rest).length;
   const unit = 60 / calibration.tempo;
-  const tuning = scoreTuning(score, calibration);
   let played = 0;
   let elapsed = 0;
   events.forEach(event => {
@@ -1387,7 +1491,7 @@ async function toggleScorePlayback() {
         updateScoreMiniDizi(event.note);
         const midi = scoreEventMidi(event, tuning);
         if (info) info.textContent = `${event.note.label} · ${nameForMidi(midi)}`;
-        const sampleKind = diziPlayback(midi, diziSamples || DIZI_SAMPLE_MANIFEST).sample.midi === midi ? '本音采样' : '半音微调';
+        const sampleKind = loadedDiziSample(midi).midi === midi ? '本音采样' : '半音微调';
         if (status) status.textContent = `第 ${event.barIndex + 1} 小节 · ${tuning.label} · 目标 ${frequencyForMidi(midi).toFixed(1)} Hz · ${sampleKind} · ${played} / ${totalNotes}`;
         const stopVoice = playMidi(midi, {
           duration: event.duration * unit * 0.95,
@@ -1612,9 +1716,10 @@ async function playElecScale() {
     return;
   }
   const labels = ['低音5', '低音6', '低音7', '中音1', '中音2', '中音3', '中音5'];
+  const midis = labels.map(label => midiOf(getNote(label, 5), 5, state.key));
   const token = sequence.token;
   ensureAudio();
-  if (!diziSamples && !await loadDiziSamples()) { showToast('笛音加载失败，请重试'); return; }
+  if (!await loadDiziSamples(midis)) { showToast('笛音加载失败，请重试'); return; }
   if (token !== sequence.token || state.muted) return;
   labels.forEach((label, index) => {
     const timer = window.setTimeout(() => {
@@ -1626,7 +1731,7 @@ async function playElecScale() {
         elec.closed[hole] = note.holes[6 - hole] === '0';
       });
       updateElecUI();
-      playMidi(midiOf(note, 5, state.key), { duration: 0.55, velocity: 0.5 });
+      playMidi(midis[index], { duration: 0.55, velocity: 0.5 });
       const stage = $('#elecStage');
       if (!stage) return;
       stage.classList.add('is-blowing');
@@ -2436,6 +2541,11 @@ function handleSheetClick(event) {
     toggleScorePlayback();
     return;
   }
+  const retryScore = event.target.closest('[data-score-retry]');
+  if (retryScore) {
+    openScore(Number(retryScore.dataset.scoreRetry), { returnFocus: sheetState.lastFocus });
+    return;
+  }
   const scoreStep = event.target.closest('[data-score-step]');
   if (scoreStep) {
     stepScore(Number(scoreStep.dataset.scoreStep));
@@ -2658,7 +2768,6 @@ function init() {
   renderTopics();
   renderFingering();
   renderElecDizi();
-  loadDiziSamples();
   updateSoundButton();
 }
 
