@@ -2211,8 +2211,8 @@ function makeFingeringQuestion(config) {
   return {
     topic: 'fingering',
     tag: '指法识音',
-    prompt: `在 ${KEYS[key].name}笛、${SYSTEMS[system].name} 中，以${note.blow}吹奏图示孔位，对应本页哪一个音？`,
-    visual: { type: 'strip', holes: note.holes, blow: note.blow },
+    prompt: `在 ${KEYS[key].name}笛、${SYSTEMS[system].name} 中，按图示孔位以${note.blow}吹奏${REG_LABEL[note.reg]}区，对应哪个音？`,
+    visual: { type: 'strip', holes: note.holes, blow: note.blow, reg: note.reg },
     options,
     correct: note.label,
     explain: `${note.label} · ${pitch}。${noteTip(note)}${BLOW[note.blow]}`,
@@ -2331,7 +2331,7 @@ function stripHTML(holes) {
 function questionVisualHTML(question) {
   if (!question.visual) return '';
   if (question.visual.type === 'strip') {
-    return `<div class="q-visual">${stripHTML(question.visual.holes)}<p class="strip-caption">孔序：第六孔 → 第一孔 · 吹法：${question.visual.blow}</p></div>`;
+    return `<div class="q-visual">${stripHTML(question.visual.holes)}<p class="strip-caption">孔序：第六孔 → 第一孔 · ${REG_LABEL[question.visual.reg]}区 · 吹法：${question.visual.blow}</p></div>`;
   }
   if (question.visual.type === 'token') {
     return `<div class="q-visual"><div class="q-note-token"><strong>${degreeHTML(question.visual.label)}</strong><span>${question.visual.label}</span></div></div>`;
